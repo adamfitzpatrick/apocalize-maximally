@@ -1,0 +1,154 @@
+import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as cognito from "aws-cdk-lib/aws-cognito";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as logs from "aws-cdk-lib/aws-logs";
+import * as path from "node:path";
+
+interface BackendStackProps extends cdk.StackProps {
+  environment: "dev" | "prd";
+  frontendOrigin: string;
+}
+
+export class BackendStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props: BackendStackProps) {
+    super(scope, id, props);
+
+    const prefix = props.environment;
+    const userPool = new cognito.UserPool(this, "UserPool", {
+      userPoolName: `${prefix}-apocalize-users`,
+      selfSignUpEnabled: true,
+      signInAliases: { email: true },
+      signInCaseSensitive: false,
+      autoVerify: { email: true },
+      standardAttributes: {
+        email: { required: true, mutable: true }
+      },
+      userVerification: {
+        emailSubject: "Your Apocalize sign-in code",
+        emailBody: "Your verification code is {####}",
+        emailStyle: cognito.VerificationEmailStyle.CODE
+      },
+      signInPolicy: {
+        allowedFirstAuthFactors: {
+          password: true,
+          emailOtp: true
+        }
+      }
+    });
+
+    const userPoolClient = userPool.addClient("FrontendClient", {
+      userPoolClientName: `${prefix}-apocalize-frontend`,
+      generateSecret: false,
+      authFlows: { user: true },
+      supportedIdentityProviders: [
+        cognito.UserPoolClientIdentityProvider.COGNITO
+      ]
+    });
+
+    const table = new dynamodb.Table(this, "ItemsTable", {
+      tableName: `${prefix}-apocalize-items`,
+      partitionKey: { name: "PK", type: dynamodb.AttributeType.STRING },
+      sortKey: { name: "SK", type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      pointInTimeRecoverySpecification: {
+        pointInTimeRecoveryEnabled: true
+      },
+      removalPolicy: cdk.RemovalPolicy.RETAIN
+    });
+
+    table.addGlobalSecondaryIndex({
+      indexName: `${prefix}-GSI1`,
+      partitionKey: { name: "GSI1PK", type: dynamodb.AttributeType.STRING },
+      sortKey: { name: "GSI1SK", type: dynamodb.AttributeType.STRING },
+      projectionType: dynamodb.ProjectionType.ALL
+    });
+
+    const handlerLogGroup = new logs.LogGroup(this, "ItemsHandlerLogs", {
+      logGroupName: `/aws/lambda/${prefix}-apocalize-items-handler`,
+      retention: logs.RetentionDays.ONE_WEEK,
+      removalPolicy: cdk.RemovalPolicy.RETAIN
+    });
+
+    const handlerRole = new iam.Role(this, "ItemsHandlerRole", {
+      roleName: `${prefix}-apocalize-items-handler`,
+      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com")
+    });
+    handlerLogGroup.grantWrite(handlerRole);
+
+    const handler = new lambda.Function(this, "ItemsHandler", {
+      functionName: `${prefix}-apocalize-items-handler`,
+      role: handlerRole,
+      code: lambda.Code.fromAsset(
+        path.resolve(__dirname, "../../dist/handler")
+      ),
+      handler: "index.handler",
+      runtime: lambda.Runtime.NODEJS_22_X,
+      environment: {
+        TABLE_NAME: table.tableName,
+        FRONTEND_ORIGIN: props.frontendOrigin,
+        ITEMS_INDEX_NAME: `${prefix}-GSI1`
+      },
+      logGroup: handlerLogGroup
+    });
+
+    table.grantReadWriteData(handler);
+
+    const api = new apigateway.RestApi(this, "ItemsApi", {
+      restApiName: `${prefix}-Apocalize Items API`,
+      defaultCorsPreflightOptions: {
+        allowOrigins: [props.frontendOrigin],
+        allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowHeaders: ["Authorization", "Content-Type"]
+      },
+      deployOptions: {
+        stageName: prefix,
+        throttlingRateLimit: 20,
+        throttlingBurstLimit: 40
+      }
+    });
+    const authorizer = new apigateway.CognitoUserPoolsAuthorizer(
+      this,
+      "ApiAuthorizer",
+      {
+        authorizerName: `${prefix}-apocalize-api-authorizer`,
+        cognitoUserPools: [userPool]
+      }
+    );
+    const integration = new apigateway.LambdaIntegration(handler);
+    const items = api.root.addResource("items");
+    const authorizedMethodOptions: apigateway.MethodOptions = {
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      authorizer
+    };
+    items.addMethod("GET", integration, authorizedMethodOptions);
+    items.addMethod("POST", integration, authorizedMethodOptions);
+
+    const item = items.addResource("{id}");
+    item.addMethod("GET", integration, authorizedMethodOptions);
+    item.addMethod("PUT", integration, authorizedMethodOptions);
+    item.addMethod("DELETE", integration, authorizedMethodOptions);
+
+    new cdk.CfnOutput(this, "ApiUrl", {
+      value: api.url,
+      description: "Copy this URL to VITE_API_URL in packages/frontend/.env"
+    });
+    new cdk.CfnOutput(this, "AuthUserPoolId", {
+      value: userPool.userPoolId,
+      description: "Copy to VITE_COGNITO_USER_POOL_ID in packages/frontend/.env"
+    });
+    new cdk.CfnOutput(this, "AuthUserPoolClientId", {
+      value: userPoolClient.userPoolClientId,
+      description:
+        "Copy to VITE_COGNITO_USER_POOL_CLIENT_ID in packages/frontend/.env"
+    });
+    new cdk.CfnOutput(this, "ItemsTableName", {
+      value: table.tableName
+    });
+
+    cdk.Tags.of(this).add("Environment", prefix);
+  }
+}

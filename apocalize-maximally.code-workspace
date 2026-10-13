@@ -1,0 +1,12 @@
+{
+    "folders": [{
+        "name": "apocalize-maximally",
+        "path": "."
+    }, {
+        "name": "frontend",
+        "path": "./packages/frontend"
+    }, {
+        "name": "backend",
+        "path": "./packages/backend"
+    }],
+}

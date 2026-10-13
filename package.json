@@ -1,0 +1,16 @@
+{
+  "name": "apocalize-maximally",
+  "private": true,
+  "workspaces": [
+    "packages/backend",
+    "packages/frontend"
+  ],
+  "scripts": {
+    "build": "yarn workspace @apocalize/frontend build && yarn workspace @apocalize/backend build",
+    "synth:backend": "yarn workspace @apocalize/backend synth",
+    "synth:frontend": "yarn workspace @apocalize/frontend synth",
+    "deploy:backend": "yarn workspace @apocalize/backend deploy",
+    "deploy:frontend": "yarn workspace @apocalize/frontend deploy"
+  },
+  "packageManager": "yarn@4.13.0"
+}
