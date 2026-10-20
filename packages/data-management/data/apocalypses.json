@@ -1,0 +1,233 @@
+[
+  {
+    "name": "Alien Invasion",
+    "description": [
+      "You were up close and personal with ET, maybe you even found yourself one of their abductees. You know their technology is organic in nature and that their weapons are primarily designed to Stun rather than kill targets. But you also know that you are only a walking sack of Organic Component Pieces to them."
+    ],
+    "modifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 5,
+      "int": 0,
+      "ins": 10,
+      "cha": 0,
+      "fs": 0,
+      "bs": 5,
+      "luck": 0
+    },
+    "skills": [
+      "Xenotech Use",
+      "Xenology"
+    ]
+  },
+  {
+    "name": "Food Riots",
+    "description": [
+      "They told everyone to stay calm. They said that rationing was only temporary. They lied. While you did your best to keep yourself fed, you watched as helpless people turned on each other as supplies ran out. For you, The Purge became a reality. You had to do whatever it took to stay alive, and probably don’t really want to tell others just how bad it got. There is a very fine line between survivor and bandit"
+    ],
+    "modifiers": {
+      "str": 0,
+      "for": 5,
+      "agi": 0,
+      "int": 0,
+      "ins": 5,
+      "cha": 0,
+      "fs": 1,
+      "bs": 0,
+      "luck": 0
+    },
+    "skills": [
+      "Brawl",
+      "Firearms"
+    ]
+  },
+  {
+    "name": "Kaiju Attack",
+    "description": [
+      "You have seen the giants and heard their roar. While you may not encounter them much anymore, the telltale shake of the ground or the distant chewing sound will usually let you know when one of these giants are approaching."
+    ],
+    "modifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 5,
+      "int": 5,
+      "ins": 0,
+      "cha": 0,
+      "fs": 0,
+      "bs": 10,
+      "luck": 0
+    },
+    "skills": [
+      "Firearms",
+      "Monster Anatomy"
+    ]
+  },
+  {
+    "name": "Nuclear Holocaust",
+    "description": [
+      "For you, it almost seemed like the mushroom clouds joined and created a single funnel, ushering in the end of the humanity. You may have been one of the lucky ones who found a bunker or one of the unlucky ones who barely escaped the blast."
+    ],
+    "modifiers": {
+      "str": 0,
+      "for": 10,
+      "agi": 0,
+      "int": 0,
+      "ins": 0,
+      "cha": 5,
+      "fs": 0,
+      "bs": 0,
+      "luck": 5
+    },
+    "skills": [
+      "Survival",
+      "Fallout"
+    ]
+  },
+  {
+    "name": "Peak Oil Collapse",
+    "description": [
+      "When human civilization collapsed, you saw the ugliness that lies beneath. We are selfish, brutal, and ultimately weak. Taking to the road, you became a warrior, stealing from the worst dregs of survivors... all because of gas. Perhaps you skirted the edge of an Oil Barony, or maybe you were one of the bandits who maintained the Baron’s supplies. Whatever the case, you are aware that humanity is its own enemy."
+    ],
+    "modifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 0,
+      "int": 0,
+      "ins": 0,
+      "cha": 10,
+      "fs": 5,
+      "bs": 5,
+      "luck": 0
+    },
+    "skills": [
+      "Drive",
+      "Automotives"
+    ]
+  },
+  {
+    "name": "Robot Uprising",
+    "description": [
+      "There were a lot of warnings that the first Fully Autonomous Drone Combat Force (ADCF) was a bad idea. Thanks to some ingenuity, you managed to escape the army of automatons that walk the planet eradicating humans wherever they find them. You know that just because the machine is off doesn’t mean it isn’t watching you."
+    ],
+    "modifiers": {
+      "str": 5,
+      "for": 0,
+      "agi": 0,
+      "int": 10,
+      "ins": 0,
+      "cha": 0,
+      "fs": 0,
+      "bs": 0,
+      "luck": 5
+    },
+    "skills": [
+      "Tech Use",
+      "Robotics"
+    ]
+  },
+  {
+    "name": "Seismic Cataclysm",
+    "description": [
+      "For you, the Earth quite literally collapsed. You were alone when you contorted your way through fallen buildings and climbed sheer surfaces to escape. You came out alive, intact, and without an Insanity Condition. But only just barely."
+    ],
+    "modifiers": {
+      "str": 5,
+      "for": 5,
+      "agi": 10,
+      "int": 0,
+      "ins": 0,
+      "cha": 0,
+      "fs": 0,
+      "bs": 0,
+      "luck": 0
+    },
+    "skills": [
+      "Athletics",
+      "Structural Integrity"
+    ]
+  },
+  {
+    "name": "Supernatural Horrors",
+    "description": [
+      "Vampires, Werewolves, Kitsune, Goblins, and the Unseelie roam the darkness. They are not just children’s tales. Boogeymen are real, lurking in the shadows and hunting humans each day, and you were once their prey."
+    ],
+    "modifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 0,
+      "int": 5,
+      "ins": 10,
+      "cha": 0,
+      "fs": 5,
+      "bs": 0,
+      "luck": 0
+    },
+    "skills": [
+      "Occult",
+      "Blades"
+    ]
+  },
+  {
+    "name": "Time Paradox",
+    "description": [
+      "Some well-meaning scientist invented time travel and tried to fix things before they began. The paradox of this event continues to ripple, creating strange pockets where time does not exist, or recreates events long since forgotten. The world is a strange place, and you should know, because you aren’t from this time, and sometimes have memories of events that have not yet happened."
+    ],
+    "modifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 0,
+      "int": 5,
+      "ins": 0,
+      "cha": 5,
+      "fs": 0,
+      "bs": 0,
+      "luck": 10
+    },
+    "skills": [
+      "Charm",
+      "Academics"
+    ]
+  },
+  {
+    "name": "The Rapture",
+    "description": [
+      "After the trumpets of Heaven sounded, the gates to Valhalla were opened and Kalki descended to Earth. And while Fenrir began chewing, you watched as the minions of Al-Masīḥ ad-Dajjāl and Jesus continued their eternal war."
+    ],
+    "modifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 5,
+      "int": 0,
+      "ins": 0,
+      "cha": 5,
+      "fs": 0,
+      "bs": 0,
+      "luck": 10
+    },
+    "skills": [
+      "Science",
+      "Theology"
+    ]
+  },
+  {
+    "name": "Zombie Apocalypse",
+    "description": [
+      "As people got sick, they were quarantined, but the virus escaped, and you got trapped. With stealth, combat and cunning, you are free and quite aware of the Z-Virus and how it works. However, the tell-tale leathery moans of the reanimated dead still haunt your dreams."
+    ],
+    "modifiers": {
+      "str": 10,
+      "for": 0,
+      "agi": 0,
+      "int": 0,
+      "ins": 5,
+      "cha": 0,
+      "fs": 5,
+      "bs": 0,
+      "luck": 0
+    },
+    "skills": [
+      "Stealth",
+      "Reanimation"
+    ]
+  }
+]

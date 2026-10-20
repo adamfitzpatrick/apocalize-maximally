@@ -1,0 +1,82 @@
+[
+  {
+    "range": "0 - 15",
+    "category": "Child",
+    "modifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 0,
+      "int": -10,
+      "ins": -10,
+      "cha": 10,
+      "fs": 0,
+      "bs": 0,
+      "luck": 10
+    },
+    "skillProf": "-"
+  },
+  {
+    "range": "16 - 29",
+    "category": "Youth",
+    "modifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 0,
+      "int": -5,
+      "ins": -5,
+      "cha": 5,
+      "fs": 0,
+      "bs": 0,
+      "luck": 5
+    },
+    "skillProf": "1"
+  },
+  {
+    "range": "30 - 45",
+    "category": "Middle",
+    "modifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 0,
+      "int": 0,
+      "ins": 0,
+      "cha": 0,
+      "fs": 0,
+      "bs": 0,
+      "luck": 0
+    },
+    "skillProf": "2"
+  },
+  {
+    "range": "45 - 59",
+    "category": "Mature",
+    "modifiers": {
+      "str": -5,
+      "for": 0,
+      "agi": 0,
+      "int": 5,
+      "ins": 5,
+      "cha": -5,
+      "fs": 0,
+      "bs": 0,
+      "luck": 0
+    },
+    "skillProf": "3"
+  },
+  {
+    "range": "60+",
+    "category": "Geriatric",
+    "modifiers": {
+      "str": -10,
+      "for": -10,
+      "agi": 0,
+      "int": 10,
+      "ins": 10,
+      "cha": -10,
+      "fs": 0,
+      "bs": 0,
+      "luck": 10
+    },
+    "skillProf": "4"
+  }
+]

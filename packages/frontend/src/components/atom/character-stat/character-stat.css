@@ -1,0 +1,40 @@
+.character-stat {
+  width: fit-content;
+  min-width: 3.8rem;
+  gap: 4px;
+  min-height: 4rem;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  border-radius: 6px;
+}
+
+.character-stat__value,
+.character-stat__derived-value {
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-variant-numeric: tabular-nums;
+}
+
+.character-stat__value {
+  min-width: 3rem;
+}
+
+.character-stat__derived {
+  min-width: 2rem;
+  border-left: 1px solid color-mix(in srgb, var(--color-foreground) 24%, transparent);
+}
+
+.character-stat__derived-block {
+  width: 100%;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-foreground) 24%, transparent);
+}
+
+.character-stat__derived-value {
+  font-size: 0.75rem;
+  margin-bottom: 0;
+}
+
+.character-stat__label {
+  color: color-mix(in srgb, var(--color-foreground) 40%, transparent);
+  font-size: 0.5rem;
+}

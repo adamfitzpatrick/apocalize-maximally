@@ -1,0 +1,36 @@
+.character-skill-pill__tooltip-anchor {
+  display: inline-flex;
+}
+
+.character-skill-pill.ant-btn {
+  display: inline-flex;
+  height: auto;
+  min-height: 28px;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 24%, transparent);
+  border-radius: 6px;
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.character-skill-pill--selected.ant-btn {
+  border-color: var(--color-accent-primary);
+  background: color-mix(in srgb, var(--color-accent-primary) 12%, var(--color-background));
+}
+
+.character-skill-pill__proficiency {
+  display: inline-flex;
+  width: 1.25em;
+  height: 1.25em;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-accent-primary);
+  border-radius: 50%;
+  color: var(--color-accent-primary);
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1;
+}

@@ -1,0 +1,142 @@
+.character-creation-step {
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.character-creation-step .ant-card-body {
+  min-width: 0;
+}
+
+.infobox-selector__item {
+    position: relative;
+}
+
+.infobox-selector__expander {
+    background: transparent;
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.character-creation-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+
+.personal-description__field {
+  display: grid;
+  gap: 6px;
+}
+
+.personal-description__label {
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+.table-selector {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.starting-gear-table.data-table-scroll {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.starting-gear-table .data-table {
+  table-layout: fixed;
+}
+
+.starting-gear-table .data-table th:first-child,
+.starting-gear-table .data-table td:first-child {
+  width: 9.5rem;
+}
+
+.starting-gear-table .data-table th:last-child,
+.starting-gear-table .data-table td:last-child {
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.point-assignment__stat {
+  min-width: 0;
+}
+
+.point-assignment__input.ant-input-number {
+  width: 3.5rem;
+}
+
+.point-assignment__input .ant-input-number-input {
+  padding-inline: 4px;
+}
+
+h5.ant-typography.selection-summary {
+  margin: 0 !important;
+  color: var(--color-accent-primary);
+}
+
+.skill-selector-tags {
+  margin-top: 1rem;
+}
+
+.skill-selector-archetype {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.skill-selector-group {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.derived-stats-review {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 4rem;
+  max-width: 44rem;
+}
+
+.derived-stats-review__column {
+  min-width: 0;
+}
+
+.derived-stats-review__item {
+  width: 100%;
+}
+
+.derived-stats-review__name {
+  font-weight: 600;
+  color: var(--color-foreground);
+  text-align: left;
+}
+
+.derived-stats-review__formula {
+  color: color-mix(in srgb, var(--color-foreground) 55%, transparent);
+  font-size: 0.8125rem;
+  text-align: left;
+}
+
+.derived-stats-review__stat {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.derived-stats-review__item .character-stat {
+  min-width: 4.125rem;
+  min-height: 3.75rem;
+  flex-shrink: 0;
+}
+
+.derived-stats-review__item .character-stat__value {
+  min-width: 3.1875rem;
+}

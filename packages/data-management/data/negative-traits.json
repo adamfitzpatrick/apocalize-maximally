@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Allergy",
+    "description": "The character suffers from environmental allergies that result in Resilience rolls to resist sneezing, wheezing, or visual impairments. Failure on the Resilience roll means that the character suffers Disadvatnage on skill rolls related to the Allergic reaction, such as Stealth, Athletics, or Perception."
+  },
+  {
+    "name": "Body Odor",
+    "description": "The character suffers from pungent body odor that causes them to be in a permanent state of DISTRUST with others. They also increase the base at the beginning of a scenario by +10."
+  },
+  {
+    "name": "Bad Volume Control",
+    "description": "The character suffers from self-hearing issues causing them to speak overly loud, increasing the base at the beginning of a scenario by +10."
+  },
+  {
+    "name": "Increased Hunger",
+    "description": "The character has an appetite larger than their Build and suffers from a +1 daily Food Requirement."
+  },
+  {
+    "name": "Limp",
+    "description": "The character has a limp resulting in DISADVANTAGE on Athletic skill rolls."
+  },
+  {
+    "name": "Nightmares",
+    "description": "The character suffers from horrific nightmares. During any sleep period, they must make a Resolve roll to stay asleep. Failure results in screaming themselves awake and increasing the +10. They cannot Rest or Sleep afterwards."
+  },
+  {
+    "name": "Post-Traumatic Stress",
+    "description": "The character has been mentally traumatized and must make Resolve rolls at the beginning of every Combat Round. Failure causes them to be UNNERVED for that Round."
+  },
+  {
+    "name": "Scarred",
+    "description": "The character has a disfiguring scar. The character is at Disadvantage on Charm skill rolls. However, it grants ADVANTAGE to the Intimidate skill."
+  },
+  {
+    "name": "Sickly",
+    "description": "The character is immunocompromised and rolls all Immunity rolls at Disadvantage."
+  },
+  {
+    "name": "Snores",
+    "description": "During Rest Periods, the character increases the +5 for each 4-hour of sleep. This trait can be chosen multiple times, increasing the +5 each time and signifying how loudly the character snores."
+  },
+  {
+    "name": "Small Bladder",
+    "description": "The character suffers from a frequent need to urinate. This grants enemies Advantage on Tracking the survivor through smell and increases the base at the beginning of a scenario by +5."
+  },
+  {
+    "name": "Social Anxiety",
+    "description": "(Requires Gamemaster Approval) The character suffers from anxiety in social situations. All Charisma skills, except Animal Ken, and Resolve rolls against Interrogate are at Disadvantage. Grants 4 skills proficiencies in exchange."
+  },
+  {
+    "name": "Speech Impediment",
+    "description": "The character suffers from a speech impediment that increases the Success Requirement on Teamwork skill rolls. It also causes Disadvantage on Charm skill rolls, but grants Advantage on Perception rolls when listening or determining someone's lies."
+  },
+  {
+    "name": "Vertigo",
+    "description": "The character suffers from balance issues and has Disadvantage on ALL Athletics skill rolls."
+  }
+]

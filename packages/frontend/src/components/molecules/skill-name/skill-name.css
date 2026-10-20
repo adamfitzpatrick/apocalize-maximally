@@ -1,0 +1,58 @@
+.skill-name {
+  width: fit-content;
+  padding: 4px 6px;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 24%, transparent);
+  border-radius: 6px;
+  background: var(--color-background);
+}
+
+.skill-name__marker.ant-btn {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 35%, transparent);
+  border-radius: 3px;
+  color: var(--color-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.skill-name--compact {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-color: var(--color-accent-primary);
+  background: color-mix(in srgb, var(--color-accent-primary) 12%, var(--color-background));
+  font-size: 0.8rem;
+}
+
+.skill-name--selectable.ant-btn {
+  height: auto;
+  min-height: 28px;
+  padding: 4px 8px;
+}
+
+.skill-name--selected.ant-btn {
+  border-color: var(--color-accent-primary);
+  background: color-mix(in srgb, var(--color-accent-primary) 12%, var(--color-background));
+  color: var(--color-foreground);
+}
+
+.skill-name__proficiency {
+  display: inline-flex;
+  width: 1.25em;
+  height: 1.25em;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-accent-primary);
+  border-radius: 50%;
+  color: var(--color-accent-primary);
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+}

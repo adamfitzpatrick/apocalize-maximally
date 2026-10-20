@@ -1,0 +1,100 @@
+[
+  {
+    "name": "Armor Option 1",
+    "category": "armor",
+    "items": ["Kevlar Jacket (Armor 6)"]
+  },
+  {
+    "name": "Armor Option 2",
+    "category": "armor",
+    "items": ["Kevlar Vest (Armor 5)", "Hat (Armor 1)"]
+  },
+  {
+    "name": "Armor Option 3",
+    "category": "armor",
+    "items": ["Motorcycle Armor (Armor 4)", "Gloves (Armor 2)"]
+  },
+  {
+    "name": "Armor Option 4",
+    "category": "armor",
+    "items": ["Thick Jacket (Armor 3)", "Gloves (Armor 2)", "Hat (Armor 1)"]
+  },
+  {
+    "name": "Bow Kit",
+    "category": "weapon",
+    "items": ["Recurve Bow (A)", "Bowstring Dampener", "5 Arrows"]
+  },
+  {
+    "name": "Handgun Kit",
+    "category": "weapon",
+    "items": ["9mm Auto (H)", "Quickdraw Holster", "2 Ammunition Rounds"]
+  },
+  {
+    "name": "Melee Kit",
+    "category": "weapon",
+    "items": ["Katana or Axe (H)", "Hatchet x2 (H)", "Combat Knife (A)", "Bat or Club (A)"]
+  },
+  {
+    "name": "Mixed Kit",
+    "category": "weapon",
+    "items": ["Crossbow (A)", "5 Arrows", "Combat Knife (A)", "Baseball Bat (A)"]
+  },
+  {
+    "name": "Rifle Kit",
+    "category": "weapon",
+    "items": ["Lever Rifle (A)", "Folding Knife (L)", "2 Ammunition Rounds"]
+  },
+  {
+    "name": "Thrower's Kit",
+    "category": "weapon",
+    "items": ["Chain (A)", "Throwing Knives x4 (L)", "Molotov Cocktails x3 (H)"]
+  },
+  {
+    "name": "Explorers Kit",
+    "category": "gear",
+    "items": ["Camo Tarp", "Glow Stick (2)", "Military Pack", "Running Shoes", "Tent (Pup)", "4 Food Units"]
+  },
+  {
+    "name": "Hoarders Kit",
+    "category": "gear",
+    "items": [
+      "Backpack",
+      "Compass",
+      "Crowbar",
+      "Isopropyl Alcohol (500mL)",
+      "Large Net",
+      "Military Survival Manual",
+      "Old Road Atlas",
+      "Pencil and Paper",
+      "Rain Poncho",
+      "Rope (30m)",
+      "Sleeping Bag",
+      "Toothbrush",
+      "Water Bottle x2",
+      "Wool Socks",
+      "4 Food Units"
+    ]
+  },
+  {
+    "name": "Scavengers Kit",
+    "category": "gear",
+    "items": [
+      "Backpack",
+      "Combat Knife",
+      "Lithium Ion Battery",
+      "Matches (10)",
+      "Mechanically-Powered Low-Light Flashlight",
+      "Medical Kit",
+      "Plastic Canteen",
+      "Pouch",
+      "Rain Poncho",
+      "Rope (30m)",
+      "4 Food Units"
+    ]
+  },
+  {
+    "name": "Tinkerers Kit",
+    "category": "gear",
+    "items": ["Drone Command Unit", "Military Pack", "Repair Kit", "Toolbelt", "Tools", "Wire (10m)", "4 Food Units"]
+  }
+]

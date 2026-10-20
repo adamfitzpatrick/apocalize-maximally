@@ -1,0 +1,40 @@
+.character-card {
+  cursor: pointer;
+}
+
+.character-card__content {
+  height: 100%;
+  justify-content: space-between;
+}
+
+.character-card__details {
+  min-width: 0;
+}
+
+.character-card__avatar {
+  flex: 0 0 auto;
+}
+
+.character-card:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+.character-card__name.ant-typography {
+  margin: 0;
+}
+
+.character-card__field.ant-typography {
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+
+.character-card__progress.ant-progress {
+  margin: 0;
+}
+
+.character-card__ready.ant-typography {
+  align-self: flex-end;
+  color: var(--color-accent-primary);
+  font-size: 0.75rem;
+}

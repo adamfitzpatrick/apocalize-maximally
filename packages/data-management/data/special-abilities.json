@@ -1,0 +1,507 @@
+[
+    {
+        "name": "Pyromania",
+        "description": "Combustible Damage Code increase +3, and burn for extra +1d6 Rounds; Must make Resolve Special Stat roll not to burn flammable liquids that enter Close Range.",
+        "source": "The Firefighter"
+    },
+    {
+        "name": "Scorched",
+        "description": "Resilience rolls against heat and flame are ALWAYS at Advantage.",
+        "source": "The Firefighter"
+    },
+    {
+        "name": "Flare",
+        "description": "When using Flares as a weapon, gain Advantage on Attack and Defensive Actions; Enemies in Short Range gain Disadvantage from the smoke. This Special Ability increases the EAG by 20%, but attracts the enemy to this survivor.",
+        "source": "The Firefighter"
+    },
+    {
+        "name": "Stamina",
+        "description": "When conducting a prolonged Athletic action, like Running or Swimming, the character increases the Success Requirement every 2 Resilience failures instead of EVERY Resilience failure.",
+        "source": "The Firefighter"
+    },
+    {
+        "name": "Bravery",
+        "description": "Resolve rolls are ALWAYS at Advantage.",
+        "source": "The Firefighter"
+    },
+    {
+        "name": "Robust",
+        "description": "Immunity rolls are ALWAYS at Advantage.",
+        "source": "The Firefighter"
+    },
+    {
+        "name": "Trusty Axe",
+        "description": "Called Shot Attacks with Axes gain Advantage (negating the Called Shot Disadvantage).",
+        "source": "The Firefighter"
+    },
+    {
+        "name": "Survivor Mentality",
+        "description": "When STARVING, Resilience can be used to negate Physical damage at 2 per Degree of Success.",
+        "source": "The Firefighter"
+    },
+    {
+        "name": "Hollow Points ",
+        "description": "Choose a Favored Firearm (.38 Revolver, 9mm Auto, Autorifle, etc.). Damage Code +2 when using this Firearm; Use of other weapon types, even other firearms, is at Disadvantage.",
+        "source": "The Gunslinger"
+    },
+    {
+        "name": "Hit and Run ",
+        "description": "Can Take Aim once on your Turn as a Free Action.",
+        "source": "The Gunslinger"
+    },
+    {
+        "name": "Trigger Happy ",
+        "description": "Gain Multi-Attack with revolvers when other hand is empty.",
+        "source": "The Gunslinger"
+    },
+    {
+        "name": "Tactical Leadership ",
+        "description": "Command skill rolls are ALWAYS at Advantage.",
+        "source": "The Gunslinger"
+    },
+    {
+        "name": "Poker Face ",
+        "description": "Reroll a failed Resolve roll ONCE per interaction without using a Luck Use Per Game. The second roll result must be accepted.",
+        "source": "The Gunslinger"
+    },
+    {
+        "name": "Lasso ",
+        "description": "Wrangle skill rolls are ALWAYS at Advantage.",
+        "source": "The Gunslinger"
+    },
+    {
+        "name": "Focused Shot ",
+        "description": "Called Shot Attacks with Firearms or Heavy Weapons skill gain Advantage (negating the Called Shot Disadvantage).",
+        "source": "The Gunslinger"
+    },
+    {
+        "name": "Guns Blazing ",
+        "description": "Gain Multi-Attack with ANY automatic handguns; when dual-wielding or if the handgun already has Multi-Attack, each pistol can be fired twice. Failures on ANY shot result in an additional d100 roll. A 25 or Below on this second d100 roll results in an ally getting hit with the attack.",
+        "source": "The Gunslinger"
+    },
+    {
+        "name": "Silent Stalker",
+        "description": "When UNSEEN, Archery and Firearm weapons’ Damage Codes are +2.",
+        "source": "The Hunter"
+    },
+    {
+        "name": "Rapid Shot",
+        "description": "Gain Multi-Attack with a Bow, or ANY Firearm that does not have Multi- Attack.",
+        "source": "The Hunter"
+    },
+    {
+        "name": "Camouflage",
+        "description": "Stealth Skill Degree of Success are +1 in Opposed rolls. Character negates 5 points of an EAG increase while moving through terrain even when not using the Stealth skill.",
+        "source": "The Hunter"
+    },
+    {
+        "name": "Razors Edge",
+        "description": "Gain Proficiency in the Blades skill, if not proficient, when using an arrow as a melee weapon (DC Light).",
+        "source": "The Hunter"
+    },
+    {
+        "name": "Parkour",
+        "description": "Ignore Hindering Terrain Athletics Skill rolls during Movement actions.",
+        "source": "The Hunter"
+    },
+    {
+        "name": "Resourceful",
+        "description": "Crafting Skill at Advantage when Creating, Improving, Rebuilding, and Repairing Melee Weapons and Special Items.",
+        "source": "The Hunter"
+    },
+    {
+        "name": "Headshot",
+        "description": "Called Shot Attacks with Bows or Crossbows gain Advantage (negating the Called Shot Disadvantage).",
+        "source": "The Hunter"
+    },
+    {
+        "name": "Survival Instincts",
+        "description": "When STARVING with at least 1 ally, reduce all party Food Requirement per day by 1.",
+        "source": "The Hunter"
+    },
+    {
+        "name": "Grease Monkey",
+        "description": "Crafting or Mechanics skill (Choose One) are ALWAYS at Advantage, and increase the Repair Code +1 before rolling. During Combat, Increase the Degree of Success limit +1. ",
+        "source": "The Mechanic"
+    },
+    {
+        "name": "Homemade Bombs",
+        "description": "Can create 1 improved explosive for 4 during an Action Phase; Explosive does Extreme (1d8+7) damage. ",
+        "source": "The Mechanic"
+    },
+    {
+        "name": "Upgrades",
+        "description": "Roll Crafting or Mechanics skill as a Combat Action to grant Damage Code+1 to a weapon for Combat Rounds equal to the Degrees of Success. ",
+        "source": "The Mechanic"
+    },
+    {
+        "name": "Locksmith",
+        "description": "Lockpick skill rolls are ALWAYS at Advantage. ",
+        "source": "The Mechanic"
+    },
+    {
+        "name": "Slick",
+        "description": "Brawl attacks against the Mechanic are at Disadvantage; Degree of Success +1 in Opposed Grapple rolls when escaping. ",
+        "source": "The Mechanic"
+    },
+    {
+        "name": "Stunt Driver",
+        "description": "Drive skill becomes Free Action ONCE per Turn during Vehicular Combat Rounds. ",
+        "source": "The Mechanic"
+    },
+    {
+        "name": "Drone Tinkerer",
+        "description": "Mechanics skill trolls o create Drones are ALWAYS at Advantage. ",
+        "source": "The Mechanic"
+    },
+    {
+        "name": "Jury Rig",
+        "description": "Increase Repair Code +2 when in a vehicle with less than ¼ Body Points. Stacks with Grease Monkey.",
+        "source": "The Mechanic"
+    },
+    {
+        "name": "Sermon",
+        "description": "In groups of 3+, Charm rolls at Advantage; Groups of 4+, gain +1 to Threshold per Person. If using Sermon for 2+ Turns, gain Advantage on Command rolls for 1d4+1 Combat Rounds afterwards.",
+        "source": "The Priest"
+    },
+    {
+        "name": "Arcane Knowledge",
+        "description": "Academic skill rolls are ALWAYS at Advantage.",
+        "source": "The Priest"
+    },
+    {
+        "name": "Blessing",
+        "description": "With a Successful Resolve roll, grant 1 of the following benefits to themselves or an ally within Close Range: Protection from ALL Physical Damage for 1 Action Phase, Remove 1 level of Resolve Damage, Grant Advantage on all Resolve Special Stat rolls for 1 Combat Round per Degree Of Success, Reduce the Stages of Infection by 1 per Degree of Success, Grant a DC +1 on Attacks against Supernatural Horrors and/or Zombies",
+        "source": "The Priest"
+    },
+    {
+        "name": "Collar",
+        "description": "Unaffected by Hunger Damage effects from Starving or Emaciated.",
+        "source": "The Priest"
+    },
+    {
+        "name": "Determination",
+        "description": "Roll Resolve ONCE during Long Rest or Sleep to heal 2 Physical Damage per Degree of Success.",
+        "source": "The Priest"
+    },
+    {
+        "name": "Exorcism",
+        "description": "With a Successful Resolve roll, ALL Supernatural Horrors and Zombies within Midrange gain Disadvantage for 1d4 Combat Rounds. Each Action Phase the Exorcism continues, these Enemies take 2 Physical Damage. No second roll required.",
+        "source": "The Priest"
+    },
+    {
+        "name": "Prayer",
+        "description": "With a Successful Resolve roll, a “Natural Event” strikes ALL Enemies within Midrange with 1d6 Resilience Damage per Degree of Success; Targets can negate 2 damage per Degree of Success with a Resilience Special Stat roll.",
+        "source": "The Priest"
+    },
+    {
+        "name": "Communion",
+        "description": "With a Successful Resolve roll during a Long Rest, each survivor's Food Requirement is reduced by 1.",
+        "source": "The Priest"
+    },
+    {
+        "name": "Martial Stance",
+        "description": "Switch between Defensive or Offensive stance as 1 Free Action; Defensive Stance grants Advantage to Defensive Actions; Offensive stance grants Advantage to Fighting Skill Attacks and increases Melee Damage Codes +1, but also Disadvantage to Defensive Actions.",
+        "source": "The Ronin"
+    },
+    {
+        "name": "Duelist",
+        "description": "Declare Opponent; until opponent is out of combat, gain +6 Initiative.",
+        "source": "The Ronin"
+    },
+    {
+        "name": "Iaido",
+        "description": "Palming Skill at Advantage when Quick-Drawing a weapon; Increased Proficiency in Palming decreases Success Requirement. (No roll for Trained)",
+        "source": "The Ronin"
+    },
+    {
+        "name": "War Cry",
+        "description": "ALL enemies within Short Range must make a Resolve roll to avoid becoming UNNERVED.",
+        "source": "The Ronin"
+    },
+    {
+        "name": "Meditation",
+        "description": "Resolve rolls are ALWAYS at Advantage; During Long Rest, remove INSANITY Condition or roll Resolve to decrease Stage of Infection by 1.",
+        "source": "The Ronin"
+    },
+    {
+        "name": "Ninja",
+        "description": "Blade Weapon Damage Codes increase +2 when UNSEEN AND attacking at Close Range or Throwing the weapon.",
+        "source": "The Ronin"
+    },
+    {
+        "name": "Swordsman",
+        "description": "Called Shot Attacks with 2-handed weapons gain Advantage (negating the Called Shot Disadvantage).",
+        "source": "The Ronin"
+    },
+    {
+        "name": "Self-Sacrifice",
+        "description": "Gain +5 Initiative in a group of 3+; You cannot leave Combat until ALL other allies have also left the Combat.",
+        "source": "The Ronin"
+    },
+    {
+        "name": "Educated",
+        "description": "Choose Science, Tech Use, or Xenotech Use to gain Advantage ALWAYS.",
+        "source": "The Scientist"
+    },
+    {
+        "name": "Academic",
+        "description": "Academics skill rolls are ALWAYS at Advantage.",
+        "source": "The Scientist"
+    },
+    {
+        "name": "Homemade Bullets",
+        "description": "Exchanges 40 to create 10 Ammunition without making a Science Skill roll ONCE per Game Day. The Ammunition increases the weapon’s DC+1.",
+        "source": "The Scientist"
+    },
+    {
+        "name": "Chemical Reaction",
+        "description": "Create 1 improved, highly volatile, Massive Damage (2d6+3) explosive or “Stink Bomb” for 4 as your Turn; Blast Radius is Short Range. Stink Bombs cause a regular Knockout Attack (see page 69).",
+        "source": "The Scientist"
+    },
+    {
+        "name": "Verge of Discovery",
+        "description": "Exchange 8 to create a syringe of the Z-Virus Experimental Antiserum ONCE per Long Rest without making a Science roll.",
+        "source": "The Scientist"
+    },
+    {
+        "name": "Blow Dart",
+        "description": "Use Science skill instead of Agility to Throw a “dart” containing a serum, explosive, or Stink Bomb.",
+        "source": "The Scientist"
+    },
+    {
+        "name": "Invent",
+        "description": "Science skill at Advantage when creating or repairing barriers.",
+        "source": "The Scientist"
+    },
+    {
+        "name": "Miracle Cure",
+        "description": "Use Science instead of Medicine to heal wounds and decrease Stages of Infection; cost is 1 per Damage healed and 4 per Stage of Infection decreased.",
+        "source": "The Scientist"
+    },
+    {
+        "name": "Hippocratic Oath",
+        "description": "Cannot use Riposte Defensive Action; Increase Treatment Code +2 during Combat Rounds and increase the Success Limit +1.",
+        "source": "The Surgeon"
+    },
+    {
+        "name": "Doctor's Orders",
+        "description": "Command skill rolls are ALWAYS at Advantage.",
+        "source": "The Surgeon"
+    },
+    {
+        "name": "Scrubs",
+        "description": "Immunity roll Degree of Success increased +1 when wearing only “scrubs” (Armor 1) as armor (no other armor).",
+        "source": "The Surgeon"
+    },
+    {
+        "name": "Adrenaline Surge",
+        "description": "Grant 1 target +5 Initiative and increase Melee Damage Code +1 for 1 round per Degree of Success on a Medicine skill roll. This does not stack with other temporary Initiative bonuses.",
+        "source": "The Surgeon"
+    },
+    {
+        "name": "Instinctive",
+        "description": "Add Instinct Base Stat to Iniative Equation before dividing ((Agility + Luck + Instinct) ÷ 10).",
+        "source": "The Surgeon"
+    },
+    {
+        "name": "Rescuer",
+        "description": "Lifting +1 Degree of Success when carrying persons in Combat; If in Teamwork, they grant +10 per Degree of Success instead of +5.",
+        "source": "The Surgeon"
+    },
+    {
+        "name": "Pharmacology",
+        "description": "Gain 1 Level of Proficiency in the Science skill, and gain Advantage on Medicine rolls to Reduce Stages of Infection.",
+        "source": "The Surgeon"
+    },
+    {
+        "name": "Surgeon's Hands",
+        "description": "Gain proficiency in Blades skill; ALWAYS deal 8 Physical Damage when using a Scalpel as a weapon (No Damage Roll).",
+        "source": "The Surgeon"
+    },
+    {
+        "name": "Assassinate",
+        "description": "Blades, Brawl, or Clubs attack Damage Code +2 when UNSEEN AND attacking at Close Range; if target is killed, is not Increased, and other Enemies do not notice for 1d4 Action Phases.",
+        "source": "The Thief"
+    },
+    {
+        "name": "Sneaky",
+        "description": "Stealth skill rolls are ALWAYS at Advantage",
+        "source": "The Thief"
+    },
+    {
+        "name": "Cutthroat",
+        "description": "Success on Charm skill grants Advantage on ALL subsequent Charm rolls against that target until failing.",
+        "source": "The Thief"
+    },
+    {
+        "name": "Reverse Psychology",
+        "description": "Reroll failed Resolve roll against Intimidate or Interrogate ONCE without using a Luck Use; Can still use Luck to reroll again.",
+        "source": "The Thief"
+    },
+    {
+        "name": "Ace up the Sleeve",
+        "description": "Palming Skill at Advantage. Light (L) or Average (A) weapons are automatically “Palmed” as if an Amazing Success.",
+        "source": "The Thief"
+    },
+    {
+        "name": "Eye on the Prize",
+        "description": "+1 Item or +1d4 on Salvage rolls per Degree of Success; can be split between items or per Degrees of Success.",
+        "source": "The Thief"
+    },
+    {
+        "name": "Driven by Hunger",
+        "description": "ALL Perception and Salvage rolls at Advantage when STARVING",
+        "source": "The Thief"
+    },
+    {
+        "name": "Rifleman",
+        "description": "Gain Firearms skill Proficiency when using a Rifle as a weapon. If already proficient, gain Advantage.",
+        "source": "The Veteran"
+    },
+    {
+        "name": "Camaraderie",
+        "description": "Gain Charm skill Proficiency when drinking alcohol. If already proficient, gain Advantage.",
+        "source": "The Veteran"
+    },
+    {
+        "name": "Vigilant",
+        "description": "Perception skill rolls are ALWAYS at Advantage.",
+        "source": "The Veteran"
+    },
+    {
+        "name": "Tough Guy",
+        "description": "Heals +2 Health Points whenever restoring Health Points.",
+        "source": "The Veteran"
+    },
+    {
+        "name": "Wing Man",
+        "description": "When participating in Teamwork skill actions, grant a +10 per Degree of Success instead of +5.",
+        "source": "The Veteran"
+    },
+    {
+        "name": "Untrusting",
+        "description": "Gain Proficiency or increase Level of Proficiency with the Interrogate skill AND Gain Advantage on Resolve rolls against the Charm Skill.",
+        "source": "The Veteran"
+    },
+    {
+        "name": "Survival Training",
+        "description": "When Starving, Gain Advantage and increase +1 Food Unit per Degree of Success when Foraging.",
+        "source": "The Veteran"
+    },
+    {
+        "name": "Loyal Companion",
+        "description": "Gain a Loyal Companion with Command Actions; If companion dies, Disadvantage to ALL rolls, but Damage Code +1 on ALL Attacks. Review the Core Rulebook for more information on loyal companions.",
+        "source": "The Veteran"
+    },
+    {
+        "name": "Sixth Sense",
+        "description": "Whenever Ambushed in Combat, you do not lose your first action, nor take the Initiative Penalty.",
+        "source": "Alien Invasion"
+    },
+    {
+        "name": "Mental Parry",
+        "description": "Resolve rolls ALWAY at Advantage. You are also not at Disadvantage against Resolve Attacks if you possess a Psychic Power.",
+        "source": "Alien Invasion"
+    },
+    {
+        "name": "Tightening the Belt",
+        "description": "Gain +4 extra points on the Starving and Emaciated thresholds (+8 total) due to prolonged periods without food.",
+        "source": "Food Riots"
+    },
+    {
+        "name": "Anarchist",
+        "description": "Gain Advantage on ALL Defensive Actions when fighting more than 1 opponent within Short Range.",
+        "source": "Food Riots"
+    },
+    {
+        "name": "Hunter Force Unit",
+        "description": "Gain Advantage on all Fighting and Ballistic skill rolls against Kaiju. Also, gain Advantage on Attack Actions if at least 1 ally is within Close Range.",
+        "source": "Kaiju Attack"
+    },
+    {
+        "name": "Fear Experienced",
+        "description": "Resolve rolls against Intimidate and Interrogate actions are at Advantage because you have looked down the mouth of a Kaiju.",
+        "source": "Kaiju Attack"
+    },
+    {
+        "name": "Exposure",
+        "description": "Reroll any failed Immunity rolls against Radiation damage ONCE per instance without using Luck Use per Game.",
+        "source": "Nuclear Holocaust"
+    },
+    {
+        "name": "Desensitized",
+        "description": "You do not need to make Resolve rolls against being UNNERVED at the sight of death and carnage.",
+        "source": "Nuclear Holocaust"
+    },
+    {
+        "name": "Survival of the Fittest",
+        "description": "When fighting Human (non-Mutant or Zombie) enemies, gain Advantage to ALL Attack Actions and increase Melee weapon Damage Codes +1.",
+        "source": "Peak Oil Collapse"
+    },
+    {
+        "name": "Road Warrior",
+        "description": "Gain +5 to Initiative during Vehicular Combat Rounds.",
+        "source": "Peak Oil Collapse"
+    },
+    {
+        "name": "Rage Against the Machine",
+        "description": "When fighting Robot enemies, gain Advantage to ALL Attack and Defense Actions, and increase Melee weapon Damage Codes +1.",
+        "source": "Robot Uprising"
+    },
+    {
+        "name": "Exposed Wiring",
+        "description": "Reroll any failed Resilience rolls against Electricity-based damage, including from Knock-out weaponry, ONCE per instance without Luck Use.",
+        "source": "Robot Uprising"
+    },
+    {
+        "name": "Escape Artist",
+        "description": "Reroll any failed Athletics or Contort rolls to manage hindering terrain. The outcome of the second roll must be accepted.",
+        "source": "Seismic Cataclysm"
+    },
+    {
+        "name": "Sudden Drop",
+        "description": "Roll the Resilience Special Stat at Advantage when falling and negate 4 points of Physical damage per Degree of Success instead of 2.",
+        "source": "Seismic Cataclysm"
+    },
+    {
+        "name": "Huntsman",
+        "description": "When fighting Supernatural Horrors, gain Advantage to ALL Attack and Defense Actions, and increase Melee weapon Damage Codes +1.",
+        "source": "Supernatural Horrors"
+    },
+    {
+        "name": "Darksight",
+        "description": "Upon Encounters with Supernatural Horrors, roll Instinct. A Success reveals the Traits & Abilities of the creature and grants Advantage to Resolve Special Stat rolls against Fear Attacks.",
+        "source": "Supernatural Horrors"
+    },
+    {
+        "name": "Skepticism",
+        "description": "Success Requirements for Resolve Attacks against you increase +1 over your Resolve Degrees of Success. However, you cannot gain the benefits of Resolve-Based Special Abilities, like the Priest Special abilities.",
+        "source": "The Rapture"
+    },
+    {
+        "name": "Faith",
+        "description": "Gain +3 Luck Use per Game because you have strong Faith in your deity. However, must spend ALL your actions during 1 Long Rest each day in devotion to your deity.",
+        "source": "The Rapture"
+    },
+    {
+        "name": "Displaced",
+        "description": "Gain Advantage to ANY skill of choice because you come from another place and time, perhaps the future, perhaps the past. However, you are not sure where you are currently and are thus unable to provide \"spoilers.\"",
+        "source": "Time Paradox"
+    },
+    {
+        "name": "Deja Vu",
+        "description": "You can spend YOUR Luck Use per Game rerolls to redo ANY immediate action, including those done by allies or enemies. This action must have just occurred and results in a reroll as you remember the event happening differently.",
+        "source": "Time Paradox"
+    },
+    {
+        "name": "Restructured Immunity",
+        "description": "You are immune to the Z-Virus. ALL other Immunity Special Stat rolls are ALWAYS at Advantage.",
+        "source": "Zombie Apocalypse"
+    },
+    {
+        "name": "Reaper",
+        "description": "When fighting Zombie enemies, gain Advantage to ALL Attack and Defense Actions, and increase Melee weapon Damage Codes +1.",
+        "source": "Zombie Apocalypse"
+    }
+]

@@ -8,5 +8,11 @@
     }, {
         "name": "backend",
         "path": "./packages/backend"
+    }, {
+        "name": "data-management",
+        "path": "./packages/data-management"
     }],
+    "settings": {
+        "js/ts.tsdk.path": "apocalize-maximally\\.yarn\\sdks\\typescript\\lib"
+    }
 }

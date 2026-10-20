@@ -1,0 +1,149 @@
+[{
+    "name": "Athletics",
+    "baseStat": "str",
+    "combat": false
+},{
+    "name": "Archery",
+    "baseStat": "agi",
+    "combat": true
+},{
+    "name": "Lockpick",
+    "baseStat": "agi",
+    "combat": false
+},{
+    "name": "Palming",
+    "baseStat": "agi",
+    "combat": false
+},{
+    "name": "Stealth",
+    "baseStat": "agi",
+    "combat": false
+},{
+    "name": "Wrangle",
+    "baseStat": "agi",
+    "combat": true
+},{
+    "name": "Academics",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Automotives",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Mechanics",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Medicine",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Monster Anatomy",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Occult",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Reanimation",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Robotics",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Science",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Structural Integrity",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Tech Use",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Theology",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Xenology",
+    "baseStat": "int",
+    "combat": false
+},{
+    "name": "Crafting",
+    "baseStat": "ins",
+    "combat": false
+},{
+    "name": "Drive",
+    "baseStat": "ins",
+    "combat": false
+},{
+    "name": "Fallout",
+    "baseStat": "ins",
+    "combat": false
+},{
+    "name": "Navigation",
+    "baseStat": "ins",
+    "combat": false
+},{
+    "name": "Perception",
+    "baseStat": "ins",
+    "combat": false
+},{
+    "name": "Survival",
+    "baseStat": "ins",
+    "combat": false
+},{
+    "name": "Tracking",
+    "baseStat": "ins",
+    "combat": false
+},{
+    "name": "Xenotech Use",
+    "baseStat": "ins",
+    "combat": false
+},{
+    "name": "Animal Ken",
+    "baseStat": "cha",
+    "combat": false
+},{
+    "name": "Charm",
+    "baseStat": "cha",
+    "combat": false
+},{
+    "name": "Command",
+    "baseStat": "cha",
+    "combat": false
+},{
+    "name": "Interrogate",
+    "baseStat": "cha",
+    "combat": false
+},{
+    "name": "Intimidate",
+    "baseStat": "cha",
+    "combat": false
+},{
+    "name": "Blades",
+    "baseStat": "fs",
+    "combat": true
+},{
+    "name": "Brawl",
+    "baseStat": "fs",
+    "combat": true
+},{
+    "name": "Clubs",
+    "baseStat": "fs",
+    "combat": true
+},{
+    "name": "Firearms",
+    "baseStat": "bs",
+    "combat": true
+},{
+    "name": "Heavy Weapons",
+    "baseStat": "bs",
+    "combat": false
+}]

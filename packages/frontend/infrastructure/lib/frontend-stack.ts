@@ -1,16 +1,16 @@
-import * as cdk from "aws-cdk-lib";
-import { Construct } from "constructs";
-import * as acm from "aws-cdk-lib/aws-certificatemanager";
-import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
-import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
-import * as route53 from "aws-cdk-lib/aws-route53";
-import * as targets from "aws-cdk-lib/aws-route53-targets";
-import * as s3 from "aws-cdk-lib/aws-s3";
-import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
-import * as path from "node:path";
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import * as route53 from 'aws-cdk-lib/aws-route53';
+import * as targets from 'aws-cdk-lib/aws-route53-targets';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+import * as path from 'node:path';
 
 interface FrontendStackProps extends cdk.StackProps {
-  environment: "dev" | "prd";
+  environment: 'dev' | 'prd';
   domainName: string;
   baseDomainName: string;
   hostedZoneId: string;
@@ -24,17 +24,17 @@ export class FrontendStack extends cdk.Stack {
     const prefix = props.environment;
     const hostedZone = route53.HostedZone.fromHostedZoneAttributes(
       this,
-      "HostedZone",
+      'HostedZone',
       {
         hostedZoneId: props.hostedZoneId,
         zoneName: props.hostedZoneName
       }
     );
-    const certificate = new acm.Certificate(this, "SiteCertificate", {
+    const certificate = new acm.Certificate(this, 'SiteCertificate', {
       domainName: props.domainName,
       validation: acm.CertificateValidation.fromDns(hostedZone)
     });
-    const bucket = new s3.Bucket(this, "SiteBucket", {
+    const bucket = new s3.Bucket(this, 'SiteBucket', {
       bucketName: `${prefix}-apocalize-frontend-${props.env?.account}-${props.env?.region}`,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: s3.BucketEncryption.S3_MANAGED,
@@ -42,8 +42,8 @@ export class FrontendStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN
     });
 
-    const distribution = new cloudfront.Distribution(this, "SiteDistribution", {
-      defaultRootObject: "index.html",
+    const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
+      defaultRootObject: 'index.html',
       comment: `${prefix}-apocalize-frontend`,
       domainNames: [props.domainName],
       certificate,
@@ -56,27 +56,27 @@ export class FrontendStack extends cdk.Stack {
         {
           httpStatus: 403,
           responseHttpStatus: 200,
-          responsePagePath: "/index.html",
+          responsePagePath: '/index.html',
           ttl: cdk.Duration.minutes(5)
         },
         {
           httpStatus: 404,
           responseHttpStatus: 200,
-          responsePagePath: "/index.html",
+          responsePagePath: '/index.html',
           ttl: cdk.Duration.minutes(5)
         }
       ]
     });
 
-    new s3deploy.BucketDeployment(this, "DeploySite", {
-      sources: [s3deploy.Source.asset(path.resolve(__dirname, "../../dist"))],
+    new s3deploy.BucketDeployment(this, 'DeploySite', {
+      sources: [s3deploy.Source.asset(path.resolve(__dirname, '../../dist'))],
       destinationBucket: bucket,
       distribution,
-      distributionPaths: ["/*"],
+      distributionPaths: ['/*'],
       prune: true
     });
 
-    new route53.ARecord(this, "SiteAliasRecord", {
+    new route53.ARecord(this, 'SiteAliasRecord', {
       zone: hostedZone,
       recordName: props.domainName.slice(
         0,
@@ -87,13 +87,13 @@ export class FrontendStack extends cdk.Stack {
       )
     });
 
-    new cdk.CfnOutput(this, "SiteUrl", {
+    new cdk.CfnOutput(this, 'SiteUrl', {
       value: `https://${props.domainName}`
     });
-    new cdk.CfnOutput(this, "DistributionId", {
+    new cdk.CfnOutput(this, 'DistributionId', {
       value: distribution.distributionId
     });
 
-    cdk.Tags.of(this).add("Environment", prefix);
+    cdk.Tags.of(this).add('Environment', prefix);
   }
 }

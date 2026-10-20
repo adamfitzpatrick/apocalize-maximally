@@ -1,0 +1,342 @@
+[
+  {
+    "name": "The Firefighter",
+    "description": [
+      "Unlike the original meaning of the term, Firefighters do not fight fire. They are fighters who are inclined to use fire to solve problems. Because of this affinity, they usually wear heavy armor to withstand ongoing damage associated with fire, and have an increased Build and Resilience.", 
+      "Group Role: Firefighters generally shine during combat, but also can perform secondary actions that help outside combat. Because of their Strength and Fortitude, Firefighters are able to carry most people and equipment out of harm’s way before rushing back into danger. "
+    ],
+    "bestStats": ["Fortitude", "Strength"],
+    "commonSkills": ["Athletics", "Blades"],
+    "imageUrl": "https://d1uvzxorswfpiw.cloudfront.net/archetypes/firefighter-archetype.webp",
+    "primaryModifiers": {
+      "str": 15,
+      "for": 20,
+      "agi": -10,
+      "int": -5,
+      "ins": 0,
+      "cha": 0,
+      "fs": 10,
+      "bs": 0,
+      "luck": 5
+    },
+    "secondaryModifiers": {
+      "str": 5,
+      "for": 10,
+      "agi": -5,
+      "int": 0,
+      "ins": 0,
+      "cha": 0,
+      "fs": 0,
+      "bs": 0,
+      "luck": 0
+    },
+    "skills": [
+      "Athletics",
+      "Blades",
+      "Crafting",
+      "Drive",
+      "Heavy Weapons",
+      "Intimidate",
+      "Medicine",
+      "Navigation"
+    ]
+  }, {
+    "name": "The Gunslinger",
+    "description": [
+      "Gunslingers are survivors with an affinity for firearms. While any survivor can pick up a firearm, Gunslingers live and die with their gun in their hand. While bullets have a significant resource cost, their benefit to a Gunslinger outweighs this cost.",
+      "Group Role: Gunslingers have the added benefit of being slightly more charismatic than other characters. This makes them good leaders or secondary commanders and they are quite frequently invited into groups because of these abilities. Gunslingers often spend their downtime bolstering other group members and they are always willing to accept a friendly wager."
+    ],
+    "bestStats": ["Ballistic Skill", "Agility", "Charisma"],
+    "commonSkills": ["Charm", "Firearms"],
+    "imageUrl": "https://d1uvzxorswfpiw.cloudfront.net/archetypes/gunslinger-archetype.webp",
+    "primaryModifiers": {
+      "str": -10,
+      "for": 0,
+      "agi": 15,
+      "int": -5,
+      "ins": 5,
+      "cha": 10,
+      "fs": 0,
+      "bs": 20,
+      "luck": 0
+    },
+    "secondaryModifiers": {
+      "str": -5,
+      "for": 0,
+      "agi": 5,
+      "int": 0,
+      "ins": 0,
+      "cha": 0,
+      "fs": 0,
+      "bs": 10,
+      "luck": 0
+    },
+    "skills": [
+      "Charm",
+      "Command",
+      "Crafting",
+      "Firearms",
+      "Heavy Weapons",
+      "Interrogate",
+      "Lockpick",
+      "Palming",
+      "Wrangle  "
+    ]
+  },{
+    "name": "The Hunter",
+    "description": [
+      "Hunters often work alone, scouting ahead of their companions to find optimal routes of travel and engaging with their enemies in silence. They are often lithe and agile, using Stealth as their primary tool, rivaling Gunslingers in their effectiveness at Ranged attacks, especially Called Shots.",
+      "Group Role: Hunters are usually very good solitary characters, but when they apply their abilities to groups, they can assist in navigating terrain, keeping camps safe, and finding food in the environment. Frequently, they provide valuable information to the group long before an attack occurs and are often the unsung heroes of any outings."
+    ],
+    "bestStats": ["Agility", "Instinct", "Ballistic Skill"],
+    "commonSkills": ["Archery", "Stealth", "Tracking"],
+    "imageUrl": "https://d1uvzxorswfpiw.cloudfront.net/archetypes/hunter-archetype.webp",
+    "primaryModifiers": {
+      "str": 0,
+      "for": 5,
+      "agi": 20,
+      "int": 0,
+      "ins": 15,
+      "cha": -5,
+      "fs": -10,
+      "bs": 10,
+      "luck": 0
+    },
+    "secondaryModifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 10,
+      "int": 0,
+      "ins": 5,
+      "cha": 0,
+      "fs": -5,
+      "bs": 0,
+      "luck": 0
+    },
+    "skills": ["Athletics", "Crafting", "Medicine", "Navigation", "Palming", "Perception",
+      "Stealth", "Tracking"]
+  }, {
+    "name": "The Mechanic",
+    "description": [
+      "Mechanics support themselves and their companions by keeping gear in order and weapons functioning. Mechanics are both creative and technical, finding interesting ways to solve problems that are usually both inside and outside of the box. They are dynamic in their abilities, able to create and control drones, drive vehicles, and maintain barriers.",
+      "Group Role: Mechanics use their skills with Crafting and Mechanics to make and repair objects on the fly, giving them the ability to be extremely useful in combat. A Mechanic armed with components and a tool can keep an ally armored indefinitely."
+    ],
+    "bestStats": ["Intelligence", "Instinct", "Agility"],
+    "commonSkills": ["Drive", "Mechanics"],
+    "imageUrl": "https://d1uvzxorswfpiw.cloudfront.net/archetypes/mechanic-archetype.webp",
+    "primaryModifiers": {
+      "str": 0,
+      "for": -10,
+      "agi": 10,
+      "int": 20,
+      "ins": 15,
+      "cha": -5,
+      "fs": 5,
+      "bs": 0,
+      "luck": 0
+    },
+    "secondaryModifiers": {
+      "str": 0,
+      "for": -5,
+      "agi": 0,
+      "int": 10,
+      "ins": 5,
+      "cha": 0,
+      "fs": 0,
+      "bs": 0,
+      "luck": 0
+    },
+    "skills": ["Crafting", "Drive", "Heavy Weapons", "Lockpick", "Mechanics", "Navigation", "Science", "Tech Use"]
+  }, {
+    "name": "The Priest",
+    "description": [
+      "The unyielding faith of Priests bolsters their allies and keeps them alive in the direst of circumstances. While often not tremendously capable in combat, Priests rely on the power of their deity to keep themselves and their allies out of the hands of enemies. Their acumen at esoteric knowledge also provides much needed information in various situations.",
+      "Group Role: Priests have Special Abilities that grant temporary almost supernatural benefits to their allies. They have strong Resolve and can overcome fear by believing that they do not walk the cursed land alone."
+    ],
+    "bestStats": ["Charisma", "Instinct", "Intelligence"],
+    "commonSkills": ["Charm", "Command"],
+    "imageUrl": "https://d1uvzxorswfpiw.cloudfront.net/archetypes/priest-archetype.webp",
+    "primaryModifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": -5,
+      "int": 10,
+      "ins": 15,
+      "cha": 20,
+      "fs": -10,
+      "bs": 0,
+      "luck": 5
+    },
+    "secondaryModifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 0,
+      "int": 0,
+      "ins": 5,
+      "cha": 10,
+      "fs": -5,
+      "bs": 0,
+      "luck": 0
+    },
+    "skills": ["Academics", "Charm", "Command", "Drive", "Intimidate", "Medicine", "Navigation", "Science"]
+  }, {
+    "name": "The Ronin",
+    "description": [
+      "Armed with swords, spears, and sometimes shields, The Ronin runs headlong into the fight, preparing to overcome their enemy or die saving their allies. To them, dying in battle is the greatest achievement a warrior can obtain, especially if it means that others survive.",
+      "Group Role: Ronin are quintessential warriors, representing whatever warrior group they feel inclined to represent. Like Firefighters, they usually have the Build and Resilience to assist in many ways, but they often use this to hold the enemy at bay while their companions escape."
+    ],
+    "bestStats": ["Fighting Skill", "Strength"],
+    "commonSkills": ["Blades", "Perception"],
+    "imageUrl": "https://d1uvzxorswfpiw.cloudfront.net/archetypes/ronin-archetype.webp",
+    "primaryModifiers": {
+      "str": 15,
+      "for": 10,
+      "agi": 0,
+      "int": 0,
+      "ins": 5,
+      "cha": 0,
+      "fs": 20,
+      "bs": -10,
+      "luck": -5
+    },
+    "secondaryModifiers": {
+      "str": 5,
+      "for": 0,
+      "agi": 0,
+      "int": 0,
+      "ins": 0,
+      "cha": 0,
+      "fs": 10,
+      "bs": -5,
+      "luck": 0
+    },
+    "skills": ["Athletics", "Blades", "Intimidate", "Palming", "Perception", "Stealth", "Survival", "Tracking"]
+  }, {
+    "name": "The Scientist",
+    "description": [
+      "The Scientist relies on cunning to make it through each situation. Like the Mechanic, The Scientist is skilled in repairs, and like the Surgeon, they are adept at biology. Scientists are versatile, adding to any other survivor, and rely upon the group’s cohesion to accomplish their goals.",
+      "Group Role: Scientists often function as support characters, using their Crafting, Mechanics, and Science to make repairs, create new objects, and modify fortifications. Despite their usual lack of combat abilities, without the scientific knowledge needed to make chemicals, the global bullet supply would quickly disappear."
+    ],
+    "bestStats": ["Intelligence", "Instinct", "Luck"],
+    "commonSkills": ["Academics", "Science"],
+    "imageUrl": "https://d1uvzxorswfpiw.cloudfront.net/archetypes/scientist-archetype.webp",
+    "primaryModifiers": {
+      "str": -10,
+      "for": 0,
+      "agi": -5,
+      "int": 20,
+      "ins": 15,
+      "cha": 5,
+      "fs": 0,
+      "bs": 0,
+      "luck": 10
+    },
+    "secondaryModifiers": {
+      "str": -5,
+      "for": 0,
+      "agi": 0,
+      "int": 10,
+      "ins": 5,
+      "cha": 0,
+      "fs": 0,
+      "bs": 0,
+      "luck": 0
+    },
+    "skills": ["Academics", "Charm", "Perception", "Mechanics", "Science", "Tech Use", "Xenotech Use"]
+  }, {
+    "name": "The Surgeon",
+    "description": [
+      "Most medical professionals were among the first to be overwhelmed in the aftermath of civilization’s collapse. While survivors may understand human anatomy, Surgeons are the masters of the meat and the commanders of the brain, making them indispensable as companions.",
+      "Group Role: Surgeons keep the fleshy bits of every group held together, with duct tape if necessary. They are often keen at recognizing the growth of an infection or the slow death of an ally in the field, and can cross wits with Scientists."
+    ],
+    "bestStats": ["Instinct", "Intelligence", "Charisma"],
+    "commonSkills": ["Command", "Medicine"],
+    "imageUrl": "https://d1uvzxorswfpiw.cloudfront.net/archetypes/surgeon-archetype.webp",
+    "primaryModifiers": {
+      "str": -10,
+      "for": -5,
+      "agi": 0,
+      "int": 15,
+      "ins": 20,
+      "cha": 10,
+      "fs": 0,
+      "bs": 0,
+      "luck": 5
+    },
+    "secondaryModifiers": {
+      "str": -5,
+      "for": 0,
+      "agi": 0,
+      "int": 5,
+      "ins": 10,
+      "cha": 0,
+      "fs": 0,
+      "bs": 0,
+      "luck": 0
+    },
+    "skills": ["Academics", "Athletics", "Charm", "Command", "Crafting", "Medicine", "Perception", "Science"]
+  }, {
+    "name": "The Thief",
+    "description": [
+      "Morality in this world is grey to many, but especially The Thief. They are not inherently bad or selfish, as they use their talents to assist others in obtaining resources, but their skills make them both useful and terrifying. The Thief recognizes the utility of objects, giving them an edge when Salvaging, and their Stealthy nature helps a group avoid attracting attention.",
+      "Group Roles: Thieves do a lot of the Salvaging for their allies, finding items and in places most wouldn’t think to look. They are quite capable at stealthily removing enemies from combat, and therefore can show their effectiveness when push comes to shove."
+    ],
+    "bestStats": ["Agility", "Strength", "Instinct"],
+    "commonSkills": ["Lockpick", "Palming", "Stealth"],
+    "imageUrl": "https://d1uvzxorswfpiw.cloudfront.net/archetypes/thief-archetype.webp",
+    "primaryModifiers": {
+      "str": 10,
+      "for": -5,
+      "agi": 20,
+      "int": 0,
+      "ins": 5,
+      "cha": 15,
+      "fs": 0,
+      "bs": -10,
+      "luck": 0
+    },
+    "secondaryModifiers": {
+      "str": 0,
+      "for": 0,
+      "agi": 10,
+      "int": 0,
+      "ins": 0,
+      "cha": 5,
+      "fs": 0,
+      "bs": -5,
+      "luck": 0
+    },
+    "skills": ["Animal Ken", "Athletics", "Charm", "Interrogate", "Lockpick", "Palming", "Perception", "Stealth"]
+  }, {
+    "name": "The Veteran",
+    "description": [
+      "Veterans have walked through fire and gained experience, wisdom, and a general understanding of what it takes to survive. They are usually distrusting, having seen allies turn traitor in the past, and but occasionally have an animal ally that they will not part with, even in the direst of circumstances.",
+      "Group Role: Veterans are capable in many areas, but often shine when it comes to setting up camp, avoiding enemies, and accomplishing intense tasks. If a group has earned their trust, a Veteran is fiercely loyal."],
+    "bestStats": ["Luck", "Fortitude", "Agility"],
+    "commonSkills": ["Survival", "Animal Ken"],
+    "imageUrl": "https://d1uvzxorswfpiw.cloudfront.net/archetypes/veteran-archetype.webp",
+    "primaryModifiers": {
+      "str": -5,
+      "for": 15,
+      "agi": 10,
+      "int": -10,
+      "ins": 0,
+      "cha": 0,
+      "fs": 0,
+      "bs": 5,
+      "luck": 20
+    },
+    "secondaryModifiers": {
+      "str": 0,
+      "for": 5,
+      "agi": 0,
+      "int": -5,
+      "ins": 0,
+      "cha": 0,
+      "fs": 0,
+      "bs": 0,
+      "luck": 10
+    },
+    "skills": ["Athletics", "Animal Ken", "Drive", "Interrogate", "Intimidate", "Perception", "Stealth", "Survival"]
+  }
+]

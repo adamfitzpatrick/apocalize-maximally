@@ -1,0 +1,94 @@
+[
+  {
+    "roll": 1,
+    "name": "Healthy Immunity",
+    "description": "Roll ALL Immunity rolls at Advantage"
+  },
+  {
+    "roll": 2,
+    "name": "Thick Headed",
+    "description": "Roll ALL Resolve rolls at Advantage"
+  },
+  {
+    "roll": 3,
+    "name": "Uncanny Abilities",
+    "description": "Gain or Increase Proficiency in 2 Skills"
+  },
+  {
+    "roll": 4,
+    "name": "Moving Target",
+    "description": "Add +1 to Initiative and +5 to Dodge"
+  },
+  {
+    "roll": 5,
+    "name": "Fleet Footed",
+    "description": "Can make 1 Movement Action as a Free Action ONCE per Action Phase"
+  },
+  {
+    "roll": 6,
+    "name": "Psychic Power",
+    "description": "Gain Psychic Power (see page 40)",
+    "powers": [
+      {
+        "name": "Premonition",
+        "description": "Character can roll their Dodge against ALL attacks, including against UNSEEN Enemies."
+      },
+      {
+        "name": "Psychic Armor",
+        "description": "Character has 3 Armor Points unless UNCONCIOUS."
+      },
+      {
+        "name": "Telekinesis",
+        "description": "Characters can lift and carry an object up to 10 with their mind, and move it up to Midrange as 1 Complex Action. This item can be thrown Short range, with an Intelligence Base Stat roll as a second Complex Action."
+      },
+      {
+        "name": "Telepathy",
+        "description": "Character may send and receive a mental message to/from any target within Short Range. Character can increase this range +1 per Degree of Success with a Resolve Special Stat roll."
+      },
+      {
+        "name": "Divination",
+        "description": "Character roll their Luck Base Stat during each Long Rest or Sleep. They may ask 1 question to the Gamemaster per Degree of Success."
+      },
+      {
+        "name": "Psychosymmetry",
+        "description": "Character may link their mind with ANY Target within Short Range and blend thoughts to obtain information. The Target can Resist with an Opposed Resolve Special Stat roll. If the character is successful, they gain memories from the Target AND Advantage on subsequent Charm or Intimidate skill rolls."
+      },
+      {
+        "name": "Psychophysiology",
+        "description": "Character may exchange 1 Hunger Damage for +5 Initiative for 1 Combat Round."
+      },
+      {
+        "name": "Trance",
+        "description": "With a successful Resolve roll, characters may remove a Resolve or Insanity Condition, decrease Stages of Infection by 1 per Degree of Success, or regain 2 lost HP per Degree of Success."
+      },
+      {
+        "name": "Enhancement",
+        "description": "Character gains +10 to any Base Stat."
+      },
+      {
+        "name": "Reflex",
+        "description": "Character gains +10 to their Dodge Special Stat."
+      }
+    ]
+  },
+  {
+    "roll": 7,
+    "name": "Giant Genetics",
+    "description": "Add +50 to Build"
+  },
+  {
+    "roll": 8,
+    "name": "Luck Stars",
+    "description": "Add +1 Luck Use per Game"
+  },
+  {
+    "roll": 9,
+    "name": "Strong Fortitude",
+    "description": "Roll ALL Resilience rolls at Advantage"
+  },
+  {
+    "roll": 10,
+    "name": "Natural Healing",
+    "description": "Gain +1d4 Health Points after Sleeping"
+  }
+]

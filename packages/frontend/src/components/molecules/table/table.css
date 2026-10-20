@@ -1,0 +1,55 @@
+.data-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.data-table caption {
+  caption-side: top;
+  padding-bottom: 8px;
+  color: var(--color-muted-foreground);
+  text-align: left;
+}
+
+.data-table th,
+.data-table td {
+  min-width: 48px;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  white-space: nowrap;
+}
+
+.data-table th {
+  background: color-mix(in srgb, var(--color-foreground) 5%, var(--color-background));
+}
+
+.data-table__row--selectable {
+  cursor: pointer;
+}
+
+.data-table tr.data-table__row--selectable:hover td,
+.data-table tr.data-table__row--selectable:focus-visible td {
+  background: color-mix(in srgb, var(--color-accent-primary) 18%, var(--color-background));
+}
+
+.data-table tr.data-table__row--selected td {
+  background: color-mix(in srgb, var(--color-accent-primary) 16%, var(--color-background));
+}
+
+.data-table tr.data-table__row--selected.data-table__row--selectable:hover td,
+.data-table tr.data-table__row--selected.data-table__row--selectable:focus-visible td {
+  background: color-mix(in srgb, var(--color-accent-primary) 30%, var(--color-background));
+}
+
+.data-table__cell--negative {
+  background: color-mix(in srgb, var(--color-accent-secondary) 18%, var(--color-background));
+}
+
+.data-table__cell--positive {
+  background: color-mix(in srgb, var(--color-accent-tertiary) 18%, var(--color-background));
+}

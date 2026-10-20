@@ -33,7 +33,9 @@ Set `AWS_ACCOUNT_ID`, `AWS_REGION`, and `FRONTEND_DOMAIN_NAME` in
 `packages/backend/.env`. Set `ENVIRONMENT` to
 `dev` or `prd` in both package `.env` files; it defaults to `dev` when omitted.
 The backend derives its allowed frontend origin as
-`https://<ENVIRONMENT>.<FRONTEND_DOMAIN_NAME>`.
+`https://<ENVIRONMENT>.<FRONTEND_DOMAIN_NAME>`. It also allows
+`http://localhost:5173` and `http://127.0.0.1:5173` for local frontend
+development.
 
 Build and deploy the backend independently:
 
@@ -89,3 +91,207 @@ yarn workspace @apocalize/frontend dev
 
 The React app expects the backend API URL and Cognito outputs in
 `packages/frontend/.env`.
+
+## Archetype image assets
+
+Archetype images are maintained outside the React app in
+`packages/data-management/assets/archetypes/`. The asset stack uploads files
+from `packages/data-management/assets/` to a private S3 bucket and serves them
+through CloudFront; the images are not bundled into the frontend build.
+
+Set `AWS_ACCOUNT_ID`, `AWS_REGION`, and `ENVIRONMENT` in
+`packages/backend/.env`, then deploy the asset stack from the repository root:
+
+```sh
+yarn synth:assets
+yarn deploy:assets
+```
+
+The deployment outputs `AssetsBaseUrl`. Use that CloudFront URL in archetype
+data, followed by `/archetypes/<filename>`, for example:
+`https://<distribution-domain>/archetypes/archetype-1.webp`. Redeploy after
+adding, replacing, or removing image files; deployment synchronizes the folder
+and invalidates the CloudFront cache.
+
+## API specification
+
+### Models
+
+#### Character creation data
+
+The authenticated API provides the selection lists and age modifiers used
+during character creation:
+
+- `GET /data/archetypes` — array of archetypes with a `name` and a
+  `description` that is either a string or an array of paragraph strings.
+  `bestStats`, `commonSkills`, and `imageUrl` are optional. Every archetype
+  must include a `skills` string array and `primaryModifiers` and
+  `secondaryModifiers` objects.
+- `GET /data/apocalypses` — array of apocalypses with `name`, a `description`
+  string or paragraph array, a required `modifiers` object, and a required
+  `skills` string array.
+- Modifier objects map the `str`, `for`, `agi`, `int`, `ins`, `cha`, `fs`, `bs`,
+  and `luck` stat keys to numeric values.
+- `GET /data/ages` — array of age categories with `range`, `category`, a
+  numeric `modifiers` object keyed by stat, and a `skillProf` string.
+
+The default data is stored in JSON files in
+`packages/data-management/data/`. The API reads each dataset from the shared
+DynamoDB table using `PK=DATA#CHARACTER_CREATION` and an `SK` of `ARCHETYPES`,
+`APOCALYPSES`, or `AGES`. If a record is missing, the API initializes it from
+the corresponding JSON file.
+
+To update all three records in the deployed table, configure
+`packages/backend/.env` with the target `ENVIRONMENT` and `AWS_REGION`, and
+ensure your AWS credentials can write to that environment's items table. Then
+run this from the repository root:
+
+```sh
+yarn update:db --profile my-aws-profile
+```
+
+Omit `--profile` to use the AWS SDK's default credential provider chain.
+The option also accepts `--profile=my-aws-profile`.
+
+The script overwrites the three shared records in
+`<ENVIRONMENT>-apocalize-items`. You can override the target table by setting
+`TABLE_NAME` in the environment. Changes in DynamoDB take effect without
+rebuilding the backend.
+
+#### Campaign
+
+```json
+{
+  "required": ["id", "name", "characters"],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string"
+    },
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    }
+  }
+}
+```
+
+#### Character
+
+```json
+{
+  "type": "object",
+  "required": [
+    "id",
+    "userId",
+    "name",
+    "primaryArchetype",
+    "secondaryArchetype",
+    "personalApocalypse",
+    "age",
+    "stats",
+    "skills",
+    "armor",
+    "health",
+    "infection",
+    "creationStage",
+    "experience"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "userId": {
+      "type": "string"
+    },
+    "avatar": {
+      "type": "string",
+      "format": "url"
+    },
+    "name": {
+      "type": "string"
+    },
+    "primaryArchetype": {
+      "type": "string"
+    },
+    "secondaryArchetype": {
+      "type": "string"
+    },
+    "personalApocalypse": {
+      "type": "string"
+    },
+    "age": {
+      "type": "integer"
+    },
+    "stats": {
+      "type": "object",
+      "required": ["str", "for", "agi", "int", "ins", "cha", "fs", "bs", "luck"],
+      "properties": {
+        "str": { "type": "integer" },
+        "for": { "type": "integer" },
+        "agi": { "type": "integer" },
+        "int": { "type": "integer" },
+        "ins": { "type": "integer" },
+        "cha": { "type": "integer" },
+        "fs": { "type": "integer" },
+        "bs": { "type": "integer" },
+        "luck": { "type": "integer" }
+      }
+    },
+    "skills": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["", "P", "S", "T", "M"]
+      }
+    },
+    "armor": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["ap", "cp"],
+          "properties": {
+            "ap": { "type": "integer" },
+            "cp": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "health": {
+      "type": "integer"
+    },
+    "infection": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 6
+    },
+    "creationStage": {
+      "type": "object",
+      "nullable": true,
+      "required": ["phase", "step"],
+      "properties": {
+        "phase": { "type": "integer" },
+        "step": { "type": "integer" }
+      }
+    },
+    "experience": {
+      "type": "object",
+      "required": ["total", "unused"],
+      "properties": {
+        "total": { "type": "integer" },
+        "unused": { "type": "integer" }
+      }
+    }
+  }
+}
+```

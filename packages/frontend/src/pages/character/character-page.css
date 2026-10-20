@@ -1,0 +1,24 @@
+.character-page {
+  display: grid;
+  gap: 8px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.character-page__meta {
+  margin-bottom: 0;
+  color: var(--color-muted-foreground);
+}
+
+.character-page__stats {
+  align-items: stretch;
+}
+
+.character-page__list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.character-page section .ant-typography {
+  margin-bottom: 8px;
+}

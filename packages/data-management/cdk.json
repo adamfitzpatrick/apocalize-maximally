@@ -1,0 +1,3 @@
+{
+  "app": "npx ts-node --project infrastructure/tsconfig.json --prefer-ts-exts infrastructure/bin/app.ts"
+}

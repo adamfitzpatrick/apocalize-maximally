@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json && esbuild src/handler.ts --bundle --platform=node --target=node22 --format=cjs --outfile=dist/handler/index.js",
     "synth": "yarn build && cdk synth",
-    "deploy": "yarn build && cdk deploy"
+    "deploy": "yarn build && cdk deploy --require-approval never"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.800.0",
