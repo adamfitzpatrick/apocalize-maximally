@@ -85,7 +85,7 @@ as `AWS_REGION` when they differ.
 
 ### Continuous deployment
 
-A push to `main` deploys the dev environment. The workflow deploys the asset
+A push to `main` deploys the dev environment. You can also run it by hand from the Actions tab with **Run workflow** on `main`. The workflow deploys the asset
 stack, the backend, the frontend, and then writes the game-data JSON into the
 dev table. It reads the backend stack outputs and passes them to the frontend
 build, so those values are not stored in GitHub.
