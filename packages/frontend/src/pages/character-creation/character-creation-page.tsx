@@ -40,14 +40,17 @@ export default function CharacterCreation() {
   function readCreationStage(): CreationStage {
     const urlPhase = Number(searchParams.get('phase'));
     const urlStep = Number(searchParams.get('step'));
+    const urlStage: CreationStage = [urlPhase, urlStep];
+    if (
+      searchParams.has('phase') &&
+      searchParams.has('step') &&
+      isValidCreationStage(urlStage)
+    ) {
+      return urlStage;
+    }
 
     if (draft && isValidCreationStage(draft.creationStage)) {
       return draft.creationStage as CreationStage;
-    }
-
-    const urlStage: CreationStage = [urlPhase, urlStep];
-    if (isValidCreationStage(urlStage)) {
-      return urlStage;
     }
 
     return [phaseFallback, stepFallback];

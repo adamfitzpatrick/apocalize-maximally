@@ -1,6 +1,7 @@
 import gearCatalogData from '../../../data-management/data/gear.json';
 import { getIdToken } from '../auth';
 import type { BugOutKit, BugOutKitEntry, StartingGearOption } from './core-game-data';
+import { requireApiUrl } from './api-url';
 
 export interface CharacterStats {
   str: number;
@@ -222,8 +223,6 @@ function isGearList(value: unknown): boolean {
   );
 }
 
-const apiUrl = import.meta.env.VITE_API_URL?.replace(/\/+$/, '');
-
 function isStartingGearSelection(
   value: unknown,
   category: StartingGearOption['category']
@@ -344,13 +343,11 @@ async function requestCharacterApi(
   path: string,
   init: RequestInit = {}
 ): Promise<unknown> {
-  if (!apiUrl) {
-    throw new Error('Set VITE_API_URL in packages/frontend/.env to use characters.');
-  }
-
   const token = await getIdToken();
   const response = await fetch(
-    `${apiUrl}/user/${encodeURIComponent(userId)}${path}`,
+    `${requireApiUrl(
+      'Set VITE_API_URL in packages/frontend/.env to use characters.'
+    )}/user/${encodeURIComponent(userId)}${path}`,
     {
       ...init,
       headers: {

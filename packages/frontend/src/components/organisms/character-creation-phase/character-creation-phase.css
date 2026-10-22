@@ -1,0 +1,36 @@
+.character-creation-phase-nav.arrow-icon-button.ant-btn {
+    position: fixed;
+    top: 50%;
+    z-index: 2;
+}
+
+.character-creation-phase-nav--back.arrow-icon-button.ant-btn {
+    left: calc(50% - min(360px, 50vw - 20px) - 12px);
+    transform: translate(-100%, -50%);
+}
+
+.character-creation-phase-nav--next.arrow-icon-button.ant-btn {
+    right: calc(50% - min(360px, 50vw - 20px) - 12px);
+    transform: translate(100%, -50%);
+}
+
+.character-creation-phase-card .ant-card-body {
+    display: grid;
+    gap: 20px;
+}
+
+.character-creation-phase-card .ant-card-body>.ant-card {
+    min-width: 0;
+}
+
+@media screen and (max-width: 520px) {
+    .character-creation-phase-nav--back.arrow-icon-button.ant-btn {
+        left: calc(50% - min(360px, 50vw - 20px) - 12px);
+        transform: translate(-10%, -50%) scaleX(0.6);
+    }
+
+    .character-creation-phase-nav--next.arrow-icon-button.ant-btn {
+        right: calc(50% - min(360px, 50vw - 20px) - 12px);
+        transform: translate(10%, -50%) scaleX(0.6);
+    }
+}

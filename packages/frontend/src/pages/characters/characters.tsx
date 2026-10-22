@@ -2,6 +2,7 @@ import { Alert, Button, Flex, Spin, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/auth-context';
+import { useCoreGameData } from '../../contexts/core-game-data-context';
 import {
   createCharacter,
   deleteCharacter,
@@ -10,6 +11,11 @@ import {
 } from '../../api/characters';
 import CharacterCard from '../../components/molecules/character-card/character-card';
 import type { CharacterCardProps } from '../../components/molecules/character-card/character-card';
+import Character, { PSYCHIC_POWER_LUCKY_MUTATION } from '../../entities/character';
+import {
+  buildCreationConfig,
+  earliestIncompleteCreationStage
+} from '../character-creation/creation-config';
 
 const characterCreationFields = [
   'name',
@@ -36,9 +42,45 @@ function getCharacterCreationProgress(character: CharacterRecord): number {
   return Math.round((completedFields / characterCreationFields.length) * 100);
 }
 
+function openCharacterPath(
+  record: CharacterRecord,
+  coreGameData: NonNullable<ReturnType<typeof useCoreGameData>>
+) {
+  const id = encodeURIComponent(record.id);
+  if (
+    !coreGameData.archetypes ||
+    !coreGameData.apocalypses ||
+    !coreGameData.ages ||
+    !coreGameData.skills ||
+    !coreGameData.specialAbilities ||
+    !coreGameData.luckyMutations ||
+    !coreGameData.negativeTraits ||
+    !coreGameData.startingGear ||
+    !coreGameData.bugOutKits
+  ) {
+    return `/character/${id}`;
+  }
+
+  const character = new Character(coreGameData, record);
+  const stage = earliestIncompleteCreationStage(
+    character,
+    buildCreationConfig(
+      coreGameData.archetypes,
+      coreGameData.apocalypses,
+      coreGameData.ages,
+      character.luckyMutation === PSYCHIC_POWER_LUCKY_MUTATION
+    )
+  );
+  if (!stage) {
+    return `/character/${id}`;
+  }
+  return `/character-creation/${id}?phase=${stage[0]}&step=${stage[1]}`;
+}
+
 export default function CharactersPage() {
   const navigate = useNavigate();
   const { userId } = useAuth();
+  const coreGameData = useCoreGameData();
   const [characters, setCharacters] = useState<CharacterRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -99,7 +141,7 @@ export default function CharactersPage() {
     }
   }
 
-  if (loading) {
+  if (loading || coreGameData?.loading) {
     return (
       <Flex className="characters-loading" justify="center">
         <Spin size="large" />
@@ -152,7 +194,11 @@ export default function CharactersPage() {
               avatar: character.avatar,
               creationProgress: getCharacterCreationProgress(character),
               onClick: () =>
-                navigate(`/character/${encodeURIComponent(character.id)}`),
+                navigate(
+                  coreGameData
+                    ? openCharacterPath(character, coreGameData)
+                    : `/character/${encodeURIComponent(character.id)}`
+                ),
               onDelete: () => handleDeleteCharacter(character.id)
             };
             return <CharacterCard key={character.id} {...characterCard} />;

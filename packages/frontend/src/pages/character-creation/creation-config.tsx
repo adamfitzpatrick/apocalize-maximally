@@ -23,6 +23,7 @@ import {
   StartingGearSelection
 } from '../../components/molecules/character-creation-step/starting-gear-selector';
 import type Character from '../../entities/character';
+import type { CreationStage } from '../../entities/character';
 
 export type { Step, Phase, CreationConfigData } from './creation-types';
 
@@ -64,7 +65,7 @@ export function buildCreationConfig(
                   'All base stats start at 25 for all characters. There are no required choices for this step.'
                 ]}
               >
-                <Flex justify="space-between">
+                <Flex className="starting-base-stats" justify="space-between">
                   {STATS.map((stat) => (
                     <CharacterStat key={stat.short} label={stat.short} value={25} />
                   ))}
@@ -290,4 +291,19 @@ export function buildCreationConfig(
       }
     ]
   };
+}
+
+export function earliestIncompleteCreationStage(
+  character: Character,
+  config: CreationConfigData
+): CreationStage | null {
+  for (let phaseIndex = 0; phaseIndex < config.phases.length; phaseIndex += 1) {
+    const steps = config.phases[phaseIndex].steps;
+    for (let stepIndex = 0; stepIndex < steps.length; stepIndex += 1) {
+      if (!steps[stepIndex].isComplete(character)) {
+        return [phaseIndex + 1, stepIndex + 1];
+      }
+    }
+  }
+  return null;
 }

@@ -102,6 +102,19 @@
   min-width: 0;
 }
 
+@media (max-width: 520px) {
+  .point-assignment__stats.ant-flex {
+    flex-wrap: wrap;
+    row-gap: 12px;
+    max-width: 100%;
+  }
+
+  .point-assignment__stats > .point-assignment__stat {
+    flex: 0 0 auto;
+    min-width: auto;
+  }
+}
+
 .point-assignment__input.ant-input-number {
   width: 3.5rem;
 }

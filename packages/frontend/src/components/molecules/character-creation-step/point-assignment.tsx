@@ -22,7 +22,7 @@ export default function PointAssignment() {
         {available} of {INITIAL_FREE_DEVELOPMENT_POINTS} free development points
         remaining
       </Typography.Text>
-      <Flex justify="space-between" gap={8}>
+      <Flex className="point-assignment__stats" justify="space-between" gap={8}>
         {statKeys.map((statKey, index) => {
           const investedInStat = invested[statKey];
           return (

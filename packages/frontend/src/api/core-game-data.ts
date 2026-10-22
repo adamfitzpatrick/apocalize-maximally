@@ -1,4 +1,5 @@
 import { getIdToken } from '../auth';
+import { requireApiUrl } from './api-url';
 
 export interface StatModifiers {
   str: number;
@@ -149,7 +150,6 @@ export const STATS = [
   { name: 'Luck', short: 'LUCK' }
 ];
 
-const apiUrl = import.meta.env.VITE_API_URL?.replace(/\/+$/, '');
 export const statKeys: (keyof StatModifiers)[] = [
   'str',
   'for',
@@ -181,16 +181,13 @@ function isStatModifiers(candidate: unknown): candidate is StatModifiers {
 }
 
 async function requestCreationData(path: string): Promise<unknown> {
-  if (!apiUrl) {
-    throw new Error(
-      'Set VITE_API_URL in packages/frontend/.env to load character creation data.'
-    );
-  }
-
   const token = await getIdToken();
-  const response = await fetch(`${apiUrl}${path}`, {
-    headers: { Authorization: token }
-  });
+  const response = await fetch(
+    `${requireApiUrl(
+      'Set VITE_API_URL in packages/frontend/.env to load character creation data.'
+    )}${path}`,
+    { headers: { Authorization: token } }
+  );
   if (!response.ok) {
     throw new Error(`Character creation data request failed (${response.status}).`);
   }

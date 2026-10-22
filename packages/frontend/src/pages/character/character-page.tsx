@@ -5,7 +5,12 @@ import { BaseStats, BaseStatsMobile } from '../../components/organisms/base-stat
 import { Actions, ActionsMobile } from '../../components/organisms/actions/actions';
 import { OtherData } from '../../components/organisms/other-data/other-data';
 import { SpecialStats, SpecialStatsMobile } from '../../components/organisms/special-stats/special-stats';
-import { getCharacter, saveCharacter, type ResolveDamage } from '../../api/characters';
+import {
+  getCharacter,
+  saveCharacter,
+  type CharacterRecord,
+  type ResolveDamage
+} from '../../api/characters';
 import { useAuth } from '../../contexts/auth-context';
 import { useCoreGameData } from '../../contexts/core-game-data-context';
 import Character from '../../entities/character';
@@ -145,10 +150,33 @@ export default function CharacterPage() {
     if (!userId || !coreGameData?.startingGear) {
       return;
     }
-    const nextRecord = { ...loadedCharacter.characterRecord, ...patch };
-    for (const field of ['infectionStage', 'hunger', 'cp', 'cx', 'unusedXp', 'totalXp'] as const) {
-      if (patch[field] === null) {
+    const nextRecord: CharacterRecord = { ...loadedCharacter.characterRecord };
+    const optionalCounts = [
+      'infectionStage',
+      'hunger',
+      'cp',
+      'cx',
+      'unusedXp',
+      'totalXp'
+    ] as const;
+    if (patch.currentArmor !== undefined) {
+      nextRecord.currentArmor = patch.currentArmor;
+    }
+    if (patch.currentHp !== undefined) {
+      nextRecord.currentHp = patch.currentHp;
+    }
+    if (patch.resolveDamage !== undefined) {
+      nextRecord.resolveDamage = patch.resolveDamage;
+    }
+    if (patch.playing !== undefined) {
+      nextRecord.playing = patch.playing;
+    }
+    for (const field of optionalCounts) {
+      const value = patch[field];
+      if (value === null) {
         delete nextRecord[field];
+      } else if (value !== undefined) {
+        nextRecord[field] = value;
       }
     }
     setCharacter(new Character(coreGameData, nextRecord));

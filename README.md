@@ -80,6 +80,28 @@ yarn synth:frontend
 
 Bootstrap each target AWS environment with AWS CDK before the first deploy.
 Deploy the backend before the frontend so the frontend build can use the API URL.
+The frontend certificate stack is in `us-east-1`, so bootstrap that region as well
+as `AWS_REGION` when they differ.
+
+### Continuous deployment
+
+A push to `main` deploys the dev environment. The workflow deploys the asset
+stack, the backend, the frontend, and then writes the game-data JSON into the
+dev table. It reads the backend stack outputs and passes them to the frontend
+build, so those values are not stored in GitHub.
+
+Create these repository variables:
+
+- `AWS_ACCOUNT_ID`
+- `AWS_REGION`
+- `FRONTEND_DOMAIN_NAME`
+- `HOSTED_ZONE_ID`
+- `HOSTED_ZONE_NAME`
+
+Create a repository secret named `AWS_DEPLOY_ROLE_ARN`. Its value is an IAM
+role that GitHub Actions can assume with OIDC, trusted for this repository on
+`main`, with permission to deploy the dev stacks. The role must be able to
+deploy in both `AWS_REGION` and `us-east-1`.
 
 ## Local frontend development
 

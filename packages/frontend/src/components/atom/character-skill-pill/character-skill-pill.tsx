@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import type { SkillProficiencyMarker } from '../../../entities/character';
 
 import './character-skill-pill.css';
-import PIcon from '../proficiency-icons/p-icon';
 
 export interface CharacterSkillPillProps {
   name: string;
