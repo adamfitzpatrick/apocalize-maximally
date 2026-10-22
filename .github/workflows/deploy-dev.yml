@@ -17,6 +17,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: dev
     env:
       COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
       ENVIRONMENT: dev
@@ -46,19 +47,25 @@ jobs:
         run: yarn install --immutable
 
       - name: Check deployment settings
+        env:
+          AWS_DEPLOY_ROLE_ARN: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
         run: |
           missing=0
-          for name in AWS_ACCOUNT_ID AWS_REGION FRONTEND_DOMAIN_NAME HOSTED_ZONE_ID HOSTED_ZONE_NAME; do
-            if [ -z "${!name}" ]; then
-              echo "Set the $name repository variable."
+          require() {
+            if [ -z "$2" ]; then
+              echo "::error title=Missing $1::$3"
               missing=1
             fi
-          done
-          if [ -z "${{ secrets.AWS_DEPLOY_ROLE_ARN }}" ]; then
-            echo "Set the AWS_DEPLOY_ROLE_ARN repository secret to the deploy role ARN."
-            missing=1
+          }
+          require AWS_ACCOUNT_ID "$AWS_ACCOUNT_ID" "Add the AWS_ACCOUNT_ID variable to the dev environment."
+          require AWS_REGION "$AWS_REGION" "Add the AWS_REGION variable to the dev environment."
+          require FRONTEND_DOMAIN_NAME "$FRONTEND_DOMAIN_NAME" "Add the FRONTEND_DOMAIN_NAME variable to the dev environment."
+          require HOSTED_ZONE_ID "$HOSTED_ZONE_ID" "Add the HOSTED_ZONE_ID variable to the dev environment."
+          require HOSTED_ZONE_NAME "$HOSTED_ZONE_NAME" "Add the HOSTED_ZONE_NAME variable to the dev environment."
+          require AWS_DEPLOY_ROLE_ARN "$AWS_DEPLOY_ROLE_ARN" "Add the AWS_DEPLOY_ROLE_ARN secret to the dev environment."
+          if [ "$missing" -ne 0 ]; then
+            exit 1
           fi
-          exit "$missing"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
