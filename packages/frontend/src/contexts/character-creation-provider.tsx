@@ -44,6 +44,7 @@ type ReadyCoreGameData = NonNullable<ReturnType<typeof useCoreGameData>> & {
   luckyMutations: NonNullable<CoreGameData['luckyMutations']>;
   negativeTraits: NonNullable<CoreGameData['negativeTraits']>;
   startingGear: NonNullable<CoreGameData['startingGear']>;
+  bugOutKits: NonNullable<CoreGameData['bugOutKits']>;
 };
 
 function isCoreGameDataReady(
@@ -59,7 +60,8 @@ function isCoreGameDataReady(
         coreGameData.specialAbilities &&
         coreGameData.luckyMutations &&
         coreGameData.negativeTraits &&
-        coreGameData.startingGear
+        coreGameData.startingGear &&
+        coreGameData.bugOutKits
     )
   );
 }
@@ -529,7 +531,6 @@ export function CharacterCreationProvider({
       coreGameData.archetypes,
       coreGameData.apocalypses,
       coreGameData.ages,
-      coreGameData.startingGear,
       includePsychicPowerStep
     );
   }, [coreGameData, dataReady, includePsychicPowerStep]);

@@ -1,0 +1,22 @@
+.base-stats__columns {
+  align-items: stretch;
+  justify-content: space-around;
+}
+
+.base-stats__column {
+  width: calc((100% / 9) - 12px);
+}
+
+.base-stats__switch {
+  margin-bottom: 12px;
+}
+
+.base-stats__phone-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.base-stats .character-stat {
+  margin-bottom: 1rem;
+}

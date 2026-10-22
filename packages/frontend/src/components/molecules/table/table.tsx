@@ -21,6 +21,8 @@ export interface TableProps {
   highlightSignedNumbers?: boolean;
   className?: string;
   selectedRowIndex?: number | null;
+  /** Selects more than one row. Used instead of `selectedRowIndex` when set. */
+  selectedRowIndexes?: readonly number[];
   onRowClick?: (rowIndex: number) => void;
 }
 
@@ -62,13 +64,19 @@ export default function Table({
   highlightSignedNumbers = false,
   className,
   selectedRowIndex = null,
+  selectedRowIndexes,
   onRowClick
 }: TableProps) {
+  const selectedRows = new Set(
+    selectedRowIndexes ??
+      (selectedRowIndex === null ? [] : [selectedRowIndex])
+  );
+
   return (
     <div className={classNames('data-table-scroll', className)}>
       <table className="data-table">
         {caption != null && <caption>{caption}</caption>}
-        <thead>
+        {headers.length > 0 && <thead>
           <tr>
             {headers.map((header, index) => {
               if (index === 0 && spanFirstHeaderAcrossTwoColumns) {
@@ -85,16 +93,16 @@ export default function Table({
               );
             })}
           </tr>
-        </thead>
+        </thead>}
         <tbody>
           {rows.map((row, rowIndex) => (
             <tr
               key={rowIndex}
               className={classNames({
                 'data-table__row--selectable': Boolean(onRowClick),
-                'data-table__row--selected': selectedRowIndex === rowIndex
+                'data-table__row--selected': selectedRows.has(rowIndex)
               })}
-              aria-selected={onRowClick ? selectedRowIndex === rowIndex : undefined}
+              aria-selected={onRowClick ? selectedRows.has(rowIndex) : undefined}
               tabIndex={onRowClick ? 0 : undefined}
               onClick={onRowClick ? () => onRowClick(rowIndex) : undefined}
               onKeyDown={

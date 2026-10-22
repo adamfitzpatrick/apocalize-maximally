@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/auth-context';
 import {
   createCharacter,
+  deleteCharacter,
   getCharacters,
   type CharacterRecord
 } from '../../api/characters';
@@ -71,6 +72,21 @@ export default function CharactersPage() {
     };
   }, [userId]);
 
+  async function handleDeleteCharacter(characterId: string) {
+    setError('');
+    try {
+      await deleteCharacter(userId, characterId);
+      setCharacters((current) =>
+        current.filter((character) => character.id !== characterId)
+      );
+    } catch (reason) {
+      setError(
+        reason instanceof Error ? reason.message : 'Unable to delete character.'
+      );
+      throw reason;
+    }
+  }
+
   async function handleCreateCharacter() {
     setCreating(true);
     setError('');
@@ -95,6 +111,15 @@ export default function CharactersPage() {
 
   return (
     <>
+      <Flex className="characters-toolbar" justify="flex-end">
+        <Button
+          type="primary"
+          loading={creating}
+          onClick={() => void handleCreateCharacter()}
+        >
+          Create New Character
+        </Button>
+      </Flex>
       {error && (
         <Alert
           className="characters-alert"
@@ -128,7 +153,8 @@ export default function CharactersPage() {
               avatar: character.avatar,
               creationProgress: getCharacterCreationProgress(character),
               onClick: () =>
-                navigate(`/character/${encodeURIComponent(character.id)}`)
+                navigate(`/character/${encodeURIComponent(character.id)}`),
+              onDelete: () => handleDeleteCharacter(character.id)
             };
             return <CharacterCard key={character.id} {...characterCard} />;
           })}

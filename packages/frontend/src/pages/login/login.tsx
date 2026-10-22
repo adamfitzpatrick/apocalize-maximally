@@ -13,7 +13,6 @@ import {
   isAuthConfigured,
   type EmailSignInStep
 } from '../../auth';
-import AppHeader from '../../components/organisms/app-header/app-header';
 import { useAuth } from '../../contexts/auth-context';
 
 type AuthMode = 'sign-in' | 'sign-up';
@@ -38,12 +37,9 @@ export default function LoginPage() {
 
   if (isLoading) {
     return (
-      <div className="app-layout">
-        <AppHeader />
-        <main className="shell auth-state">
-          <Spin size="large" />
-          <Typography.Text>Restoring your session...</Typography.Text>
-        </main>
+      <div className="auth-page auth-state">
+        <Spin size="large" />
+        <Typography.Text>Restoring your session...</Typography.Text>
       </div>
     );
   }
@@ -158,10 +154,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="app-layout">
-      <AppHeader />
-      <main className="shell">
-        <section className="hero">
+    <div className="auth-page">
+      <section className="hero">
           <Typography.Paragraph className="intro">
             Sign in securely with your email. Accounts use a one-time code;
             no password or extra profile details are needed.
@@ -262,7 +256,6 @@ export default function LoginPage() {
             </Typography.Paragraph>
           )}
         </Card>
-      </main>
     </div>
   );
 }

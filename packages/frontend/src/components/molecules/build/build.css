@@ -1,0 +1,32 @@
+.build {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.build__stat {
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.build .build__stat > .character-stat {
+  margin-bottom: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.build__dc {
+  min-width: 3.25rem;
+  padding-inline: 6px;
+  border-left: 1px solid color-mix(in srgb, var(--color-foreground) 24%, transparent);
+}
+
+.build__label {
+  color: color-mix(in srgb, var(--color-foreground) 40%, transparent);
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.build__value {
+  font-variant-numeric: tabular-nums;
+}

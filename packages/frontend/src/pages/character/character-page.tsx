@@ -1,67 +1,30 @@
-import { Alert, Button, Flex, Spin, Typography } from 'antd';
+import { Alert, Button, Descriptions, Flex, Popconfirm, Spin, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import CharacterStat from '../../components/atom/character-stat/character-stat';
-import { getCharacter } from '../../api/characters';
-import { STATS, type StartingGearOption } from '../../api/core-game-data';
+import { BaseStats, BaseStatsMobile } from '../../components/organisms/base-stats/base-stats';
+import { Actions, ActionsMobile } from '../../components/organisms/actions/actions';
+import { OtherData } from '../../components/organisms/other-data/other-data';
+import { SpecialStats, SpecialStatsMobile } from '../../components/organisms/special-stats/special-stats';
+import { getCharacter, saveCharacter, type ResolveDamage } from '../../api/characters';
 import { useAuth } from '../../contexts/auth-context';
 import { useCoreGameData } from '../../contexts/core-game-data-context';
 import Character from '../../entities/character';
 
 import './character-page.css';
 
-const BASE_STAT_GETTERS: ((character: Character) => number)[] = [
-  (character) => character.strength,
-  (character) => character.fortitude,
-  (character) => character.agility,
-  (character) => character.intelligence,
-  (character) => character.instinct,
-  (character) => character.charisma,
-  (character) => character.fightingSkill,
-  (character) => character.ballisticSkill,
-  (character) => character.luck
-];
-
-const DERIVED_STATS: {
-  label: string;
-  getValue: (character: Character) => number;
-}[] = [
-  { label: 'BLD', getValue: (character) => character.build },
-  { label: 'HP', getValue: (character) => character.hp },
-  { label: 'INIT', getValue: (character) => character.initiative },
-  { label: 'SAL', getValue: (character) => character.salvage },
-  { label: 'RES', getValue: (character) => character.resilience },
-  { label: 'RSV', getValue: (character) => character.resolve },
-  { label: 'IMM', getValue: (character) => character.immunity },
-  { label: 'DDG', getValue: (character) => character.dodge },
-  { label: 'LPG', getValue: (character) => character.luckUsePerGame }
-];
-
 function displayValue(value?: string | null) {
   return value?.trim() ? value : '—';
 }
 
-function GearSummary({
-  label,
-  gear
-}: {
-  label: string;
-  gear?: StartingGearOption | null;
-}) {
-  return (
-    <div>
-      <Typography.Text strong>
-        {label}: {gear?.name ?? '—'}
-      </Typography.Text>
-      {gear && gear.items.length > 0 && (
-        <ul className="character-page__list">
-          {gear.items.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
+function formatAge(age: number, category?: string | null) {
+  if (!category?.trim()) {
+    return '—';
+  }
+  return `${age} (${category.toLowerCase()})`;
+}
+
+function withoutLeadingThe(name?: string | null) {
+  return displayValue(name).replace(/^The\s+/, '');
 }
 
 export default function CharacterPage() {
@@ -103,8 +66,22 @@ export default function CharacterPage() {
       setError('');
       try {
         const record = await getCharacter(userId, characterId!);
+        const loaded = new Character(gameData, record);
+        const nextRecord = { ...record };
+        if (typeof record.currentHp !== 'number' && loaded.allEffectiveStats) {
+          nextRecord.currentHp = loaded.hp;
+        }
+        if (typeof record.currentArmor !== 'number') {
+          nextRecord.currentArmor = loaded.armorMax;
+        }
+        const seeded =
+          nextRecord.currentHp !== record.currentHp ||
+          nextRecord.currentArmor !== record.currentArmor;
+        if (seeded) {
+          await saveCharacter(userId, nextRecord);
+        }
         if (!cancelled) {
-          setCharacter(new Character(gameData, record));
+          setCharacter(new Character(gameData, seeded ? nextRecord : record));
         }
       } catch (reason) {
         if (!cancelled) {
@@ -151,122 +128,176 @@ export default function CharacterPage() {
   }
 
   const record = character.characterRecord;
-  const skillNames = Object.keys(character.skillProficiencies).sort((a, b) =>
-    a.localeCompare(b)
-  );
+  const loadedCharacter = character;
+
+  function persistCurrents(patch: {
+    currentArmor?: number;
+    currentHp?: number;
+    resolveDamage?: ResolveDamage;
+    playing?: boolean;
+    infectionStage?: number | null;
+    hunger?: number | null;
+    cp?: number | null;
+    cx?: number | null;
+    unusedXp?: number | null;
+    totalXp?: number | null;
+  }) {
+    if (!userId || !coreGameData?.startingGear) {
+      return;
+    }
+    const nextRecord = { ...loadedCharacter.characterRecord, ...patch };
+    for (const field of ['infectionStage', 'hunger', 'cp', 'cx', 'unusedXp', 'totalXp'] as const) {
+      if (patch[field] === null) {
+        delete nextRecord[field];
+      }
+    }
+    setCharacter(new Character(coreGameData, nextRecord));
+    void saveCharacter(userId, nextRecord);
+  }
 
   return (
-    <section className="character-page">
+    <>
+    <section className="character-page character-page--wide">
       <Flex justify="space-between" align="center" gap={12} wrap>
         <Button onClick={() => navigate('/')}>Back to characters</Button>
-        <Button
-          onClick={() =>
-            navigate(
-              `/character-creation/${encodeURIComponent(record.id)}`
-            )
-          }
-        >
-          Continue creation
-        </Button>
+        <Flex gap={8}>
+          <Popconfirm
+            title="You will no longer be able to edit this character."
+            okText="Play"
+            cancelText="Cancel"
+            onConfirm={() => persistCurrents({ playing: true })}
+          >
+            <Button type='primary'>Play Character</Button>
+          </Popconfirm>
+          {!record.playing && (
+            <Button
+              onClick={() =>
+                navigate(
+                  `/character-creation/${encodeURIComponent(record.id)}`
+                )
+              }
+            >
+              Edit Character
+            </Button>
+          )}
+        </Flex>
       </Flex>
 
       <header>
         <Typography.Title level={2} style={{ marginBottom: 4 }}>
           {displayValue(record.name)}
         </Typography.Title>
-        <Typography.Paragraph className="character-page__meta">
-          {displayValue(character.primaryArchetype?.name)} /{' '}
-          {displayValue(character.secondaryArchetype?.name)} /{' '}
-          {displayValue(character.personalApocalypse?.name)}
-          {character.ageCategory
-            ? ` — ${character.ageCategory.category} (${record.age})`
-            : ''}
-        </Typography.Paragraph>
+        <Descriptions
+          className="character-page__identity"
+          column={4}
+          layout="vertical"
+          size="small"
+          colon={false}
+          items={[
+            {
+              key: 'primaryArchetype',
+              label: 'Primary archetype',
+              children: displayValue(character.primaryArchetype?.name)
+            },
+            {
+              key: 'secondaryArchetype',
+              label: 'Secondary archetype',
+              children: displayValue(character.secondaryArchetype?.name)
+            },
+            {
+              key: 'personalApocalypse',
+              label: 'Personal apocalypse',
+              children: displayValue(character.personalApocalypse?.name)
+            },
+            {
+              key: 'age',
+              label: 'Age',
+              children: formatAge(record.age, character.ageCategory?.category)
+            }
+          ]}
+        />
       </header>
 
-      <section>
-        <Typography.Title level={4}>Description</Typography.Title>
-        <Typography.Paragraph>
-          <Typography.Text strong>Physical description: </Typography.Text>
-          {displayValue(record.physicalDescription)}
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          <Typography.Text strong>Background: </Typography.Text>
-          {displayValue(record.background)}
-        </Typography.Paragraph>
-      </section>
+      <BaseStats character={character} skills={coreGameData?.skills} />
 
-      <section>
-        <Typography.Title level={4}>Base stats</Typography.Title>
-        <Flex className="character-page__stats" wrap gap={12}>
-          {STATS.map((stat, index) => (
-            <CharacterStat
-              key={stat.short}
-              label={stat.short}
-              value={BASE_STAT_GETTERS[index](character)}
-              showDerived
-            />
-          ))}
-        </Flex>
-      </section>
+      <SpecialStats
+        character={character}
+        onCurrentArmorChange={(currentArmor) => persistCurrents({ currentArmor })}
+        onCurrentHpChange={(currentHp) => persistCurrents({ currentHp })}
+      />
 
-      <section>
-        <Typography.Title level={4}>Derived stats</Typography.Title>
-        <Flex className="character-page__stats" wrap gap={12}>
-          {DERIVED_STATS.map((stat) => (
-            <CharacterStat
-              key={stat.label}
-              label={stat.label}
-              value={stat.getValue(character)}
-              showDerived
-            />
-          ))}
-        </Flex>
-      </section>
+      <Actions character={character} />
 
-      <section>
-        <Typography.Title level={4}>Skills</Typography.Title>
-        {skillNames.length === 0 ? (
-          <Typography.Text>—</Typography.Text>
-        ) : (
-          <ul className="character-page__list">
-            {skillNames.map((skillName) => (
-              <li key={skillName}>
-                {skillName}
-                {character.getSkillProficiencyMarker(skillName)
-                  ? ` (${character.getSkillProficiencyMarker(skillName)})`
-                  : ''}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      <section>
-        <Typography.Title level={4}>Special abilities</Typography.Title>
-        <Typography.Paragraph>
-          Archetype: {displayValue(character.primaryArchetypeSpecialAbility)}
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          Apocalypse: {displayValue(character.personalApocalypseSpecialAbility)}
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          Lucky mutation: {displayValue(character.luckyMutation)}
-          {character.psychicPower ? ` — ${character.psychicPower}` : ''}
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          Negative trait: {displayValue(character.negativeTrait)}
-        </Typography.Paragraph>
-      </section>
-
-      <section>
-        <Typography.Title level={4}>Starting gear</Typography.Title>
-        <Flex vertical gap={12}>
-          <GearSummary label="Armor" gear={character.startingArmor} />
-          <GearSummary label="Weapon" gear={character.startingWeapon} />
-          <GearSummary label="Gear" gear={character.startingGear} />
-        </Flex>
-      </section>
+      <OtherData
+        character={character}
+        onResolveDamageChange={(resolveDamage) => persistCurrents({ resolveDamage })}
+        onInfectionChange={(infectionStage) => persistCurrents({ infectionStage })}
+        onHungerChange={(hunger) => persistCurrents({ hunger })}
+        onCountChange={(field, value) => persistCurrents({ [field]: value })}
+      />
     </section>
+    <section className="character-page character-page--phone">
+      <Flex justify="space-between" align="center" gap={12} wrap>
+        <Button onClick={() => navigate('/')}>Back to characters</Button>
+        <Flex gap={8}>
+          <Popconfirm
+            title="You will no longer be able to edit this character."
+            okText="Play"
+            cancelText="Cancel"
+            onConfirm={() => persistCurrents({ playing: true })}
+          >
+            <Button>Play Character</Button>
+          </Popconfirm>
+          {!record.playing && (
+            <Button
+              onClick={() =>
+                navigate(
+                  `/character-creation/${encodeURIComponent(record.id)}`
+                )
+              }
+            >
+              Edit Character
+            </Button>
+          )}
+        </Flex>
+      </Flex>
+
+      <header>
+        <Typography.Title level={2} style={{ marginBottom: 4 }}>
+          {displayValue(record.name)}
+        </Typography.Title>
+        <Flex className="character-page__phone-identity" justify="space-between" gap={8}>
+          <span>
+            {[
+              withoutLeadingThe(character.primaryArchetype?.name),
+              withoutLeadingThe(character.secondaryArchetype?.name)
+            ]
+              .filter((name) => name !== '—')
+              .join(' / ') || '—'}
+          </span>
+          <span>{displayValue(character.personalApocalypse?.name)}</span>
+          <span>{formatAge(record.age, character.ageCategory?.category)}</span>
+        </Flex>
+      </header>
+
+      <BaseStatsMobile character={character} skills={coreGameData?.skills} />
+
+      <SpecialStatsMobile
+        character={character}
+        onCurrentArmorChange={(currentArmor) => persistCurrents({ currentArmor })}
+        onCurrentHpChange={(currentHp) => persistCurrents({ currentHp })}
+      />
+
+      <ActionsMobile character={character} />
+
+      <OtherData
+        character={character}
+        onResolveDamageChange={(resolveDamage) => persistCurrents({ resolveDamage })}
+        onInfectionChange={(infectionStage) => persistCurrents({ infectionStage })}
+        onHungerChange={(hunger) => persistCurrents({ hunger })}
+        onCountChange={(field, value) => persistCurrents({ [field]: value })}
+      />
+    </section>
+    </>
   );
 }

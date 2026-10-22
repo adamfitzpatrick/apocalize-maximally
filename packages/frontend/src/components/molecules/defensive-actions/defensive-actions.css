@@ -1,0 +1,19 @@
+.defensive-actions .data-table {
+  width: auto;
+  font-size: 0.8rem;
+}
+
+.character-page--phone .defensive-actions .data-table {
+  width: 100%;
+}
+
+.defensive-actions .data-table th:first-child,
+.defensive-actions .data-table td:first-child {
+  text-align: left;
+  white-space: normal;
+}
+
+.defensive-actions .data-table th:not(:first-child),
+.defensive-actions .data-table td:not(:first-child) {
+  width: 3.25rem;
+}

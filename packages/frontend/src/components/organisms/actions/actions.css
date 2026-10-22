@@ -1,0 +1,14 @@
+.actions__columns {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.character-page--phone .actions__columns {
+  flex-direction: column;
+}
+
+.actions__switch {
+  margin-bottom: 12px;
+}

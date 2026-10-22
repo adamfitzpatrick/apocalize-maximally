@@ -5,20 +5,42 @@
   margin: 0 auto;
 }
 
-.character-page__meta {
-  margin-bottom: 0;
-  color: var(--color-muted-foreground);
+.character-page--phone {
+  display: none;
 }
 
-.character-page__stats {
-  align-items: stretch;
+@media (max-width: 520px) {
+  .character-page--wide {
+    display: none;
+  }
+
+  .character-page--phone {
+    display: grid;
+  }
 }
 
-.character-page__list {
-  margin: 0;
-  padding-left: 1.25rem;
+.character-page__identity {
+  width: 100%;
 }
 
-.character-page section .ant-typography {
-  margin-bottom: 8px;
+.character-page__identity .ant-descriptions-view > table {
+  width: 100%;
+  table-layout: fixed;
+}
+.character-page__identity .ant-descriptions-item-label {
+  font-size: 0.75rem;
+}
+.character-page__identity .ant-descriptions-item {
+  padding-bottom: 0;
+}
+
+.character-page__phone-identity {
+  width: 100%;
+}
+
+.character-page section, .character-page header {
+  border-top: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  border-radius: 6px;
+  padding: 8px;
 }

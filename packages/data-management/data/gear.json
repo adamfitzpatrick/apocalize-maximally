@@ -1,0 +1,840 @@
+[
+  {
+    "slug": "2-qt-container-of-oil",
+    "name": "2 qt container of oil",
+    "category": "gear",
+    "cp": 12,
+    "description": "2 quarts of motor oil. Reduce 1 CP to gain Advantage on Mechanic skill rolls for repairing. Reduce 2 CP to deal 1d4 Resilience Fire Damage for 1d4 Combat Rounds."
+  },
+  {
+    "slug": "20l-jerry-can-of-fuel",
+    "name": "20L Jerry Can of Fuel",
+    "category": "gear",
+    "cp": 40,
+    "description": "20L (5 gallon) metal container of Fuel. Reduce 2 CP to deal 1d6 Fire-based Resilience Damage for 1d4 Combat Rounds, or Reduce 2 CP to give vehicles 1L of Fuel."
+  },
+  {
+    "slug": "25cm-taper-candle",
+    "name": "25cm Taper Candle",
+    "category": "gear",
+    "cp": 6,
+    "description": "Reduce 1 CP to produce 1 hour of Midrange light, or can cause 1 Resilience Damage. Can be extinguished and relit, but still loses 1 CP."
+  },
+  {
+    "slug": "9mm-auto-h",
+    "name": "9mm Auto",
+    "description": "Concealable, Mag, Unreliable. Accepts 16 rounds.  Adds +10 to EAG.",
+    "category": "weapon",
+    "cp": 10,
+    "dc": "H",
+    "skill": "Firearms"
+  },
+  {
+    "slug": "accumulator-flashlight",
+    "name": "Accumulator Flashlight",
+    "category": "gear",
+    "cp": 4,
+    "description": "Fixed beam flashlight. Reduce 1 CP for 1 hour of Midrange light. Accumulator technology recharges 1 CP per hour of non-use via natural magnetism."
+  },
+  {
+    "slug": "acetaminophen",
+    "name": "Acetaminophen",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce 2 CP to Increase Immunity Special Stat roll Degree of Success +1. Cannot reduce more than 8 CP at once."
+  },
+  {
+    "slug": "alarm-clock",
+    "name": "Alarm Clock",
+    "category": "gear",
+    "cp": 12,
+    "description": "Mechanical device that rapidly and repeatedly rings a small bell at the set time. Increases the EAG + 30."
+  },
+  {
+    "slug": "alcohol-80-proof",
+    "name": "Alcohol 80 Proof",
+    "category": "gear",
+    "cp": 8,
+    "description": "Reduce 1 CP to gain 1 Food Unit and become STUNNED for 1 hour or reduce 1 CP to gain Advantage on a Medical skill roll. Or, Reduce 2 CP to cause 1d6 Fire-based Resilience Damage for 2 Combat Rounds."
+  },
+  {
+    "slug": "amphetamines",
+    "name": "Amphetamines",
+    "category": "gear",
+    "cp": 15,
+    "description": "Reduce by 3 CP to gain +10 Initiative for 3 Combat Rounds. After 3 Combat Rounds, make a Resilience Special Stat roll against Knock-out (see page 68). Not cumulative with other Initiative bonuses."
+  },
+  {
+    "slug": "antidote",
+    "name": "Antidote",
+    "category": "gear",
+    "cp": 4,
+    "description": "Created with the Medicine or Science skills. Reduce 2 CP to reduce 1 Stage of Infection."
+  },
+  {
+    "slug": "arrow",
+    "name": "Arrow",
+    "category": "ammo",
+    "cp": 2,
+    "description": "Ammunition for Bows and Crossbows. Receives Damage Code from the weapon."
+  },
+  {
+    "slug": "axe-h",
+    "name": "Axe",
+    "category": "weapon",
+    "cp": 6,
+    "description": "Unbalanced, 2-Handed, Reach.",
+    "dc": "H",
+    "skill": "Blades"
+  },
+  {
+    "slug": "backpack",
+    "name": "Backpack",
+    "category": "gear",
+    "cp": 5,
+    "description": "Holds 100 CP off the body, allowing small items and most weapons to be carried. Does not hold rifles, bows, or sleeping bags, but these may be attached externally."
+  },
+  {
+    "slug": "ballistic-glasses",
+    "name": "Ballistic Glasses",
+    "category": "gear",
+    "cp": 5,
+    "description": "Tool used to gain +5 to Ballistic Skill Threshold."
+  },
+  {
+    "slug": "baseball-bat-a",
+    "name": "Baseball Bat",
+    "category": "weapon",
+    "cp": 3,
+    "description": "Versatile.",
+    "dc": "A"
+  },
+  {
+    "slug": "binoculars",
+    "name": "Binoculars",
+    "category": "gear",
+    "cp": 6,
+    "description": "Grants Advantage to Perception skill rolls over Long Distance, but Disadvantage to Perception skills from Midrange and below."
+  },
+  {
+    "slug": "bowstring-dampener",
+    "name": "Bowstring Dampener",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce 1 CP to decrease the EAG from a bowstring -2 for 1 Attack Action."
+  },
+  {
+    "slug": "camo-tarp",
+    "name": "Camo Tarp",
+    "category": "gear",
+    "cp": 2,
+    "description": "Stealth skill rolls at ADVANTAGE when stationary (not moving)."
+  },
+  {
+    "slug": "chain-a",
+    "name": "Chain",
+    "category": "weapon",
+    "cp": 4,
+    "description": "Reach, Wrangling Skill.",
+    "dc": "A",
+    "skill": "Wrangle"
+  },
+  {
+    "slug": "cigar-5",
+    "name": "Cigar (5)",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce by 2 CP to gain ADVANTAGE on Resolve rolls made within 5 hours of use or reduce by 2 CP to become an improvised delayed fuse that burns for 1 hour. EAG +5 when burning."
+  },
+  {
+    "slug": "cigarettes-10",
+    "name": "Cigarettes (10)",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce by 1 CP to gain ADVANTAGE on Resolve rolls made within 3 hours of use or reduce by 1 CP to become an improvised delayed fuse that burns for 10 Combat Rounds (1 Minute). EAG +2 when burning."
+  },
+  {
+    "slug": "club-a",
+    "name": "Club",
+    "category": "weapon",
+    "cp": 3,
+    "description": "Versatile.",
+    "dc": "A",
+    "skill": "Clubs"
+  },
+  {
+    "slug": "combat-knife-a",
+    "name": "Combat Knife",
+    "category": "weapon",
+    "cp": 3,
+    "description": "Balanced.",
+    "dc": "A",
+    "skill": "Blades"
+  },
+  {
+    "slug": "comic-book",
+    "name": "Comic Book",
+    "category": "gear",
+    "cp": 4,
+    "description": "Resolve rolls are made at Advantage for 10 hours after reading. Reduce 1 CP to use as kindling to gain Advantage to Survival skill rolls when increasing Food Safe Levels (see Gamemaster Guide, page 19)."
+  },
+  {
+    "slug": "compass",
+    "name": "Compass",
+    "category": "gear",
+    "cp": 5,
+    "description": "Grants Advantage to Navigation skill rolls."
+  },
+  {
+    "slug": "cord-saw",
+    "name": "Cord Saw",
+    "category": "gear",
+    "cp": 5,
+    "description": "Grants Advantage to Survival skill rolls when Foraging. Can also be used to do Average (2d4) Damage or cut through wood, metal, bone, and ice."
+  },
+  {
+    "slug": "cosmetic-kit",
+    "name": "Cosmetic Kit",
+    "category": "gear",
+    "cp": 4,
+    "description": "Reduce 1 CP to gain Advantage on Charm skill rolls."
+  },
+  {
+    "slug": "crossbow-a",
+    "name": "Crossbow",
+    "category": "weapon",
+    "cp": 7,
+    "description": "Uses Firearms Skill, requires 1 complex action to load. +1 EAG.",
+    "dc": "A"
+  },
+  {
+    "slug": "crowbar",
+    "name": "Crowbar",
+    "category": "gear",
+    "cp": 5,
+    "description": "Grants Advantage on Prying actions. Can be used as a Heavy (H) Blunt Weapon."
+  },
+  {
+    "slug": "deck-of-playing-cards",
+    "name": "Deck of Playing Cards",
+    "category": "gear",
+    "cp": 5,
+    "description": "Grants Advantage to Palming rolls for \"cheating.\""
+  },
+  {
+    "slug": "drone-command-unit",
+    "name": "Drone Command Unit",
+    "category": "gear",
+    "cp": 12,
+    "description": "A book sized Radio Frequency GUI-operated Device that controls up to 3 drones within Midrange. With a Successful Tech Use skill roll, the device can be modified to send and receive voice transmissions, connect to the global information network used for Robot communication, or hack a Robot or Drone within Midrange. If connected to the Robot communication network, becomes infected with the Robot Sentience Code."
+  },
+  {
+    "slug": "duct-tape",
+    "name": "Duct Tape",
+    "category": "gear",
+    "cp": 8,
+    "description": "Reduce by 1 CP to gain Advantage on Crafting, Mechanics, Medicine or Science skill rolls."
+  },
+  {
+    "slug": "edible-mushrooms",
+    "name": "Edible Mushrooms",
+    "category": "gear",
+    "cp": 9,
+    "description": "Reduce by 3 CP to gain 1 Food Unit. If mixed with 1 other Food Unit (water), it produces a 4 Food Unit soup."
+  },
+  {
+    "slug": "energy-drink",
+    "name": "Energy Drink",
+    "category": "gear",
+    "cp": 6,
+    "description": "Reduce by 2 CP to provide +5 Initiative for 3 Combat Rounds. Not cumulative with other Initiative bonuses."
+  },
+  {
+    "slug": "ethanol-gel",
+    "name": "Ethanol Gel",
+    "category": "gear",
+    "cp": 2,
+    "description": "Reduce by 1 CP to gain ADVANTAGE to Survival skill rolls when increasing Food Safe Levels (see Gamemaster Guide, page 19), or Reduce by 2 CP to cause 1d6 Fire-based Resilience Damage per Combat Round until extinguished by smothering with 2 Complex Actions. If mixed with water, increases to 2d6 Fire-based Resilience Damage per Combat Round."
+  },
+  {
+    "slug": "extra-clothes",
+    "name": "Extra Clothes",
+    "category": "gear",
+    "cp": 5,
+    "description": "Grants Advantage to the Charm skills."
+  },
+  {
+    "slug": "firearm-ammunition",
+    "name": "Firearm Ammunition",
+    "category": "ammo",
+    "cp": 4,
+    "description": "Used for firearms. Ammunition costs 1 complex CP (4 CP) each and can be ANY damage code. Ammunition only works in a firearm with the corresponding Damage Code."
+  },
+  {
+    "slug": "flare",
+    "name": "Flare",
+    "category": "gear",
+    "cp": 4,
+    "description": "Ignites as a Complex Action and immediately increases the EAG +10. Provides Midrange light. Can be used to cause Heavy (H) Resilience Damage to a target and burns for 1d10+2 minutes. Cannot be extinguished."
+  },
+  {
+    "slug": "folding-knife-l",
+    "name": "Folding Knife",
+    "category": "weapon",
+    "cp": 2,
+    "description": "Concealable,Balanced.",
+    "dc": "L",
+    "skill": "Blades"
+  },
+  {
+    "slug": "food-unit",
+    "name": "Food Unit",
+    "category": "gear",
+    "cp": 3,
+    "description": "1 Unit of Food required to be eaten each day based on the character's Build stat. (see Hunger Damage, page 54)"
+  },
+  {
+    "slug": "game-bag",
+    "name": "Game Bag",
+    "category": "gear",
+    "cp": 4,
+    "description": "Mesh bag that Holds 2 Food Units when full and can be used as a Lure when Hunting (does not get destroyed)."
+  },
+  {
+    "slug": "geiger-counter",
+    "name": "Geiger Counter",
+    "category": "gear",
+    "cp": 12,
+    "description": "Reduce 1 CP to gain 1 hour of radiation scanning on objects, places or persons. Accumulator technology recharges 1 CP per hour of non-use."
+  },
+  {
+    "slug": "gloves-armor-2",
+    "name": "Gloves",
+    "category": "armor",
+    "cp": 6
+  },
+  {
+    "slug": "glow-stick",
+    "name": "Glow Stick",
+    "category": "gear",
+    "cp": 8,
+    "description": "Single use. Provides 12 hours of Short Range light via chemiluminescence when \"cracked.\" Cannot be extinguished. EAG +5."
+  },
+  {
+    "slug": "government-id",
+    "name": "Government ID",
+    "category": "gear",
+    "cp": 3,
+    "description": "Grants Advantage on Charm skill rolls. A Great Success or better on a Perception skill roll reveals the ID to be expired or fake."
+  },
+  {
+    "slug": "ground-coffee",
+    "name": "Ground Coffee",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce by 1 CP to gain 1 Food Unit. When mixed with 1 other Food Unit, this can be consumed by 1 character to gain +3 Initiative for 3 Combat Rounds within 6 hours. Not cumulative with other Initiative bonuses."
+  },
+  {
+    "slug": "handcuffs",
+    "name": "Handcuffs",
+    "category": "gear",
+    "cp": 6,
+    "description": "Grants Advantage to Interrogate skill roll, and Grapple actions."
+  },
+  {
+    "slug": "handheld-shortwave-radio",
+    "name": "Handheld Shortwave Radio",
+    "category": "gear",
+    "cp": 10,
+    "description": "A handheld device that can send and receive radio transmissions over Long Range."
+  },
+  {
+    "slug": "hat-armor-1",
+    "name": "Hat",
+    "category": "armor",
+    "cp": 3
+  },
+  {
+    "slug": "hatchet-h",
+    "name": "Hatchet",
+    "category": "weapon",
+    "cp": 5,
+    "description": "Balanced, Versatile.",
+    "dc": "H",
+    "skill": "Blades"
+  },
+  {
+    "slug": "hunting-boots",
+    "name": "Hunting Boots",
+    "category": "gear",
+    "cp": 5,
+    "description": "Grants Disadvantage to Athletic skill rolls, but negates the EAG increases from movement."
+  },
+  {
+    "slug": "isopropyl-alcohol-500ml",
+    "name": "Isopropyl Alcohol (500mL)",
+    "category": "gear",
+    "cp": 8,
+    "description": "Reduce by 1 CP to gain Advantage on Medicine skill rolls or Reduce by 2 CP to ignite with flame for 1d4 Fire-based Resilience Damage for 2 Combat Rounds."
+  },
+  {
+    "slug": "katana-h",
+    "name": "Katana",
+    "category": "weapon",
+    "cp": 6,
+    "description": "Unbalanced, 2-Handed, Reach.",
+    "dc": "H",
+    "skill": "Blades"
+  },
+  {
+    "slug": "kevlar-jacket-armor-6",
+    "name": "Kevlar Jacket",
+    "category": "armor",
+    "cp": 18
+  },
+  {
+    "slug": "kevlar-vest-armor-5",
+    "name": "Kevlar Vest",
+    "category": "armor",
+    "cp": 15
+  },
+  {
+    "slug": "laptop",
+    "name": "Laptop",
+    "category": "gear",
+    "cp": 16,
+    "description": "A portable device with attached keyboard, screen, and graphic interface. Does not require a Tech Use skill for basic functions, but does for programming or connecting to the Robot communication network. Basic Use: \"Record\" data that can be used later to gain Advantage on Academics or Science skill rolls. Reduce 1 CP to use for 1 hour. After 4 CP have been removed, it must be recharged through external power supplies, like a Solar Charging Unit."
+  },
+  {
+    "slug": "large-net",
+    "name": "Large Net",
+    "category": "gear",
+    "cp": 2,
+    "description": "Grants Advantage to Wrangle skill rolls or Hunting near water."
+  },
+  {
+    "slug": "lever-rifle-a",
+    "name": "Lever Rifle",
+    "category": "weapon",
+    "cp": 13,
+    "description": "Multi-Attack, Unreliable. Accepts 6 rounds. +10 EAG.",
+    "dc": "A"
+  },
+  {
+    "slug": "lighter",
+    "name": "Lighter",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce by 1 CP to cause 1 Fire-based Resilience Damage to a target or ignite flammable objects. Burns for 5 minutes before self-extinguishing but extinguishes if used to cause damage."
+  },
+  {
+    "slug": "lithium-ion-battery",
+    "name": "Lithium Ion Battery",
+    "category": "gear",
+    "cp": 8,
+    "description": "Reduce by 1 CP to grant 1 hour of electrical energy (even to vehicles). After 4 CP have been removed, it must be recharged through external power supplies, like a Solar Charging Unit."
+  },
+  {
+    "slug": "magic-mushroom",
+    "name": "Magic Mushroom",
+    "category": "gear",
+    "cp": 3,
+    "description": "Reduce by 3 CP to gain Advantage on Resolve Special Stat rolls for 5 hours due to ongoing hallucinations. After this same period, character gains Disadvantage on all Resilience Special Stat rolls until next sleep."
+  },
+  {
+    "slug": "matches-10",
+    "name": "Matches (10)",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce by 1 CP to light as a Complex Action to gain Close Range light OR ignite flammable object. Extinguishes after 1 Action Phase."
+  },
+  {
+    "slug": "mechanically-powered-flashlight",
+    "name": "Mechanically Powered Flashlight",
+    "category": "gear",
+    "cp": 7,
+    "description": "Reduce 1 CP to gain 1 hour of filtered Midrange light that cannot be seen farther than Short Range. After 4 CP have been removed, it can be recharged with manual charging actions at a rate of 1-minute charging to regain 1 CP."
+  },
+  {
+    "slug": "medical-kit",
+    "name": "Medical Kit",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce 1 CP to increase the Treatment Code by 1 on a Medicine skill roll. Can be combined with other Medical Kits to replenish CP."
+  },
+  {
+    "slug": "military-pack",
+    "name": "Military Pack",
+    "category": "gear",
+    "cp": 7,
+    "description": "A special designed backpack that reduces the Success Requirement on a Quick-draw action to a Success (1 Degree) via several accessible pockets. Holds 100 CP off the body."
+  },
+  {
+    "slug": "military-survival-manual",
+    "name": "Military Survival Manual",
+    "category": "gear",
+    "cp": 4,
+    "description": "Grants Advantage to survival skill rolls. Characters also decrease the cost for gaining or increasing the proficiency with the Survival skill by 100 XP."
+  },
+  {
+    "slug": "molotov-cocktail-h",
+    "name": "Molotov Cocktail",
+    "category": "weapon",
+    "cp": 5,
+    "description": "Burns 1d6 rounds.  EAG +5",
+    "dc": "H",
+    "skill": "Athletics"
+  },
+  {
+    "slug": "motorcycle-armor-armor-4",
+    "name": "Motorcycle Armor",
+    "category": "armor",
+    "cp": 12
+  },
+  {
+    "slug": "mre-1",
+    "name": "MRE (1)",
+    "category": "gear",
+    "cp": 9,
+    "description": "\"Meals Ready to Eat.\" Provides 3 Food Units in sealed, protective packaging."
+  },
+  {
+    "slug": "old-magazine",
+    "name": "Old Magazine",
+    "category": "gear",
+    "cp": 3,
+    "description": "Grants Advantage to Resolve Special Stat rolls for 10 hours after reading. Reduce 1 CP to use as kindling to gain Advantage to Survival skill rolls when increasing Food Safe Levels (see Gamemaster Guide, page 19)."
+  },
+  {
+    "slug": "old-road-atlas",
+    "name": "Old Road Atlas",
+    "category": "gear",
+    "cp": 2,
+    "description": "Grants Advantage on Navigation skill rolls."
+  },
+  {
+    "slug": "oxygen-mask",
+    "name": "Oxygen Mask",
+    "category": "gear",
+    "cp": 10,
+    "description": "2 Armor Points that cannot be destroyed without a Called Shot action. Grants Advantage on Immunity Special Stat rolls. Can be combined with an Oxygen Tank to ignore Immunity Rolls."
+  },
+  {
+    "slug": "oxygen-tank",
+    "name": "Oxygen Tank",
+    "category": "gear",
+    "cp": 23,
+    "description": "5 Armor Point objects that contains 8 CP of air. Cannot be destroyed without a Called Shot action, but if destroyed while containing at least 1 CP of air, it explodes for Heavy (H) Damage within Close Range. Reduce 1 CP to gain 1 hour of pressurized air that can be breathed or sprayed. Once it has been reduced by 8 CP, the air must be recharged with a Crafting skill roll at a rate of 1 CP per Degree of Success. Can be repeated multiple times at 1 hour each."
+  },
+  {
+    "slug": "pencil-and-paper",
+    "name": "Pencil and Paper",
+    "category": "gear",
+    "cp": 3,
+    "description": "Grants Advantage to Academic Skill rolls or any skill the character has previously recorded using 2 Complex Actions."
+  },
+  {
+    "slug": "personalized-grip",
+    "name": "Personalized Grip",
+    "category": "gear",
+    "cp": 5,
+    "description": "Tool used to grant +5 to Fighting Skill Thresholds."
+  },
+  {
+    "slug": "plastic-canteen-1-liter",
+    "name": "Plastic Canteen (1 Liter)",
+    "category": "gear",
+    "cp": 3,
+    "description": "Holds 2 Food Unit when full or holds 6 CP of other liquids."
+  },
+  {
+    "slug": "potassium-iodide",
+    "name": "Potassium Iodide",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce by 2 CP to decrease Immunity Success Requirement against Radiation by 1. Cannot reduce more than 8 CP at once."
+  },
+  {
+    "slug": "pouch",
+    "name": "Pouch",
+    "category": "gear",
+    "cp": 2,
+    "description": "Carries 20 CP off the body. This can be 10 arrows or 5 rounds of ammunition."
+  },
+  {
+    "slug": "psychedelic-pills",
+    "name": "Psychedelic pills",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce by 2 CP to gain ADVANTAGE on Resolve Special Stat rolls for 5 hours due to ongoing hallucinations. During this same period, character gains DISADVANTAGE on all Resilience Special Stat rolls. After this period, the character becomes UNNERVED until their next Sleep. Requires a Great Success or better on a Medicine or Science skill roll to create."
+  },
+  {
+    "slug": "quickdraw-holster",
+    "name": "Quickdraw Holster",
+    "category": "gear",
+    "cp": 5,
+    "description": "Reduces the Success Requirement on a Quick-draw action to a Success (1 Degree)."
+  },
+  {
+    "slug": "radiation-suit",
+    "name": "Radiation Suit",
+    "category": "gear",
+    "cp": 4,
+    "description": "1 Armor Point object. Reduces Immunity Success Requirements by 2."
+  },
+  {
+    "slug": "rain-poncho",
+    "name": "Rain Poncho",
+    "category": "gear",
+    "cp": 3,
+    "description": "Grants Advantage on Resilience Special Stat rolls against Weather."
+  },
+  {
+    "slug": "raw-chemicals",
+    "name": "Raw chemicals",
+    "category": "gear",
+    "cp": 16,
+    "description": "Stable chemicals that can be used as CP for Science skill rolls. Reduce by 4 CP to make explosives, ammunition, etc."
+  },
+  {
+    "slug": "recurve-bow-a",
+    "name": "Recurve Bow",
+    "category": "weapon",
+    "cp": 3,
+    "description": "Strength required 20, DC Mod Max +1. +2 EAG.",
+    "dc": "A"
+  },
+  {
+    "slug": "reinforced-bowstring",
+    "name": "Reinforced Bowstring",
+    "category": "weapon",
+    "cp": 5,
+    "description": "Attached to a bow, this grants +5 to the Archery skill Threshold."
+  },
+  {
+    "slug": "religious-holy-book",
+    "name": "Religious Holy Book",
+    "category": "gear",
+    "cp": 7,
+    "description": "Grants Advantage to Resolve Special Stat rolls when held. As a side effect, it causes Disadvantage on Xenotech Use skill rolls when held."
+  },
+  {
+    "slug": "repair-kit",
+    "name": "Repair Kit",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce 1 CP to increase the Repair Code by 1 on a Crafting, Mechanics, or Science skill roll. Can be combined with other Repair Kits to replenish CP."
+  },
+  {
+    "slug": "rope-30m",
+    "name": "Rope (30m)",
+    "category": "gear",
+    "cp": 5,
+    "description": "Grants Advantage to Athletic rolls when climbing. Can be made into a lasso to catch animals or people with the Wrangle skill."
+  },
+  {
+    "slug": "rubber-mallet",
+    "name": "Rubber Mallet",
+    "category": "gear",
+    "cp": 6,
+    "description": "Increase Success Requirement +1 to negate the EAG increase when using a Crafting, Mechanics, and Science skill."
+  },
+  {
+    "slug": "running-shoes",
+    "name": "Running Shoes",
+    "category": "gear",
+    "cp": 4,
+    "description": "Grants Advantage to Athletics skill rolls, but Disadvantage to Stealth skill rolls."
+  },
+  {
+    "slug": "sci-fi-novel",
+    "name": "Sci-Fi novel",
+    "category": "gear",
+    "cp": 4,
+    "description": "Grants Advantage to Resolve Special Stat rolls for 10 hours after reading. Reduce 1 CP to use as kindling to gain Advantage to Survival skill rolls when increasing Food Safe Levels (see Gamemaster Guide, page 19)."
+  },
+  {
+    "slug": "silencer-firearm",
+    "name": "Silencer (Firearm)",
+    "category": "gear",
+    "cp": 5,
+    "description": "Reduce by 1 CP to reduce EAG increase -5 per use."
+  },
+  {
+    "slug": "sleeping-bag",
+    "name": "Sleeping Bag",
+    "category": "gear",
+    "cp": 4,
+    "description": "Grants Advantage on Resilience Special Stat rolls against Weather during Rests or Sleeps."
+  },
+  {
+    "slug": "soap",
+    "name": "Soap",
+    "category": "gear",
+    "cp": 4,
+    "description": "Reduce 1 CP to gain Advantage on Charm skill rolls for 12 hours."
+  },
+  {
+    "slug": "solar-charging-unit",
+    "name": "Solar Charging Unit",
+    "category": "gear",
+    "cp": 7,
+    "description": "Recharges a battery 1 CP every 1 hour during the day."
+  },
+  {
+    "slug": "spray-paint",
+    "name": "Spray Paint",
+    "category": "gear",
+    "cp": 12,
+    "description": "Reduce by 1 CP to gain Advantage on Crafting skill rolls for leaving legible messages or symbols, or Reduce by 2 CP and combine with Lighter, match, or Flare to cause 1d4 Fire-based Resilience Damage to 1 Target within Short Range."
+  },
+  {
+    "slug": "sunglasses",
+    "name": "Sunglasses",
+    "category": "gear",
+    "cp": 4,
+    "description": "Grants Advantage to Perception skill rolls in conditions that would grant Disadvantage due to brightness or reflections. However, grants Disadvantage to Perception Skill rolls in dim light."
+  },
+  {
+    "slug": "tea",
+    "name": "Tea",
+    "category": "gear",
+    "cp": 5,
+    "description": "Reduce by 1 CP to gain 1 Food Unit. When mixed with 1 other Food Unit, this can be consumed by 1 character to gain +2 Initiative for 2 Combat Rounds within 6 hours. Not cumulative with other Initiative bonuses."
+  },
+  {
+    "slug": "tent-pup",
+    "name": "Tent (Pup)",
+    "category": "gear",
+    "cp": 24,
+    "description": "Can house 300 BUILD worth of characters. Ignores Resilience rolls against Weather during Rests or Sleeps."
+  },
+  {
+    "slug": "thick-jacket-armor-3",
+    "name": "Thick Jacket",
+    "category": "armor",
+    "cp": 9
+  },
+  {
+    "slug": "throwing-knife-l",
+    "name": "Throwing Knife",
+    "category": "weapon",
+    "cp": 2,
+    "description": "Concealable, Balanced.",
+    "dc": "L",
+    "skill": "Blades"
+  },
+  {
+    "slug": "toilet-paper",
+    "name": "Toilet Paper",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce by 1 CP to gain Advantage on Charm skill rolls."
+  },
+  {
+    "slug": "toolbelt",
+    "name": "Toolbelt",
+    "category": "gear",
+    "cp": 6,
+    "description": "Holds 2 sets of tools at the waist (Ignores tools for CP)."
+  },
+  {
+    "slug": "tools",
+    "name": "Tools",
+    "category": "gear",
+    "cp": 5,
+    "description": "Set of items used on related skill actions (i.e. hammers, picks). Some may be considered as weapons; the Gamemaster must determine if they are. Chemistry set: Science skill. Climbing tools: Athletics skill. Cartographer tools: Navigation skill. Crafting tools: Crafting skill. Dog Whistle: Animal Ken skill. Entrenching tools: Survival skill. Fishing Rod: Tracking skill. Flint and Steel: Survival skill. Lockpick tools: Lockpick skill. Mechanics tools: Mechanics skill. Surgical tools: Medicine skill. Thumb drive: Tech Use skill. Torture tools: Interrogate skill."
+  },
+  {
+    "slug": "toothbrush",
+    "name": "Toothbrush",
+    "category": "gear",
+    "cp": 2,
+    "description": "Grants Advantage to Charm skill rolls for 5 hours after use."
+  },
+  {
+    "slug": "watch",
+    "name": "Watch",
+    "category": "gear",
+    "cp": 8,
+    "description": "Made of several pieces, it reduces 1 CP every year. Possesses an \"alarm\" function that increases the EAG +10."
+  },
+  {
+    "slug": "water-bottle",
+    "name": "Water Bottle",
+    "category": "gear",
+    "cp": 4,
+    "description": "Holds 1 Food Unit when full or 3 CP of other liquids."
+  },
+  {
+    "slug": "water-filter",
+    "name": "Water Filter",
+    "category": "gear",
+    "cp": 16,
+    "description": "Reduce by 4 CP to gain Advantage to Survival skill rolls when increasing Food Safe Levels. Automatically increases Water Safe Level +20 before the roll (see Gamemaster Guide, page 19)."
+  },
+  {
+    "slug": "well-kept-gold-jewelry",
+    "name": "Well-Kept Gold Jewelry",
+    "category": "gear",
+    "cp": 5,
+    "description": "Grants ADVANTAGE to Charm skills rolls."
+  },
+  {
+    "slug": "wire-10m",
+    "name": "Wire (10m)",
+    "category": "gear",
+    "cp": 10,
+    "description": "Reduce 1 CP to gain Advantage on Crafting or Mechanics skill rolls, or reduce 1 CP to create a \"trip wire\" with a 20% \"trip chance.\" For every 1 additional CP added, the trip chance increased +5%. The wire can be attached to an explosive or improvised 1d6 damage trap."
+  },
+  {
+    "slug": "wool-socks",
+    "name": "Wool Socks",
+    "category": "gear",
+    "cp": 4,
+    "description": "Grants Advantage to Resilience Special Stat rolls, but Disadvantage to Athletics skill rolls."
+  },
+  {
+    "slug": "z-virus-antiserum",
+    "name": "Z-virus Antiserum",
+    "category": "gear",
+    "cp": 8,
+    "description": "Grants Advantage on Immunity Special Stat rolls against the Z-Virus. Requires a Great Success or better on a Science skill roll to create. The experimental Z-virus Anti-Serum is highly volatile and breaks down within several hours. If not used before the end of the game day, it is no longer viable and the CP are lost."
+  },
+  {
+    "slug": ".38-Revolver-a",
+    "name": ".38 Revolver",
+    "description": "Concealable, Reliable. Accepts 5 rounds.  Adds +7 to EAG.",
+    "category": "weapon",
+    "cp": 7,
+    "dc": "A",
+    "skill": "Firearms"
+  },
+  {
+    "slug": ".44-Revolver-m",
+    "name": ".44 Revolver",
+    "description": "Reliable. Requires Strength 40. Accepts 6 rounds.  Adds +15 to EAG.",
+    "category": "weapon",
+    "cp": 15,
+    "dc": "M",
+    "skill": "Firearms"
+  },
+  {
+    "slug": ".45-auto-m",
+    "name": ".45 Auto",
+    "description": "Mag, Multi-Attack. Requires Strength 25. Accepts 13 rounds.  Adds +15 to EAG.",
+    "category": "weapon",
+    "cp": 12,
+    "dc": "M",
+    "skill": "Firearms"
+  },
+  {
+    "slug": ".357-revolver-h",
+    "name": ".357 Revolver",
+    "description": "Concealable, Reliable. Accepts 6 rounds.  Adds +10 to EAG.",
+    "category": "weapon",
+    "cp": 7,
+    "dc": "H",
+    "skill": "Firearms"
+  }
+]

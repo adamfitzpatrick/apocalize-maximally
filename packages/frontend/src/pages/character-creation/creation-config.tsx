@@ -6,8 +6,7 @@ import {
   AgeCategory,
   ApocalypseOption,
   STATS,
-  type ArchetypeOption,
-  type StartingGearOption
+  type ArchetypeOption
 } from '../../api/core-game-data';
 import type { CreationConfigData } from './creation-types';
 import AgeSelector, {
@@ -17,7 +16,12 @@ import PointAssignment from '../../components/molecules/character-creation-step/
 import { SkillSelector } from '../../components/molecules/character-creation-step/skill-selector';
 import DerivedStatsReview from '../../components/molecules/character-creation-step/derived-stats-review';
 import PersonalDescription from '../../components/molecules/character-creation-step/personal-description';
-import TableSelector from '../../components/molecules/character-creation-step/table-selector';
+import {
+  isBugOutSelectionComplete,
+  isFreeChoiceSelectionComplete,
+  StartingGearMethod,
+  StartingGearSelection
+} from '../../components/molecules/character-creation-step/starting-gear-selector';
 import type Character from '../../entities/character';
 
 export type { Step, Phase, CreationConfigData } from './creation-types';
@@ -26,7 +30,6 @@ export function buildCreationConfig(
   archetypes: ArchetypeOption[],
   apocalypses: ApocalypseOption[],
   ageCategories: AgeCategory[],
-  startingGear: StartingGearOption[],
   includePsychicPowerStep = false
 ): CreationConfigData {
   return {
@@ -259,42 +262,21 @@ from their Archetype, they cannot choose the Combat skill again.'
         title: 'Starting Gear',
         steps: [
           {
-            title: 'Starting Gear',
-            fullComponent: (
-              <TableSelector
-                instructions="Select 1 option from each starting gear category."
-                className="starting-gear-table"
-                columns={[
-                  { header: 'Name', value: (gear) => gear.name },
-                  { header: 'Items', value: (gear) => gear.items.join(', ') }
-                ]}
-                getRowKey={(gear) => gear.name}
-                tables={[
-                  {
-                    caption: 'Armor',
-                    target: 'startingArmor',
-                    data: startingGear.filter((gear) => gear.category === 'armor')
-                  },
-                  {
-                    caption: 'Weapon',
-                    target: 'startingWeapon',
-                    data: startingGear.filter((gear) => gear.category === 'weapon')
-                  },
-                  {
-                    caption: 'Gear',
-                    target: 'startingGear',
-                    data: startingGear.filter((gear) => gear.category === 'gear')
-                  }
-                ]}
-              />
-            ),
+            title: 'Choose a Method',
+            fullComponent: <StartingGearMethod />,
             collapsedComponent: null,
             isComplete: (character) =>
-              Boolean(
-                character.startingArmor &&
-                  character.startingWeapon &&
-                  character.startingGear
-              )
+              character.characterRecord.startingGearMethod === 'bug-out' ||
+              character.characterRecord.startingGearMethod === 'free-choice'
+          },
+          {
+            title: 'Select Starting Gear',
+            fullComponent: <StartingGearSelection />,
+            collapsedComponent: null,
+            isComplete: (character) =>
+              character.characterRecord.startingGearMethod === 'free-choice'
+                ? isFreeChoiceSelectionComplete(character)
+                : isBugOutSelectionComplete(character)
           }
         ]
       }

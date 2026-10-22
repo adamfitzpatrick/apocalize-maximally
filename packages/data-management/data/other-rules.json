@@ -1,0 +1,137 @@
+{
+    "build": [
+        {
+            "min": 0,
+            "max": 49,
+            "dcMod": -1,
+            "foodMod": 0,
+            "contortMod": 20
+        },
+        {
+            "min": 50,
+            "max": 99,
+            "dcMod": 0,
+            "foodMod": 1,
+            "contortMod": 10
+        },
+        {
+            "min": 100,
+            "max": 149,
+            "dcMod": 1,
+            "foodMod": 2,
+            "contortMod": 0
+        },
+        {
+            "min": 150,
+            "max": 199,
+            "dcMod": 2,
+            "foodMod": 3,
+            "contortMod": -10
+        },
+        {
+            "min": 200,
+            "max": 249,
+            "dcMod": 3,
+            "foodMod": 4,
+            "contortMod": -20
+        }
+    ],
+    "damageCodes": [
+        {
+            "degree": 1,
+            "code": "L",
+            "description": "Light",
+            "dice": "1d4"
+        },
+        {
+            "degree": 2,
+            "code": "A",
+            "description": "Average",
+            "dice": "2d4"
+        },
+        {
+            "degree": 3,
+            "code": "H",
+            "description": "Heavy",
+            "dice": "1d6+3"
+        },
+        {
+            "degree": 4,
+            "code": "M",
+            "description": "Massive",
+            "dice": "2d6+3"
+        },
+        {
+            "degree": 5,
+            "code": "E",
+            "description": "Extreme",
+            "dice": "1d8+7"
+        },
+        {
+            "degree": 6,
+            "code": "D",
+            "description": "Devastating",
+            "dice": "2d8+7"
+        },
+        {
+            "degree": 7,
+            "code": "F",
+            "description": "Ferocious",
+            "dice": "1d10+11"
+        },
+        {
+            "degree": 8,
+            "code": "R",
+            "description": "Ruinous",
+            "dice": "2d10+11"
+        },
+        {
+            "degree": 9,
+            "code": "R+L",
+            "description": "Ruinous + Light",
+            "dice": "2d10+1d4+11"
+        },
+        {
+            "degree": 10,
+            "code": "R + A",
+            "description": "Ruinous + Average",
+            "dice": "2d10+2d4+11"
+        },
+        {
+            "degree": 11,
+            "code": "R + H",
+            "description": "Ruinous + Heavy",
+            "dice": "2d10+1d6+14"
+        },
+        {
+            "degree": 12,
+            "code": "R + M",
+            "description": "Ruinous + Massive",
+            "dice": "2d10+2d6+14"
+        },
+        {
+            "degree": 13,
+            "code": "R + E",
+            "description": "Ruinous + Extreme",
+            "dice": "2d10+1d8+18"
+        },
+        {
+            "degree": 14,
+            "code": "R + D",
+            "description": "Ruinous + Devastating",
+            "dice": "2d10+2d8+18"
+        },
+        {
+            "degree": 15,
+            "code": "R + F",
+            "description": "Ruinous + Ferocious",
+            "dice": "3d10+22"
+        },
+        {
+            "degree": 16,
+            "code": "R + R",
+            "description": "Ruinous + Ruinous",
+            "dice": "4d10+22"
+        }
+    ]
+}

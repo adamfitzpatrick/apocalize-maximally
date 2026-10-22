@@ -171,7 +171,12 @@ export class BackendStack extends cdk.Stack {
       integration,
       authorizedMethodOptions
     );
-    data.addResource('starting-gear').addMethod(
+    data.addResource('gear').addMethod(
+      'GET',
+      integration,
+      authorizedMethodOptions
+    );
+    data.addResource('other-rules').addMethod(
       'GET',
       integration,
       authorizedMethodOptions
@@ -199,6 +204,7 @@ export class BackendStack extends cdk.Stack {
       .addResource('{characterId}');
     character.addMethod('GET', integration, authorizedMethodOptions);
     character.addMethod('PUT', integration, authorizedMethodOptions);
+    character.addMethod('DELETE', integration, authorizedMethodOptions);
 
     new cdk.CfnOutput(this, 'ApiUrl', {
       value: api.url,

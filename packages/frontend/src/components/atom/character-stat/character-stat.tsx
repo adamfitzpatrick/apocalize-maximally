@@ -26,7 +26,7 @@ export default function CharacterStat({ label, value, showDerived }: CharacterSt
         className="character-stat__value"
       >
         <Typography.Text strong>{label}</Typography.Text>
-        <Typography.Text>{value}</Typography.Text>
+        <Typography.Text className="character-stat__value-text">{value}</Typography.Text>
       </Flex>
       {showDerived && <Flex
         className="character-stat__derived"

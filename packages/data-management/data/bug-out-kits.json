@@ -1,0 +1,360 @@
+[
+  {
+    "slug": "armor-1",
+    "name": "Option 1",
+    "items": [
+      {
+        "slug": "kevlar-jacket-armor-6",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "slug": "armor-2",
+    "name": "Option 2",
+    "items": [
+      {
+        "slug": "kevlar-vest-armor-5",
+        "quantity": 1
+      },
+      {
+        "slug": "hat-armor-1",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "slug": "armor-3",
+    "name": "Option 3",
+    "items": [
+      {
+        "slug": "motorcycle-armor-armor-4",
+        "quantity": 1
+      },
+      {
+        "slug": "gloves-armor-2",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "slug": "armor-4",
+    "name": "Option 4",
+    "items": [
+      {
+        "slug": "thick-jacket-armor-3",
+        "quantity": 1
+      },
+      {
+        "slug": "gloves-armor-2",
+        "quantity": 1
+      },
+      {
+        "slug": "hat-armor-1",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "slug": "bow-kit",
+    "name": "Bow Kit",
+    "items": [
+      {
+        "slug": "recurve-bow-a",
+        "quantity": 1
+      },
+      {
+        "slug": "bowstring-dampener",
+        "quantity": 1
+      },
+      {
+        "slug": "arrow",
+        "quantity": 5
+      }
+    ]
+  },
+  {
+    "slug": "handgun-kit",
+    "name": "Handgun Kit",
+    "items": [
+      {
+        "slug": "9mm-auto-h",
+        "quantity": 1
+      },
+      {
+        "slug": "quickdraw-holster",
+        "quantity": 1
+      },
+      {
+        "slug": "firearm-ammunition",
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "slug": "melee-kit",
+    "name": "Melee Kit",
+    "items": [
+      {
+        "quantity": 1,
+        "options": [
+          { "slug": "katana-h" },
+          { "slug": "axe-h" }
+        ]
+      },
+      {
+        "slug": "hatchet-h",
+        "quantity": 2
+      },
+      {
+        "slug": "combat-knife-a",
+        "quantity": 1
+      },
+      {
+        "quantity": 1,
+        "options": [
+          { "slug": "baseball-bat-a" },
+          { "slug": "club-a" }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "mixed-kit",
+    "name": "Mixed Kit",
+    "items": [
+      {
+        "slug": "crossbow-a",
+        "quantity": 1
+      },
+      {
+        "slug": "arrow",
+        "quantity": 5
+      },
+      {
+        "slug": "combat-knife-a",
+        "quantity": 1
+      },
+      {
+        "slug": "baseball-bat-a",
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "slug": "rifle-kit",
+    "name": "Rifle Kit",
+    "items": [
+      {
+        "slug": "lever-rifle-a",
+        "quantity": 1
+      },
+      {
+        "slug": "folding-knife-l",
+        "quantity": 1
+      },
+      {
+        "slug": "firearm-ammunition",
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "slug": "thrower-kit",
+    "name": "Thrower's Kit",
+    "items": [
+      {
+        "slug": "chain-a",
+        "quantity": 1
+      },
+      {
+        "slug": "throwing-knife-l",
+        "quantity": 4
+      },
+      {
+        "slug": "molotov-cocktail-h",
+        "quantity": 3
+      }
+    ]
+  },
+  {
+    "slug": "scavengers-kit",
+    "name": "Scavengers Kit",
+    "items": [
+      {
+        "slug": "backpack",
+        "quantity": 1
+      },
+      {
+        "slug": "combat-knife-a",
+        "quantity": 1
+      },
+      {
+        "slug": "lithium-ion-battery",
+        "quantity": 1
+      },
+      {
+        "slug": "matches-10",
+        "quantity": 1
+      },
+      {
+        "slug": "mechanically-powered-flashlight",
+        "quantity": 1
+      },
+      {
+        "slug": "medical-kit",
+        "quantity": 1
+      },
+      {
+        "slug": "plastic-canteen-1-liter",
+        "quantity": 1
+      },
+      {
+        "slug": "pouch",
+        "quantity": 1
+      },
+      {
+        "slug": "rain-poncho",
+        "quantity": 1
+      },
+      {
+        "slug": "rope-30m",
+        "quantity": 1
+      },
+      {
+        "slug": "food-unit",
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "slug": "explorers-kit",
+    "name": "Explorers Kit",
+    "items": [
+      {
+        "slug": "camo-tarp",
+        "quantity": 1
+      },
+      {
+        "slug": "glow-stick",
+        "quantity": 2
+      },
+      {
+        "slug": "military-pack",
+        "quantity": 1
+      },
+      {
+        "slug": "running-shoes",
+        "quantity": 1
+      },
+      {
+        "slug": "tent-pup",
+        "quantity": 1
+      },
+      {
+        "slug": "food-unit",
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "slug": "tinkerers-kit",
+    "name": "Tinkerers Kit",
+    "items": [
+      {
+        "slug": "drone-command-unit",
+        "quantity": 1
+      },
+      {
+        "slug": "military-pack",
+        "quantity": 1
+      },
+      {
+        "slug": "repair-kit",
+        "quantity": 1
+      },
+      {
+        "slug": "toolbelt",
+        "quantity": 1
+      },
+      {
+        "slug": "tools",
+        "quantity": 1
+      },
+      {
+        "slug": "wire-10m",
+        "quantity": 1
+      },
+      {
+        "slug": "food-unit",
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "slug": "hoarders-kit",
+    "name": "Hoarders Kit",
+    "items": [
+      {
+        "slug": "backpack",
+        "quantity": 1
+      },
+      {
+        "slug": "compass",
+        "quantity": 1
+      },
+      {
+        "slug": "crowbar",
+        "quantity": 1
+      },
+      {
+        "slug": "isopropyl-alcohol-500ml",
+        "quantity": 1
+      },
+      {
+        "slug": "large-net",
+        "quantity": 1
+      },
+      {
+        "slug": "military-survival-manual",
+        "quantity": 1
+      },
+      {
+        "slug": "old-road-atlas",
+        "quantity": 1
+      },
+      {
+        "slug": "pencil-and-paper",
+        "quantity": 1
+      },
+      {
+        "slug": "rain-poncho",
+        "quantity": 1
+      },
+      {
+        "slug": "rope-30m",
+        "quantity": 1
+      },
+      {
+        "slug": "sleeping-bag",
+        "quantity": 1
+      },
+      {
+        "slug": "toothbrush",
+        "quantity": 1
+      },
+      {
+        "slug": "water-bottle",
+        "quantity": 2
+      },
+      {
+        "slug": "wool-socks",
+        "quantity": 1
+      },
+      {
+        "slug": "food-unit",
+        "quantity": 4
+      }
+    ]
+  }
+]

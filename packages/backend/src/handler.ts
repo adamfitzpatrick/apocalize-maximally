@@ -18,7 +18,9 @@ import skills from '../../data-management/data/skills.json';
 import specialAbilities from '../../data-management/data/special-abilities.json';
 import luckyMutations from '../../data-management/data/lucky-mutation.json';
 import negativeTraits from '../../data-management/data/negative-traits.json';
-import startingGear from '../../data-management/data/starting-gear.json';
+import gear from '../../data-management/data/gear.json';
+import bugOutKits from '../../data-management/data/bug-out-kits.json';
+import otherRules from '../../data-management/data/other-rules.json';
 const client = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const tableName = process.env.TABLE_NAME ?? '';
 const frontendOriginsValue = process.env.FRONTEND_ORIGINS ?? '';
@@ -206,7 +208,9 @@ function requireStoredSkillData(value: unknown): unknown[] {
       return (
         typeof record.name !== 'string' ||
         typeof record.baseStat !== 'string' ||
-        typeof record.combat !== 'boolean'
+        typeof record.combat !== 'boolean' ||
+        (record.apocalypseSkill !== undefined &&
+          typeof record.apocalypseSkill !== 'boolean')
       );
     })
   ) {
@@ -215,8 +219,62 @@ function requireStoredSkillData(value: unknown): unknown[] {
   return value;
 }
 
+function isStoredBugOutKitEntry(value: unknown): boolean {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const entry = value as Record<string, unknown>;
+  if (typeof entry.quantity !== 'number') {
+    return false;
+  }
+  if (Array.isArray(entry.options)) {
+    return entry.options.every(
+      (option) =>
+        typeof option === 'object' &&
+        option !== null &&
+        typeof (option as { slug?: unknown }).slug === 'string'
+    );
+  }
+  return typeof entry.slug === 'string';
+}
+
+function requireStoredBugOutKits(value: unknown): unknown[] {
+  if (
+    !Array.isArray(value) ||
+    value.some((kit) => {
+      if (typeof kit !== 'object' || kit === null || Array.isArray(kit)) {
+        return true;
+      }
+      const record = kit as Record<string, unknown>;
+      return (
+        typeof record.slug !== 'string' ||
+        typeof record.name !== 'string' ||
+        !Array.isArray(record.items) ||
+        !record.items.every(isStoredBugOutKitEntry)
+      );
+    })
+  ) {
+    throw new Error('Stored bug-out kit data is invalid.');
+  }
+  return value;
+}
+
+function requireStoredGearCatalog(value: unknown): {
+  gear: unknown[];
+  bugOutKits: unknown[];
+} {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    throw new Error('Stored gear data is invalid.');
+  }
+  const record = value as Record<string, unknown>;
+  return {
+    gear: requireStoredStartingGearData(record.gear),
+    bugOutKits: requireStoredBugOutKits(record.bugOutKits)
+  };
+}
+
 function requireStoredStartingGearData(value: unknown): unknown[] {
-  const categories = new Set(['armor', 'weapon', 'gear']);
+  const categories = new Set(['armor', 'weapon', 'gear', 'ammo']);
   if (
     !Array.isArray(value) ||
     value.some((gear) => {
@@ -225,15 +283,66 @@ function requireStoredStartingGearData(value: unknown): unknown[] {
       }
       const record = gear as Record<string, unknown>;
       return (
+        typeof record.slug !== 'string' ||
         typeof record.name !== 'string' ||
         typeof record.category !== 'string' ||
         !categories.has(record.category) ||
-        !Array.isArray(record.items) ||
-        record.items.some((item) => typeof item !== 'string')
+        typeof record.cp !== 'number' ||
+        (record.description !== undefined &&
+          typeof record.description !== 'string') ||
+        (record.dc !== undefined &&
+          (record.category !== 'weapon' || typeof record.dc !== 'string')) ||
+        (record.skill !== undefined &&
+          (record.category !== 'weapon' || typeof record.skill !== 'string')) ||
+        'bugOutKit' in record ||
+        'items' in record
       );
     })
   ) {
     throw new Error('Stored starting gear data is invalid.');
+  }
+  return value;
+}
+
+function isStoredDamageCode(value: unknown): boolean {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const code = value as Record<string, unknown>;
+  return (
+    typeof code.degree === 'number' &&
+    typeof code.code === 'string' &&
+    typeof code.description === 'string' &&
+    typeof code.dice === 'string'
+  );
+}
+
+function requireStoredOtherRulesData(value: unknown): unknown {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    throw new Error('Stored other rules data is invalid.');
+  }
+  const record = value as Record<string, unknown>;
+  const build = record.build;
+  const damageCodes = record.damageCodes;
+  if (
+    !Array.isArray(build) ||
+    build.some((band) => {
+      if (typeof band !== 'object' || band === null || Array.isArray(band)) {
+        return true;
+      }
+      const entry = band as Record<string, unknown>;
+      return (
+        typeof entry.min !== 'number' ||
+        typeof entry.max !== 'number' ||
+        typeof entry.dcMod !== 'number' ||
+        typeof entry.foodMod !== 'number' ||
+        typeof entry.contortMod !== 'number'
+      );
+    }) ||
+    !Array.isArray(damageCodes) ||
+    !damageCodes.every(isStoredDamageCode)
+  ) {
+    throw new Error('Stored other rules data is invalid.');
   }
   return value;
 }
@@ -388,10 +497,11 @@ async function getCharacterCreationData(
     | 'SPECIAL_ABILITIES'
     | 'LUCKY_MUTATION'
     | 'NEGATIVE_TRAITS'
-    | 'STARTING_GEAR',
-  defaultData: unknown[],
-  validate: (value: unknown) => unknown[]
-): Promise<unknown[]> {
+    | 'GEAR'
+    | 'OTHER_RULES',
+  defaultData: unknown,
+  validate: (value: unknown) => unknown
+): Promise<unknown> {
   const key = {
     PK: 'DATA#CHARACTER_CREATION',
     SK: sortKey
@@ -518,13 +628,23 @@ async function handleRequest(
           ),
           requestOrigin
         );
-      case '/data/starting-gear':
+      case '/data/gear':
         return response(
           200,
           await getCharacterCreationData(
-            'STARTING_GEAR',
-            startingGear,
-            requireStoredStartingGearData
+            'GEAR',
+            { gear, bugOutKits },
+            requireStoredGearCatalog
+          ),
+          requestOrigin
+        );
+      case '/data/other-rules':
+        return response(
+          200,
+          await getCharacterCreationData(
+            'OTHER_RULES',
+            otherRules,
+            requireStoredOtherRulesData
           ),
           requestOrigin
         );
@@ -612,7 +732,7 @@ async function handleRequest(
 
     if (
       resource === '/user/{userId}/character/{characterId}' &&
-      (method === 'GET' || method === 'PUT')
+      (method === 'GET' || method === 'PUT' || method === 'DELETE')
     ) {
       const characterId = event.pathParameters?.characterId;
       if (!characterId) {
@@ -649,6 +769,24 @@ async function handleRequest(
           },
           requestOrigin
         );
+      }
+
+      if (method === 'DELETE') {
+        const result = await client.send(
+          new DeleteCommand({
+            TableName: tableName,
+            Key: key,
+            ReturnValues: 'ALL_OLD'
+          })
+        );
+        if (!result.Attributes) {
+          return response(
+            404,
+            { message: 'Character not found.' },
+            requestOrigin
+          );
+        }
+        return response(204, undefined, requestOrigin);
       }
 
       const data = parseJsonObject(event.body);

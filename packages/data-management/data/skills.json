@@ -29,7 +29,8 @@
 },{
     "name": "Automotives",
     "baseStat": "int",
-    "combat": false
+    "combat": false,
+    "apocalypseSkill": true
 },{
     "name": "Mechanics",
     "baseStat": "int",
@@ -41,19 +42,23 @@
 },{
     "name": "Monster Anatomy",
     "baseStat": "int",
-    "combat": false
+    "combat": false,
+    "apocalypseSkill": true
 },{
     "name": "Occult",
     "baseStat": "int",
-    "combat": false
+    "combat": false,
+    "apocalypseSkill": true
 },{
     "name": "Reanimation",
     "baseStat": "int",
-    "combat": false
+    "combat": false,
+    "apocalypseSkill": true
 },{
     "name": "Robotics",
     "baseStat": "int",
-    "combat": false
+    "combat": false,
+    "apocalypseSkill": true
 },{
     "name": "Science",
     "baseStat": "int",
@@ -61,7 +66,8 @@
 },{
     "name": "Structural Integrity",
     "baseStat": "int",
-    "combat": false
+    "combat": false,
+    "apocalypseSkill": true
 },{
     "name": "Tech Use",
     "baseStat": "int",
@@ -69,11 +75,13 @@
 },{
     "name": "Theology",
     "baseStat": "int",
-    "combat": false
+    "combat": false,
+    "apocalypseSkill": true
 },{
     "name": "Xenology",
     "baseStat": "int",
-    "combat": false
+    "combat": false,
+    "apocalypseSkill": true
 },{
     "name": "Crafting",
     "baseStat": "ins",
@@ -85,7 +93,8 @@
 },{
     "name": "Fallout",
     "baseStat": "ins",
-    "combat": false
+    "combat": false,
+    "apocalypseSkill": true
 },{
     "name": "Navigation",
     "baseStat": "ins",

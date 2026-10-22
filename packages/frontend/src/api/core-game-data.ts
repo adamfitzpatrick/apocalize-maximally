@@ -42,6 +42,7 @@ export interface SkillOption {
   name: string;
   baseStat: string;
   combat: boolean;
+  apocalypseSkill?: boolean;
 }
 
 export interface SpecialAbilityOption {
@@ -66,12 +67,61 @@ export interface NegativeTraitOption {
   description: string;
 }
 
-export type StartingGearCategory = 'armor' | 'weapon' | 'gear';
+export type StartingGearCategory = 'armor' | 'weapon' | 'gear' | 'ammo';
 
 export interface StartingGearOption {
+  slug: string;
   name: string;
   category: StartingGearCategory;
-  items: string[];
+  cp: number;
+  description?: string;
+  /** Difficulty class letter. Present only on weapons. */
+  dc?: string;
+  /** Skill used to attack with this weapon. */
+  skill?: string;
+}
+
+export interface BugOutKitChoice {
+  quantity: number;
+  options: { slug: string }[];
+}
+
+export interface BugOutKitItem {
+  slug: string;
+  quantity: number;
+}
+
+export type BugOutKitEntry = BugOutKitItem | BugOutKitChoice;
+
+export interface BugOutKit {
+  slug: string;
+  name: string;
+  items: BugOutKitEntry[];
+}
+
+export interface GearCatalog {
+  gear: StartingGearOption[];
+  bugOutKits: BugOutKit[];
+}
+
+export interface BuildBand {
+  min: number;
+  max: number;
+  dcMod: number;
+  foodMod: number;
+  contortMod: number;
+}
+
+export interface DamageCode {
+  degree: number;
+  code: string;
+  description: string;
+  dice: string;
+}
+
+export interface OtherRules {
+  build: BuildBand[];
+  damageCodes: DamageCode[];
 }
 
 export interface CoreGameData {
@@ -83,6 +133,8 @@ export interface CoreGameData {
   luckyMutations: LuckyMutationOption[] | null;
   negativeTraits: NegativeTraitOption[] | null;
   startingGear: StartingGearOption[] | null;
+  bugOutKits: BugOutKit[] | null;
+  otherRules: OtherRules | null;
 }
 
 export const STATS = [
@@ -204,7 +256,9 @@ function isSkillOption(value: unknown): value is SkillOption {
   return (
     typeof skill.name === 'string' &&
     typeof skill.baseStat === 'string' &&
-    typeof skill.combat === 'boolean'
+    typeof skill.combat === 'boolean' &&
+    (skill.apocalypseSkill === undefined ||
+      typeof skill.apocalypseSkill === 'boolean')
   );
 }
 
@@ -244,18 +298,111 @@ function isNegativeTraitOption(
   );
 }
 
+function isBuildBand(value: unknown): value is BuildBand {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const band = value as Record<string, unknown>;
+  return (
+    typeof band.min === 'number' &&
+    typeof band.max === 'number' &&
+    typeof band.dcMod === 'number' &&
+    typeof band.foodMod === 'number' &&
+    typeof band.contortMod === 'number'
+  );
+}
+
+function isDamageCode(value: unknown): value is DamageCode {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const code = value as Record<string, unknown>;
+  return (
+    typeof code.degree === 'number' &&
+    typeof code.code === 'string' &&
+    typeof code.description === 'string' &&
+    typeof code.dice === 'string'
+  );
+}
+
+function isOtherRules(value: unknown): value is OtherRules {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const rules = value as Record<string, unknown>;
+  return (
+    Array.isArray(rules.build) &&
+    rules.build.every(isBuildBand) &&
+    Array.isArray(rules.damageCodes) &&
+    rules.damageCodes.every(isDamageCode)
+  );
+}
+
+function isBugOutKitEntry(value: unknown): value is BugOutKitEntry {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const entry = value as Record<string, unknown>;
+  if (typeof entry.quantity !== 'number') {
+    return false;
+  }
+  if (Array.isArray(entry.options)) {
+    return entry.options.every(
+      (option) =>
+        typeof option === 'object' &&
+        option !== null &&
+        typeof (option as { slug?: unknown }).slug === 'string'
+    );
+  }
+  return typeof entry.slug === 'string';
+}
+
+function isBugOutKit(value: unknown): value is BugOutKit {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const kit = value as Record<string, unknown>;
+  return (
+    typeof kit.slug === 'string' &&
+    typeof kit.name === 'string' &&
+    Array.isArray(kit.items) &&
+    kit.items.every(isBugOutKitEntry)
+  );
+}
+
+function isGearCatalog(value: unknown): value is GearCatalog {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const catalog = value as Record<string, unknown>;
+  return (
+    Array.isArray(catalog.gear) &&
+    catalog.gear.every(isStartingGearOption) &&
+    Array.isArray(catalog.bugOutKits) &&
+    catalog.bugOutKits.every(isBugOutKit)
+  );
+}
+
 function isStartingGearOption(value: unknown): value is StartingGearOption {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     return false;
   }
   const gear = value as Record<string, unknown>;
   return (
+    typeof gear.slug === 'string' &&
     typeof gear.name === 'string' &&
     (gear.category === 'armor' ||
       gear.category === 'weapon' ||
-      gear.category === 'gear') &&
-    Array.isArray(gear.items) &&
-    gear.items.every((item) => typeof item === 'string')
+      gear.category === 'gear' ||
+      gear.category === 'ammo') &&
+    typeof gear.cp === 'number' &&
+    (gear.description === undefined || typeof gear.description === 'string') &&
+    (gear.dc === undefined ||
+      (gear.category === 'weapon' && typeof gear.dc === 'string')) &&
+    (gear.skill === undefined ||
+      (gear.category === 'weapon' && typeof gear.skill === 'string')) &&
+    !('bugOutKit' in gear) &&
+    !('items' in gear)
   );
 }
 
@@ -293,7 +440,8 @@ export async function getCharacterCreationData(): Promise<CoreGameData> {
     specialAbilities,
     luckyMutations,
     negativeTraits,
-    startingGear
+    gearCatalog,
+    otherRules
   ] = await Promise.all([
     getSelectionOptions('/data/archetypes', isArchetypeOption),
     getSelectionOptions('/data/apocalypses', isApocalypseOption),
@@ -302,10 +450,17 @@ export async function getCharacterCreationData(): Promise<CoreGameData> {
     getSelectionOptions('/data/special-abilities', isSpecialAbilityOption),
     getSelectionOptions('/data/lucky-mutation', isLuckyMutationOption),
     getSelectionOptions('/data/negative-traits', isNegativeTraitOption),
-    getSelectionOptions('/data/starting-gear', isStartingGearOption)
+    requestCreationData('/data/gear'),
+    requestCreationData('/data/other-rules')
   ]);
   if (!Array.isArray(ages) || !ages.every(isAgeCategory)) {
     throw new Error('The ages response is invalid.');
+  }
+  if (!isGearCatalog(gearCatalog)) {
+    throw new Error('The gear response is invalid.');
+  }
+  if (!isOtherRules(otherRules)) {
+    throw new Error('The other-rules response is invalid.');
   }
   return {
     archetypes,
@@ -315,6 +470,8 @@ export async function getCharacterCreationData(): Promise<CoreGameData> {
     specialAbilities,
     luckyMutations,
     negativeTraits,
-    startingGear
+    startingGear: gearCatalog.gear,
+    bugOutKits: gearCatalog.bugOutKits,
+    otherRules
   };
 }

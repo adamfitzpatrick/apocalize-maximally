@@ -1,0 +1,185 @@
+.other-data {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.other-data--segment {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.other-data__switch {
+  margin-bottom: 12px;
+}
+
+.other-data__inventory {
+  flex: 1;
+  min-width: 0;
+}
+
+.other-data__inventory .data-table {
+  table-layout: fixed;
+  font-size: 0.75rem;
+}
+
+.other-data__inventory .data-table th:first-child,
+.other-data__inventory .data-table td:first-child,
+.other-data__inventory .data-table th:nth-child(2),
+.other-data__inventory .data-table td:nth-child(2) {
+  text-align: left;
+}
+
+.other-data__inventory .data-table th:first-child,
+.other-data__inventory .data-table td:first-child {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.other-data__inventory .data-table td:nth-child(2) {
+  overflow: hidden;
+  max-width: 0;
+}
+
+.other-data__characteristic {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.other-data__inventory .data-table th:last-child,
+.other-data__inventory .data-table td:last-child {
+  width: 3rem;
+}
+
+.other-data__abilities {
+  flex: 1;
+  min-width: 0;
+}
+
+.other-data__abilities .data-table {
+  table-layout: fixed;
+  font-size: 0.75rem;
+}
+
+.other-data__abilities .data-table th,
+.other-data__abilities .data-table td {
+  text-align: left;
+}
+
+.other-data__abilities .data-table th:nth-child(-n + 2),
+.other-data__abilities .data-table td:nth-child(-n + 2) {
+  width: 20%;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.other-data__status {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.character-page--phone .other-data__status {
+  flex-direction: column;
+}
+
+.other-data__infection {
+  order: -1;
+}
+
+.character-page--phone .other-data__infection {
+  order: 0;
+}
+
+.other-data__hunger {
+  margin-top: 12px;
+}
+
+.other-data__tracked {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.other-data__stat-columns {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.other-data__stat-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.other-data__encumbrance {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 16rem;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+.other-data__encumbrance--over {
+  border-color: #c62828;
+  background: color-mix(in srgb, #c62828 18%, var(--color-background));
+}
+
+.other-data__stat,
+.other-data__hunger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  font-size: 0.75rem;
+}
+
+.other-data__stat .ant-input-number,
+.other-data__hunger .ant-input-number {
+  width: 4rem;
+}
+
+.other-data__status .data-table {
+  width: auto;
+  font-size: 0.75rem;
+}
+
+.other-data__status .data-table td:first-child {
+  text-align: left;
+  white-space: normal;
+}
+
+.other-data__status .data-table td:last-child,
+.other-data__infection .data-table th:last-child {
+  width: 2.5rem;
+  text-align: center;
+}
+
+.other-data__infection .data-table th,
+.other-data__infection .data-table td {
+  text-align: left;
+}
+
+.other-data__infection .data-table th:first-child,
+.other-data__infection .data-table td:first-child {
+  width: 3.25rem;
+}
+
+.other-data__infection .data-table th:last-child,
+.other-data__infection .data-table td:last-child {
+  text-align: center;
+}
+
+.other-data__abilities .data-table td:last-child {
+  overflow: hidden;
+  max-width: 0;
+}

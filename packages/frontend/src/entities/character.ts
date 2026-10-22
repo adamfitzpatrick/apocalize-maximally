@@ -31,6 +31,15 @@ export type SkillProficiencyMarker = 'P' | 'S' | 'T' | 'M';
 
 const SKILL_PROFICIENCY_MARKERS: SkillProficiencyMarker[] = ['P', 'S', 'T', 'M'];
 
+/** Added to the skill's base stat. Untrained skills use the separate penalty. */
+const SKILL_THRESHOLD_MODIFIER: Record<SkillProficiencyMarker, number> = {
+  P: 0,
+  S: 5,
+  T: 10,
+  M: 15
+};
+const UNTRAINED_SKILL_THRESHOLD_MODIFIER = -5;
+
 export function proficiencyLevelToMarker(
   level: number
 ): SkillProficiencyMarker | null {
@@ -71,6 +80,13 @@ export function buildSkillProficiencies(
   return counts;
 }
 
+function isCharacterStat(
+  key: string,
+  stats: CharacterStats
+): key is keyof CharacterStats {
+  return Object.prototype.hasOwnProperty.call(stats, key);
+}
+
 const INITIAL_BASE_STATS: CharacterStats = {
   str: 25,
   for: 25,
@@ -105,7 +121,7 @@ export default class Character {
       throw new Error('Cannot instantiate Character: missing core game data');
     }
     this.coreGameData = coreGameData;
-    this.internalCharacterRecord = characterRecord
+    this.internalCharacterRecord = characterRecord;
     this.internalPrimaryArchetype = this.getArchetype(this.internalCharacterRecord.primaryArchetype);
     this.internalSecondaryArchetype = this.getArchetype(this.internalCharacterRecord.secondaryArchetype);
     this.internalPersonalApocalypse = coreGameData.apocalypses.find(apocalypse => {
@@ -148,6 +164,24 @@ export default class Character {
 
   getSkillProficiencyMarker(skillName: string): SkillProficiencyMarker | null {
     return proficiencyLevelToMarker(this.getSkillProficiencyLevel(skillName));
+  }
+
+  /**
+   * Proficient (P) skills use their base stat. Untrained skills are 5 lower.
+   * S, T, and M add 5, 10, and 15.
+   */
+  getSkillThreshold(skillName: string): number | null {
+    const skill = this.coreGameData.skills?.find((entry) => entry.name === skillName);
+    const stats = this.allEffectiveStats;
+    if (!skill || !stats || !isCharacterStat(skill.baseStat, stats)) {
+      return null;
+    }
+    const marker = this.getSkillProficiencyMarker(skillName);
+    const modifier =
+      marker === null
+        ? UNTRAINED_SKILL_THRESHOLD_MODIFIER
+        : SKILL_THRESHOLD_MODIFIER[marker];
+    return stats[skill.baseStat] + modifier;
   }
 
   get primaryArchetypeSkills(): string[] {
@@ -295,8 +329,8 @@ export default class Character {
     );
   }
 
-  get startingArmor() {
-    return this.characterRecord.startingArmor ?? null;
+  get gear() {
+    return this.characterRecord.gear ?? [];
   }
 
   get startingWeapon() {
@@ -307,8 +341,174 @@ export default class Character {
     return this.characterRecord.startingGear ?? null;
   }
 
+  get gearCatalog() {
+    return this.coreGameData.startingGear ?? [];
+  }
+
+  get bugOutKits() {
+    return this.coreGameData.bugOutKits ?? [];
+  }
+
+  get carriedGear(): {
+    name: string;
+    cp: number;
+    category: string;
+    equipped: boolean;
+    skill?: string;
+    dc?: string;
+  }[] {
+    const catalog = new Map(
+      this.gearCatalog.map((item) => [
+        item.slug,
+        {
+          name: item.name,
+          cp: item.cp,
+          category: item.category,
+          skill: item.skill,
+          dc: item.dc
+        }
+      ])
+    );
+    const items: {
+      name: string;
+      cp: number;
+      category: string;
+      equipped: boolean;
+      skill?: string;
+      dc?: string;
+    }[] = this.gear.flatMap((owned) => {
+      const item = catalog.get(owned.slug);
+      if (!item) {
+        return [];
+      }
+      return [{
+        name: item.name,
+        cp: owned.cp,
+        category: item.category,
+        equipped: owned.equipped,
+        skill: item.skill,
+        dc: item.dc
+      }];
+    });
+    for (const slug of this.characterRecord.freeChoiceGear ?? []) {
+      const item = catalog.get(slug);
+      if (item) {
+        items.push({ ...item, equipped: true });
+      }
+    }
+    for (const row of this.characterRecord.customGear ?? []) {
+      const [name, description, category, cpText] = row.map((cell) => cell.trim());
+      if (name && description && category && /^\d+$/.test(cpText)) {
+        items.push({ name, cp: Number(cpText), category, equipped: true });
+      }
+    }
+    for (const item of [this.startingWeapon, this.startingGear]) {
+      if (item) {
+        items.push({
+          name: item.name,
+          cp: item.cp,
+          category: item.category,
+          equipped: true,
+          skill: item.skill,
+          dc: item.dc
+        });
+      }
+    }
+    return items;
+  }
+
+  get gearCp(): number {
+    return this.carriedGear.reduce((total, item) => total + item.cp, 0);
+  }
+
+  get armorMax(): number {
+    return this.carriedGear
+      .filter((item) => item.category === 'armor' && item.equipped)
+      .reduce((total, piece) => total + piece.cp / 3, 0);
+  }
+
+  get currentArmor(): number {
+    return typeof this.characterRecord.currentArmor === 'number'
+      ? this.characterRecord.currentArmor
+      : this.armorMax;
+  }
+
+  get currentHp(): number {
+    return typeof this.characterRecord.currentHp === 'number'
+      ? this.characterRecord.currentHp
+      : this.hp;
+  }
+
   get negativeTrait(): string | null {
     return this.characterRecord.negativeTrait || null;
+  }
+
+  get specialAbilityRows(): { source: string; name: string; effect: string }[] {
+    const rows: { source: string; name: string; effect: string }[] = [];
+    const abilities = this.coreGameData.specialAbilities ?? [];
+    const named = (name: string, source?: string | null) =>
+      abilities.find(
+        (ability) =>
+          ability.name.trim() === name.trim() &&
+          (source === undefined || source === null || ability.source === source)
+      );
+
+    const archetypeAbility = this.primaryArchetypeSpecialAbility;
+    if (archetypeAbility) {
+      const match = named(archetypeAbility, this.primaryArchetype?.name);
+      rows.push({
+        source: match?.source ?? 'Archetype',
+        name: archetypeAbility,
+        effect: match?.description ?? ''
+      });
+    }
+
+    const apocalypseAbility = this.personalApocalypseSpecialAbility;
+    if (apocalypseAbility) {
+      const match = named(apocalypseAbility, this.personalApocalypse?.name);
+      rows.push({
+        source: match?.source ?? 'Apocalypse',
+        name: apocalypseAbility,
+        effect: match?.description ?? ''
+      });
+    }
+
+    const mutationName = this.luckyMutation;
+    if (mutationName) {
+      const mutation = this.coreGameData.luckyMutations?.find(
+        (entry) => entry.name.trim() === mutationName.trim()
+      );
+      rows.push({
+        source: 'Lucky mutation',
+        name: mutationName,
+        effect: mutation?.description ?? ''
+      });
+      const powerName = this.psychicPower;
+      if (powerName) {
+        const power = mutation?.powers?.find(
+          (entry) => entry.name.trim() === powerName.trim()
+        );
+        rows.push({
+          source: 'Psychic power',
+          name: powerName,
+          effect: power?.description ?? ''
+        });
+      }
+    }
+
+    const traitName = this.negativeTrait;
+    if (traitName) {
+      const trait = this.coreGameData.negativeTraits?.find(
+        (entry) => entry.name.trim() === traitName.trim()
+      );
+      rows.push({
+        source: 'Negative trait',
+        name: traitName,
+        effect: trait?.description ?? ''
+      });
+    }
+
+    return rows;
   }
 
   get canSelectMoreNegativeTraits(): boolean {
@@ -445,6 +645,25 @@ export default class Character {
     return this.strength + this.fortitude;
   }
 
+  get dcMod(): number | null {
+    const band = this.coreGameData.otherRules?.build.find(
+      (entry) => this.build >= entry.min && this.build <= entry.max
+    );
+    return band?.dcMod ?? null;
+  }
+
+  /** Unarmed attacks start at Light (degree 1) and shift by the build DC modifier. */
+  get unarmedDamageCode(): string | null {
+    if (this.dcMod === null) {
+      return null;
+    }
+    const degree = 1 + this.dcMod;
+    return (
+      this.coreGameData.otherRules?.damageCodes.find((entry) => entry.degree === degree)
+        ?.code ?? null
+    );
+  }
+
   get hp(): number {
     return Math.floor(this.build / 5.);
   }
@@ -471,6 +690,17 @@ export default class Character {
 
   get dodge(): number {
     return Math.floor((this.agility + this.instinct) / 2.);
+  }
+
+  /** Highest threshold among Blades, Brawl, and Clubs. */
+  get parry(): number | null {
+    const thresholds = ['Blades', 'Brawl', 'Clubs']
+      .map((skill) => this.getSkillThreshold(skill))
+      .filter((threshold): threshold is number => threshold !== null);
+    if (thresholds.length === 0) {
+      return null;
+    }
+    return Math.max(...thresholds);
   }
 
   get luckUsePerGame(): number {

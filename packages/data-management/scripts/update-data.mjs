@@ -60,7 +60,8 @@ const datasets = [
   ['SPECIAL_ABILITIES', 'special-abilities.json'],
   ['LUCKY_MUTATION', 'lucky-mutation.json'],
   ['NEGATIVE_TRAITS', 'negative-traits.json'],
-  ['STARTING_GEAR', 'starting-gear.json']
+  ['GEAR', ['gear.json', 'bug-out-kits.json']],
+  ['OTHER_RULES', 'other-rules.json']
 ];
 const client = DynamoDBDocumentClient.from(
   new DynamoDBClient({
@@ -71,9 +72,18 @@ const client = DynamoDBDocumentClient.from(
 
 try {
   for (const [sortKey, filename] of datasets) {
-    const data = JSON.parse(
-      await readFile(path.join(packageDirectory, 'data', filename), 'utf8')
-    );
+    const data = Array.isArray(filename)
+      ? {
+          gear: JSON.parse(
+            await readFile(path.join(packageDirectory, 'data', filename[0]), 'utf8')
+          ),
+          bugOutKits: JSON.parse(
+            await readFile(path.join(packageDirectory, 'data', filename[1]), 'utf8')
+          )
+        }
+      : JSON.parse(
+          await readFile(path.join(packageDirectory, 'data', filename), 'utf8')
+        );
     await client.send(
       new PutCommand({
         TableName: tableName,

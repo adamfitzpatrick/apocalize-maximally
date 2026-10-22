@@ -13,6 +13,8 @@ import {
   LuckyMutationOption,
   NegativeTraitOption,
   SkillOption,
+  BugOutKit,
+  OtherRules,
   StartingGearOption,
   SpecialAbilityOption,
   type CoreGameData
@@ -34,6 +36,8 @@ export function CoreGameDataProvider({ children }: { children: ReactNode }) {
   const [luckyMutations, setLuckyMutations] = useState<LuckyMutationOption[] | null>(null);
   const [negativeTraits, setNegativeTraits] = useState<NegativeTraitOption[] | null>(null);
   const [startingGear, setStartingGear] = useState<StartingGearOption[] | null>(null);
+  const [bugOutKits, setBugOutKits] = useState<BugOutKit[] | null>(null);
+  const [otherRules, setOtherRules] = useState<OtherRules | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -53,6 +57,8 @@ export function CoreGameDataProvider({ children }: { children: ReactNode }) {
           setLuckyMutations(coreGameData.luckyMutations);
           setNegativeTraits(coreGameData.negativeTraits);
           setStartingGear(coreGameData.startingGear);
+          setBugOutKits(coreGameData.bugOutKits);
+          setOtherRules(coreGameData.otherRules);
         }
       } catch (reason) {
         if (!cancelled) {
@@ -74,7 +80,7 @@ export function CoreGameDataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <CoreGameDataContext.Provider value={{ archetypes, apocalypses, ages, skills, specialAbilities, luckyMutations, negativeTraits, startingGear, loading, error }}>
+    <CoreGameDataContext.Provider value={{ archetypes, apocalypses, ages, skills, specialAbilities, luckyMutations, negativeTraits, startingGear, bugOutKits, otherRules, loading, error }}>
       {children}
     </CoreGameDataContext.Provider>
   );

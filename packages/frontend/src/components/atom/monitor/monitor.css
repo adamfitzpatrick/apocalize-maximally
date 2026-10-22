@@ -1,0 +1,38 @@
+.monitor {
+  width: fit-content;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.monitor__max,
+.monitor__current {
+  padding: 4px 8px;
+}
+
+.monitor__current {
+  border-top: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+}
+
+.monitor__label {
+  color: color-mix(in srgb, var(--color-foreground) 40%, transparent);
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.monitor__value {
+  font-variant-numeric: tabular-nums;
+}
+
+.monitor__input.ant-input-number {
+  width: 2.25rem;
+}
+
+.monitor__input .ant-input-number-input {
+  padding-inline: 2px;
+  text-align: center;
+}
+
+.monitor__input .ant-input-number-handler-wrap {
+  display: none;
+}

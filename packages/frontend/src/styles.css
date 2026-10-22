@@ -63,6 +63,11 @@ body {
   width: min(1120px, calc(100% - 40px));
 }
 
+.auth-page {
+  width: min(720px, 100%);
+  margin: 0 auto;
+}
+
 .auth-state {
   display: flex;
   min-height: 50vh;
@@ -116,6 +121,10 @@ body {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
+}
+
+.characters-toolbar {
+  margin-bottom: 16px;
 }
 
 .characters-alert {

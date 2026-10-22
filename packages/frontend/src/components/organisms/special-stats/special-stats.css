@@ -1,0 +1,33 @@
+.special-stats__stats {
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.special-stats__derived {
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.special-stats__derived--paired {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 12px;
+  justify-content: start;
+}
+
+.special-stats .special-stats__derived > .character-stat {
+  margin-bottom: 0;
+}
+
+.special-stats__collapse {
+  width: 100%;
+}
+
+.special-stats__collapse .ant-collapse-item-disabled > .ant-collapse-header {
+  color: inherit;
+  cursor: default;
+}

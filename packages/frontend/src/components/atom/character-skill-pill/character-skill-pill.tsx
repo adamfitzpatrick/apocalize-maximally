@@ -1,8 +1,9 @@
-import { Button, Tooltip, Typography } from 'antd';
+import { Button, Flex, Tooltip, Typography } from 'antd';
 import classNames from 'classnames';
 import type { SkillProficiencyMarker } from '../../../entities/character';
 
 import './character-skill-pill.css';
+import PIcon from '../proficiency-icons/p-icon';
 
 export interface CharacterSkillPillProps {
   name: string;
@@ -10,6 +11,7 @@ export interface CharacterSkillPillProps {
   proficiency?: SkillProficiencyMarker | null;
   selected?: boolean;
   disabled?: boolean;
+  displayOnly?: boolean;
   onClick?: () => void;
 }
 
@@ -19,12 +21,15 @@ export default function CharacterSkillPill({
   proficiency = null,
   selected = false,
   disabled = false,
+  displayOnly = false,
   onClick
 }: CharacterSkillPillProps) {
+  if (displayOnly) { disabled = true; }
   const pill = (
     <Button
       aria-pressed={selected}
       className={classNames('character-skill-pill', {
+        'character-skill-pill--display-only': displayOnly,
         'character-skill-pill--selected': selected
       })}
       disabled={disabled}
@@ -32,23 +37,12 @@ export default function CharacterSkillPill({
       onClick={onClick}
       size="small"
     >
-      {proficiency && (
-        <span
-          className="character-skill-pill__proficiency"
-          aria-label={
-            proficiency === 'P'
-              ? 'Proficient'
-              : proficiency === 'S'
-                ? 'Specialized'
-                : proficiency === 'T'
-                  ? 'Trained'
-                  : 'Master'
-          }
-        >
-          {proficiency}
-        </span>
-      )}
-      <Typography.Text>{name}</Typography.Text>
+      <Flex className="character-skill-pill__content">
+        <Typography.Text
+          className={classNames('character-skill-pill__proficiency', `character-skill-pill__proficiency--${proficiency ?? 'empty'}`)}
+        >{proficiency}</Typography.Text>
+        <Typography.Text className="character-skill-pill__name">{name}</Typography.Text>
+      </Flex>
     </Button>
   );
 
@@ -62,4 +56,26 @@ export default function CharacterSkillPill({
       <span className="character-skill-pill__tooltip-anchor">{pill}</span>
     </Tooltip>
   );
+}
+
+{
+  /*
+  <span
+          className={classNames('character-skill-pill__proficiency', {
+            'character-skill-pill__proficiency--empty': !proficiency
+          })}
+          aria-hidden={proficiency ? undefined : true}
+          aria-label={
+            proficiency === 'P'
+              ? 'Proficient'
+              : proficiency === 'S'
+                ? 'Specialized'
+                : proficiency === 'T'
+                  ? 'Trained'
+                  : proficiency === 'M'
+                    ? 'Master'
+                    : undefined
+          }
+        >
+          */
 }

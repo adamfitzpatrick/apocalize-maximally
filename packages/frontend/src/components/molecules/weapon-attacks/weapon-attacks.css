@@ -1,0 +1,22 @@
+.weapon-attacks .data-table {
+  width: auto;
+  font-size: 0.8rem;
+}
+
+.character-page--phone .weapon-attacks .data-table {
+  width: 100%;
+}
+
+.weapon-attacks .data-table th:first-child,
+.weapon-attacks .data-table td:first-child {
+  text-align: left;
+}
+
+.weapon-attacks .data-table th:nth-child(-n + 5):not(:first-child),
+.weapon-attacks .data-table td:nth-child(-n + 5):not(:first-child),
+.weapon-attacks .data-table th:last-child,
+.weapon-attacks .data-table td:last-child {
+  width: 6ch;
+  min-width: 6ch;
+  padding-inline: 0;
+}

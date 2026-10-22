@@ -1,5 +1,17 @@
 .character-card {
+  position: relative;
   cursor: pointer;
+}
+
+.character-card__delete.ant-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+}
+
+.character-card__delete-confirm {
+  width: 16rem;
 }
 
 .character-card__content {
@@ -9,6 +21,7 @@
 
 .character-card__details {
   min-width: 0;
+  padding-right: 1.5rem;
 }
 
 .character-card__avatar {

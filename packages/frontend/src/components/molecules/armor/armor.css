@@ -1,0 +1,42 @@
+.armor {
+  width: fit-content;
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.armor__pieces {
+  flex: 0 1 auto;
+  width: auto;
+  max-width: 100%;
+}
+
+.armor__pieces .data-table {
+  width: auto;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.armor__pieces .data-table th,
+.armor__pieces .data-table td {
+  min-width: 0;
+  padding: 2px 4px;
+}
+
+.armor__pieces .data-table th:first-child,
+.armor__pieces .data-table td:first-child {
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.armor__pieces .data-table th:nth-child(2),
+.armor__pieces .data-table td:nth-child(2),
+.armor__pieces .data-table th:last-child,
+.armor__pieces .data-table td:last-child {
+  width: 3rem;
+  text-align: center;
+  white-space: nowrap;
+}

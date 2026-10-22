@@ -1,0 +1,43 @@
+.manual-entry {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.manual-entry .data-table {
+  table-layout: fixed;
+}
+
+.manual-entry .data-table th,
+.manual-entry .data-table td {
+  text-align: left;
+  white-space: normal;
+}
+
+.manual-entry .data-table th:nth-child(1),
+.manual-entry .data-table td:nth-child(1),
+.manual-entry .data-table th:nth-child(3),
+.manual-entry .data-table td:nth-child(3) {
+  width: 25%;
+}
+
+.manual-entry .data-table th:last-child,
+.manual-entry .data-table td:last-child {
+  width: 3.25rem;
+  padding-inline: 4px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.manual-entry .ant-input,
+.manual-entry .ant-select {
+  width: 100%;
+}
+
+.manual-entry .data-table td:last-child .ant-input {
+  padding-inline: 4px;
+  text-align: center;
+}
+
+.manual-entry > .ant-btn {
+  align-self: flex-start;
+}
