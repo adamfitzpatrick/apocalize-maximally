@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 import type Character from '../entities/character';
 import type {
   CreationStage,
+  SkillSelectionAction,
   SkillSelectionSource
 } from '../entities/character';
 import type { CharacterRecord, CharacterStats } from '../api/characters';
@@ -23,7 +24,11 @@ export interface CharacterCreationContextValue {
     stat: keyof CharacterStats,
     points: number
   ) => void;
-  updateSkills: (skillName: string, source: SkillSelectionSource) => void;
+  updateSkills: (
+    skillName: string,
+    source: SkillSelectionSource,
+    action?: SkillSelectionAction
+  ) => void;
 }
 
 export const CharacterCreationContext =

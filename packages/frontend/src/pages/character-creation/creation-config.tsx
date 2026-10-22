@@ -26,6 +26,25 @@ import type Character from '../../entities/character';
 
 export type { Step, Phase, CreationConfigData } from './creation-types';
 
+const combatSkillInstructions = [
+  'Every character may begin with two Combat-related skill proficiencies, but may choose fewer to gain up to two additional skill proficiencies from their Archetype lists.',
+  'If a Combat-related skill also appears on an Archetype list, it may be selected again to increase its Level of Proficiency.'
+].join(' ');
+
+const archetypeSkillInstructions = [
+  'Characters gain Proficiency in seven skills: four from their Primary Archetype and three from their Secondary Archetype.',
+  'Skills may not be selected more than once from an Archetype list, except for the Scientist.',
+  'Only Scientists may select the same skill repeatedly from the Scientist list, up to M Proficiency.',
+  "Each selection counts toward that Archetype's skill selection limit.",
+  'A Skill Proficiency gained through Age or a Combat-related skill choice may be selected again to increase its Level of Proficiency.'
+].join(' ');
+
+const apocalypseSkillInstructions = [
+  'Characters gain one skill proficiency from their Personal Apocalypse, but cannot choose one previously gained from Age or an Archetype.',
+  'They may, however, gain or increase proficiency in a Combat skill.',
+  'If they gained a Level of Proficiency in a Combat skill from their Archetype, they cannot choose that Combat skill again.'
+].join(' ');
+
 export function buildCreationConfig(
   archetypes: ArchetypeOption[],
   apocalypses: ApocalypseOption[],
@@ -42,7 +61,7 @@ export function buildCreationConfig(
             fullComponent: (
               <InformationDisplay
                 description={[
-                  'All base stats start at 25 for all characters.  There are no required choices for this step.'
+                  'All base stats start at 25 for all characters. There are no required choices for this step.'
                 ]}
               >
                 <Flex justify="space-between">
@@ -58,7 +77,12 @@ export function buildCreationConfig(
           {
             title: 'Select a primary archetype',
             fullComponent: (
-              <MajorChoiceSelector data={archetypes} target="primaryArchetype" />
+              <Flex vertical gap="middle">
+                <Typography.Text>
+                  Click on an archetype to learn more about it.
+                </Typography.Text>
+                <MajorChoiceSelector data={archetypes} target="primaryArchetype" />
+              </Flex>
             ),
             collapsedComponent: (<MajorChoiceSelectorSummary target="primaryArchetype" />),
             isComplete: (character) => Boolean(character.primaryArchetype)
@@ -91,7 +115,8 @@ export function buildCreationConfig(
               <AgeSelector ageCategories={ageCategories} />
             ),
             collapsedComponent: <AgeSelectionSummary />,
-            isComplete: (character) => Boolean(character.ageCategory)
+            isComplete: (character) =>
+              character.characterRecord.age > 0 && Boolean(character.ageCategory)
           },
           {
             title: 'Distribute free development points',
@@ -103,7 +128,7 @@ export function buildCreationConfig(
                 All points distributed
               </Typography.Title>
             ),
-            isComplete: (character) => Boolean(character.personalApocalypse)
+            isComplete: (character) => character.availableDevelopmentPoints === 0
           }
         ]
       },
@@ -115,9 +140,7 @@ export function buildCreationConfig(
             fullComponent: (
               <SkillSelector
                 source="combat"
-                instructions='Every character may begin with 2 Combat-related skill proficiencies, but can choose
-fewer to gain additional skill proficiencies from their Archetype lists (maximum 2). If the Combat-related skill also exists on the Archetype list, it may be
-selected a second time to increase the Level of Proficiency'
+                instructions={combatSkillInstructions}
               />
             ),
             collapsedComponent: null,
@@ -129,12 +152,7 @@ selected a second time to increase the Level of Proficiency'
             fullComponent: (
               <SkillSelector
                 source="archetype"
-                instructions='Characters gain Proficiency in 7 skills: 4 from their Primary Archetype and 3 from their
-Secondary Archetype. Skills may not be chosen more than once by any character
-Archetype except for the Scientist. The Scientist which can choose multiple times from
-the Scientist List (increasing the Level of Proficiency each time the skill is selected). If a
-Skill Proficiency was gained through Age or the Combat-related skill choices, it may be
-chosen again to increase the Level of Proficiency.'
+                instructions={archetypeSkillInstructions}
               />
             ),
             collapsedComponent: null,
@@ -147,10 +165,7 @@ chosen again to increase the Level of Proficiency.'
             fullComponent: (
               <SkillSelector
                 source="apocalypse"
-                instructions='Characters gain 1 skill proficiency from their Personal Apocalypse, but cannot choose
-one previously gained from Age or Archetype. They MAY, however, gain or increase the
-level of proficiency in a Combat skill. If they gained a Level of Proficiency in a Combat
-from their Archetype, they cannot choose the Combat skill again.'
+                instructions={apocalypseSkillInstructions}
               />
             ),
             collapsedComponent: null,
@@ -237,13 +252,8 @@ from their Archetype, they cannot choose the Combat skill again.'
             title: 'Describe your character',
             fullComponent: <PersonalDescription />,
             collapsedComponent: null,
-            isComplete: (character) => {
-              const { name, physicalDescription, background } =
-                character.characterRecord;
-              return [name, physicalDescription, background].every(
-                (value) => typeof value === 'string' && value.trim().length > 0
-              );
-            }
+            isComplete: (character) =>
+              Boolean(character.characterRecord.name?.trim())
           },
           {
             title: 'Select Negative Traits',
@@ -265,9 +275,7 @@ from their Archetype, they cannot choose the Combat skill again.'
             title: 'Choose a Method',
             fullComponent: <StartingGearMethod />,
             collapsedComponent: null,
-            isComplete: (character) =>
-              character.characterRecord.startingGearMethod === 'bug-out' ||
-              character.characterRecord.startingGearMethod === 'free-choice'
+            isComplete: () => true
           },
           {
             title: 'Select Starting Gear',

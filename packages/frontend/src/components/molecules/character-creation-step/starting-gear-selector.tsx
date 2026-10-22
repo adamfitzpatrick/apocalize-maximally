@@ -127,7 +127,8 @@ function selectedKit(
 export function StartingGearMethod() {
   const { character, setDraft } = useCharacterCreation();
   const record = character?.characterRecord;
-  const method = record?.startingGearMethod;
+  const storedMethod = record?.startingGearMethod;
+  const method = storedMethod ?? 'bug-out';
   const [pendingMethod, setPendingMethod] = useState<GearMethod | null>(null);
 
   function applyMethod(next: GearMethod) {
@@ -145,7 +146,7 @@ export function StartingGearMethod() {
     if (!record || next === method) {
       return;
     }
-    if (method) {
+    if (storedMethod) {
       setPendingMethod(next);
       return;
     }
@@ -179,13 +180,7 @@ export function StartingGearMethod() {
           <Segmented
             block
             options={['Bug-Out', 'Free Choice']}
-            value={
-              method === 'bug-out'
-                ? 'Bug-Out'
-                : method === 'free-choice'
-                  ? 'Free Choice'
-                  : undefined
-            }
+            value={method === 'bug-out' ? 'Bug-Out' : 'Free Choice'}
             onChange={(value) =>
               chooseMethod(value === 'Bug-Out' ? 'bug-out' : 'free-choice')
             }
@@ -358,7 +353,7 @@ export function BugOutKitSelector() {
   const names = new Map(catalog.map((item) => [item.slug, item.name]));
   const cpBySlug = new Map(catalog.map((item) => [item.slug, item.cp]));
 
-  if (record?.startingGearMethod !== 'bug-out') {
+  if (!record || record.startingGearMethod === 'free-choice') {
     return null;
   }
 
@@ -372,6 +367,7 @@ export function BugOutKitSelector() {
       : (record.gear ?? []);
     setDraft({
       ...record,
+      startingGearMethod: 'bug-out',
       bugOut: true,
       gear: [...kept, ...gearItemsFromKit(kit, cpBySlug)]
     });

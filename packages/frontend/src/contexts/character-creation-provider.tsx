@@ -10,7 +10,10 @@ import Character, {
   CreationStage,
   INITIAL_FREE_DEVELOPMENT_POINTS,
   MAX_COMBAT_SKILL_SELECTIONS,
+  MAX_SKILL_PROFICIENCY_LEVEL,
   PSYCHIC_POWER_LUCKY_MUTATION,
+  SCIENTIST_ARCHETYPE_NAME,
+  type SkillSelectionAction,
   type SkillSelectionSource
 } from '../entities/character';
 import type { CoreGameData } from '../api/core-game-data';
@@ -174,7 +177,11 @@ export function CharacterCreationProvider({
   );
 
   const updateSkills = useCallback(
-    (skillName: string, source: SkillSelectionSource) => {
+    (
+      skillName: string,
+      source: SkillSelectionSource,
+      action: SkillSelectionAction = 'toggle'
+    ) => {
       if (!isCoreGameDataReady(coreGameData) || !character) {
         return;
       }
@@ -213,73 +220,48 @@ export function CharacterCreationProvider({
       const primarySelected = [...character.primaryArchetypeSkills];
       const secondarySelected = [...character.secondaryArchetypeSkills];
 
-      if (source === 'primaryArchetype') {
-        if (primarySelected.includes(skillName)) {
-          const nextRecord = {
-            ...character.characterRecord,
-            archetypeSkills: {
-              primary: primarySelected.filter((name) => name !== skillName),
-              secondary: secondarySelected
-            }
-          };
-          doSetDraft(
-            new Character(coreGameData, {
-              ...nextRecord,
-              skills: buildSkillProficiencies(nextRecord)
-            })
-          );
-          return;
-        }
-        if (!character.canSelectMorePrimaryArchetypeSkills) {
-          return;
-        }
-        if (!(character.primaryArchetype?.skills ?? []).includes(skillName)) {
-          return;
-        }
-        const nextRecord = {
-          ...character.characterRecord,
-          archetypeSkills: {
-            primary: [...primarySelected, skillName],
-            secondary: secondarySelected
-          }
-        };
-        doSetDraft(
-          new Character(coreGameData, {
-            ...nextRecord,
-            skills: buildSkillProficiencies(nextRecord)
-          })
-        );
-        return;
-      }
+      if (
+        source === 'primaryArchetype' ||
+        source === 'secondaryArchetype'
+      ) {
+        const isPrimary = source === 'primaryArchetype';
+        const selected = isPrimary ? primarySelected : secondarySelected;
+        const archetype = isPrimary
+          ? character.primaryArchetype
+          : character.secondaryArchetype;
+        const isScientist = archetype?.name === SCIENTIST_ARCHETYPE_NAME;
+        const selectedIndex = selected.lastIndexOf(skillName);
+        const shouldRemove =
+          action === 'remove' ||
+          (!isScientist && action === 'toggle' && selectedIndex >= 0);
 
-      if (source === 'secondaryArchetype') {
-        if (secondarySelected.includes(skillName)) {
-          const nextRecord = {
-            ...character.characterRecord,
-            archetypeSkills: {
-              primary: primarySelected,
-              secondary: secondarySelected.filter((name) => name !== skillName)
-            }
-          };
-          doSetDraft(
-            new Character(coreGameData, {
-              ...nextRecord,
-              skills: buildSkillProficiencies(nextRecord)
-            })
-          );
-          return;
+        if (shouldRemove) {
+          if (selectedIndex < 0) {
+            return;
+          }
+          selected.splice(selectedIndex, 1);
+        } else {
+          const canSelectMore = isPrimary
+            ? character.canSelectMorePrimaryArchetypeSkills
+            : character.canSelectMoreSecondaryArchetypeSkills;
+          if (
+            !canSelectMore ||
+            !(archetype?.skills ?? []).includes(skillName) ||
+            (!isScientist && selectedIndex >= 0) ||
+            (isScientist &&
+              character.getSkillProficiencyLevel(skillName) >=
+                MAX_SKILL_PROFICIENCY_LEVEL)
+          ) {
+            return;
+          }
+          selected.push(skillName);
         }
-        if (!character.canSelectMoreSecondaryArchetypeSkills) {
-          return;
-        }
-        if (!(character.secondaryArchetype?.skills ?? []).includes(skillName)) {
-          return;
-        }
+
         const nextRecord = {
           ...character.characterRecord,
           archetypeSkills: {
             primary: primarySelected,
-            secondary: [...secondarySelected, skillName]
+            secondary: secondarySelected
           }
         };
         doSetDraft(

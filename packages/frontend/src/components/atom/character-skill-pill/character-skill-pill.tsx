@@ -39,7 +39,11 @@ export default function CharacterSkillPill({
     >
       <Flex className="character-skill-pill__content">
         <Typography.Text
-          className={classNames('character-skill-pill__proficiency', `character-skill-pill__proficiency--${proficiency ?? 'empty'}`)}
+          className={classNames(
+            'character-skill-pill__proficiency',
+            `character-skill-pill__proficiency--${proficiency ?? 'empty'}`,
+            { 'character-skill-pill__proficiency--color': selected && !proficiency }
+          )}
         >{proficiency}</Typography.Text>
         <Typography.Text className="character-skill-pill__name">{name}</Typography.Text>
       </Flex>

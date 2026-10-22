@@ -1,4 +1,4 @@
-import { Flex, Typography } from 'antd';
+import { Button, Flex, Typography } from 'antd';
 import { useCharacterCreation } from '../../../contexts/character-creation-context';
 import { useCoreGameData } from '../../../contexts/core-game-data-context';
 import {
@@ -11,7 +11,10 @@ import {
   MAX_APOCALYPSE_SPECIAL_ABILITY_SELECTIONS,
   MAX_PRIMARY_ARCHETYPE_SPECIAL_ABILITY_SELECTIONS,
   MAX_SECONDARY_ARCHETYPE_SKILL_SELECTIONS,
+  MAX_SKILL_PROFICIENCY_LEVEL,
   PSYCHIC_POWER_LUCKY_MUTATION,
+  SCIENTIST_ARCHETYPE_NAME,
+  type SkillSelectionAction,
   type SkillSelectionSource
 } from '../../../entities/character';
 import type { SkillOption } from '../../../api/core-game-data';
@@ -43,13 +46,19 @@ function SkillPillGroup({
   canSelectSkill,
   source,
   onToggle,
+  repeatable = false,
   showProficiency = true
 }: {
   options: SelectableOption[];
   selectedSkills: string[];
   canSelectSkill: (skillName: string) => boolean;
   source: SkillSelectionSource;
-  onToggle: (skillName: string, source: SkillSelectionSource) => void;
+  onToggle: (
+    skillName: string,
+    source: SkillSelectionSource,
+    action?: SkillSelectionAction
+  ) => void;
+  repeatable?: boolean;
   showProficiency?: boolean;
 }) {
   const { character } = useCharacterCreation();
@@ -57,20 +66,36 @@ function SkillPillGroup({
   return (
     <Flex className="skill-selector-tags" wrap gap={8}>
       {options.map((option) => {
-        const selected = selectedSkills.includes(option.name);
+        const selectionCount = selectedSkills.filter(
+          (name) => name === option.name
+        ).length;
+        const selected = selectionCount > 0;
         const proficiency = showProficiency
           ? (character?.getSkillProficiencyMarker(option.name) ?? null)
           : null;
         return (
-          <CharacterSkillPill
-            key={option.name}
-            name={option.name.trim()}
-            description={option.description}
-            proficiency={proficiency}
-            selected={selected}
-            disabled={!canSelectSkill(option.name)}
-            onClick={() => onToggle(option.name, source)}
-          />
+          <Flex key={option.name} gap={4}>
+            <CharacterSkillPill
+              name={option.name.trim()}
+              description={option.description}
+              proficiency={proficiency}
+              selected={selected}
+              disabled={!canSelectSkill(option.name)}
+              onClick={() =>
+                onToggle(option.name, source, repeatable ? 'add' : 'toggle')
+              }
+            />
+            {repeatable && selected && (
+              <Button
+                aria-label={`Remove one ${option.name} selection`}
+                onClick={() => onToggle(option.name, source, 'remove')}
+                size="small"
+                title={`Remove one ${option.name} selection`}
+              >
+                −
+              </Button>
+            )}
+          </Flex>
         );
       })}
     </Flex>
@@ -382,6 +407,10 @@ export function SkillSelector({ source, instructions }: SkillSelectorProps) {
   const primarySelected = character?.primaryArchetypeSkills ?? [];
   const secondarySelected = character?.secondaryArchetypeSkills ?? [];
   const bonusRemaining = character?.remainingBonusArchetypeSkillSlots ?? 0;
+  const primaryIsScientist =
+    primaryArchetype?.name === SCIENTIST_ARCHETYPE_NAME;
+  const secondaryIsScientist =
+    secondaryArchetype?.name === SCIENTIST_ARCHETYPE_NAME;
 
   return (
     <div className="skill-selector-archetype">
@@ -408,11 +437,16 @@ export function SkillSelector({ source, instructions }: SkillSelectorProps) {
           options={toSkillOptions(primarySkills)}
           selectedSkills={primarySelected}
           canSelectSkill={(skillName) =>
-            primarySelected.includes(skillName) ||
-            Boolean(character?.canSelectMorePrimaryArchetypeSkills)
+            primaryIsScientist
+              ? Boolean(character?.canSelectMorePrimaryArchetypeSkills) &&
+                (character?.getSkillProficiencyLevel(skillName) ?? 0) <
+                  MAX_SKILL_PROFICIENCY_LEVEL
+              : primarySelected.includes(skillName) ||
+                Boolean(character?.canSelectMorePrimaryArchetypeSkills)
           }
           source="primaryArchetype"
           onToggle={updateSkills}
+          repeatable={primaryIsScientist}
         />
       </section>
       <section className="skill-selector-group">
@@ -427,11 +461,16 @@ export function SkillSelector({ source, instructions }: SkillSelectorProps) {
           options={toSkillOptions(secondarySkills)}
           selectedSkills={secondarySelected}
           canSelectSkill={(skillName) =>
-            secondarySelected.includes(skillName) ||
-            Boolean(character?.canSelectMoreSecondaryArchetypeSkills)
+            secondaryIsScientist
+              ? Boolean(character?.canSelectMoreSecondaryArchetypeSkills) &&
+                (character?.getSkillProficiencyLevel(skillName) ?? 0) <
+                  MAX_SKILL_PROFICIENCY_LEVEL
+              : secondarySelected.includes(skillName) ||
+                Boolean(character?.canSelectMoreSecondaryArchetypeSkills)
           }
           source="secondaryArchetype"
           onToggle={updateSkills}
+          repeatable={secondaryIsScientist}
         />
       </section>
     </div>

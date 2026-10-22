@@ -8,13 +8,41 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
+const THEME_STORAGE_KEY = 'theme';
+
+function readStoredThemeOverride(): boolean | null {
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === 'dark') return true;
+    if (stored === 'light') return false;
+  } catch {
+    // Storage can be unavailable in private browsing or when it is blocked.
+  }
+  return null;
+}
+
+function writeStoredThemeOverride(themeOverride: boolean | null) {
+  try {
+    if (themeOverride === null) {
+      localStorage.removeItem(THEME_STORAGE_KEY);
+      return;
+    }
+    localStorage.setItem(THEME_STORAGE_KEY, themeOverride ? 'dark' : 'light');
+  } catch {
+    // Keep the in-memory theme when storage cannot be updated.
+  }
+}
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [systemPrefersDark, setSystemPrefersDark] = useState(() =>
     window.matchMedia('(prefers-color-scheme: dark)').matches
   );
-  const [themeOverride, setThemeOverride] = useState<boolean | null>(null);
+  const [themeOverride, setThemeOverride] = useState<boolean | null>(readStoredThemeOverride);
   const isDarkMode = themeOverride ?? systemPrefersDark;
+
+  useEffect(() => {
+    writeStoredThemeOverride(themeOverride);
+  }, [themeOverride]);
 
   useLayoutEffect(() => {
     document.documentElement.dataset.theme = isDarkMode ? 'dark' : 'light';

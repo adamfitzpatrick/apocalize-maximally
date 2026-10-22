@@ -20,7 +20,7 @@
 .data-table td {
   min-width: 48px;
   padding: 8px;
-  border: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 25%, transparent);
   white-space: nowrap;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .data-table tr.data-table__row--selected td {
-  background: color-mix(in srgb, var(--color-accent-primary) 16%, var(--color-background));
+  background: color-mix(in srgb, var(--color-accent-primary) 50%, var(--color-background));
 }
 
 .data-table tr.data-table__row--selected.data-table__row--selectable:hover td,

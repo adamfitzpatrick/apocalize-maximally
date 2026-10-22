@@ -161,14 +161,16 @@ export default function CharacterPage() {
       <Flex justify="space-between" align="center" gap={12} wrap>
         <Button onClick={() => navigate('/')}>Back to characters</Button>
         <Flex gap={8}>
-          <Popconfirm
-            title="You will no longer be able to edit this character."
-            okText="Play"
-            cancelText="Cancel"
-            onConfirm={() => persistCurrents({ playing: true })}
-          >
-            <Button type='primary'>Play Character</Button>
-          </Popconfirm>
+          {!record.playing && (
+            <Popconfirm
+              title="You will no longer be able to edit this character."
+              okText="Play"
+              cancelText="Cancel"
+              onConfirm={() => persistCurrents({ playing: true })}
+            >
+              <Button type="primary">Play Character</Button>
+            </Popconfirm>
+          )}
           {!record.playing && (
             <Button
               onClick={() =>
@@ -240,14 +242,16 @@ export default function CharacterPage() {
       <Flex justify="space-between" align="center" gap={12} wrap>
         <Button onClick={() => navigate('/')}>Back to characters</Button>
         <Flex gap={8}>
-          <Popconfirm
-            title="You will no longer be able to edit this character."
-            okText="Play"
-            cancelText="Cancel"
-            onConfirm={() => persistCurrents({ playing: true })}
-          >
-            <Button>Play Character</Button>
-          </Popconfirm>
+          {!record.playing && (
+            <Popconfirm
+              title="You will no longer be able to edit this character."
+              okText="Play"
+              cancelText="Cancel"
+              onConfirm={() => persistCurrents({ playing: true })}
+            >
+              <Button>Play Character</Button>
+            </Popconfirm>
+          )}
           {!record.playing && (
             <Button
               onClick={() =>

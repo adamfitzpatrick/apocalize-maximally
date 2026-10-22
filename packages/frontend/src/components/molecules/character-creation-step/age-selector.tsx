@@ -60,7 +60,7 @@ export default function AgeSelector({ ageCategories }: AgeSelectorProps) {
       <label className="character-creation-field">
         Age
         <InputNumber
-          min={0}
+          min={1}
           value={character?.characterRecord.age}
           onChange={(value) => {
             if (typeof value === 'number') {

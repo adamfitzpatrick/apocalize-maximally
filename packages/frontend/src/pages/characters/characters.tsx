@@ -10,7 +10,6 @@ import {
 } from '../../api/characters';
 import CharacterCard from '../../components/molecules/character-card/character-card';
 import type { CharacterCardProps } from '../../components/molecules/character-card/character-card';
-import { useCoreGameData } from '../../contexts/core-game-data-context';
 
 const characterCreationFields = [
   'name',
@@ -18,7 +17,7 @@ const characterCreationFields = [
   'secondaryArchetype',
   'personalApocalypse',
   'age',
-  'stats',
+  'investedDevelopmentPoints',
   'skills',
   'armor',
   'health',
@@ -44,7 +43,6 @@ export default function CharactersPage() {
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState('');
-  const coreGameData = useCoreGameData();
 
   useEffect(() => {
     let cancelled = false;
@@ -111,15 +109,17 @@ export default function CharactersPage() {
 
   return (
     <>
-      <Flex className="characters-toolbar" justify="flex-end">
-        <Button
-          type="primary"
-          loading={creating}
-          onClick={() => void handleCreateCharacter()}
-        >
-          Create New Character
-        </Button>
-      </Flex>
+      {characters.length > 0 && (
+        <Flex className="characters-toolbar" justify="flex-end">
+          <Button
+            type="primary"
+            loading={creating}
+            onClick={() => void handleCreateCharacter()}
+          >
+            Create New Character
+          </Button>
+        </Flex>
+      )}
       {error && (
         <Alert
           className="characters-alert"
@@ -131,7 +131,6 @@ export default function CharactersPage() {
       
       {error ? null : characters.length === 0 ? (
         <Flex className="characters-empty" vertical align="center" gap="middle">
-          <div>{JSON.stringify(coreGameData)}</div>
           <Typography.Title level={2}>No characters yet</Typography.Title>
           <Button
             type="primary"

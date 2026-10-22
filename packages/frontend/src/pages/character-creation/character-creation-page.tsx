@@ -170,6 +170,7 @@ export default function CharacterCreation() {
       )}
       {draft && phase &&(
         <CharacterCreationPhase
+          character={draft}
           creationStage={stage}
           key={phase.title}
           title={phase.title}

@@ -36,7 +36,7 @@ export default function PersonalDescription() {
       </label>
       <label className="personal-description__field">
         <Typography.Text className="personal-description__label">
-          Physical description
+          Physical description (optional)
         </Typography.Text>
         <TextArea
           autoSize={{ minRows: 3, maxRows: 8 }}
@@ -48,7 +48,7 @@ export default function PersonalDescription() {
       </label>
       <label className="personal-description__field">
         <Typography.Text className="personal-description__label">
-          Background
+          Background (optional)
         </Typography.Text>
         <TextArea
           autoSize={{ minRows: 4, maxRows: 12 }}

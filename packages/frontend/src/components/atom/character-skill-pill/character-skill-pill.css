@@ -25,6 +25,10 @@
   border-bottom-left-radius: 6px;
 }
 
+.character-skill-pill--selected .character-skill-pill__proficiency--color {
+  background-color: var(--color-accent-primary);
+}
+
 .character-skill-pill__proficiency--P {
   background-color: color-mix(in srgb, var(--color-accent-primary) 50%, transparent);
 }
@@ -42,7 +46,7 @@
 }
 
 .character-skill-pill__name {
-  padding-left: 0.25rem;
+  padding: 0 0.5rem;
   display: inline-flex;
   font-size: 0.75rem;
   justify-content: flex-start;

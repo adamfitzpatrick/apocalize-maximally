@@ -15,6 +15,7 @@ export const MAX_PSYCHIC_POWER_SELECTIONS = 1;
 export const MAX_NEGATIVE_TRAIT_SELECTIONS = 1;
 export const PSYCHIC_POWER_LUCKY_MUTATION = 'Psychic Power';
 export const MAX_SKILL_PROFICIENCY_LEVEL = 4;
+export const SCIENTIST_ARCHETYPE_NAME = 'The Scientist';
 
 export type SkillSelectionSource =
   | 'combat'
@@ -26,6 +27,8 @@ export type SkillSelectionSource =
   | 'luckyMutation'
   | 'psychicPower'
   | 'negativeTrait';
+
+export type SkillSelectionAction = 'toggle' | 'add' | 'remove';
 
 export type SkillProficiencyMarker = 'P' | 'S' | 'T' | 'M';
 
@@ -49,7 +52,7 @@ export function proficiencyLevelToMarker(
   return SKILL_PROFICIENCY_MARKERS[level - 1];
 }
 
-/** Proficiency rank is the number of distinct selection sources for a skill. */
+/** Proficiency rank is the number of selections across all skill sources. */
 export function buildSkillProficiencies(
   record: CharacterRecord
 ): Record<string, number> {
