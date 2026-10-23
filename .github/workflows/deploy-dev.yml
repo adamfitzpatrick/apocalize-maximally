@@ -77,13 +77,13 @@ jobs:
         run: yarn deploy:assets
 
       - name: Deploy backend
-        run: yarn workspace @apocalize/backend deploy -- --outputs-file /tmp/backend-outputs.json
+        run: yarn workspace @apocalize/backend deploy --outputs-file "$RUNNER_TEMP/backend-outputs.json"
 
       - name: Read backend outputs
         id: backend
         run: |
           stack=apocalize-dev-backend
-          file=/tmp/backend-outputs.json
+          file="$RUNNER_TEMP/backend-outputs.json"
           api_url="$(jq -er --arg stack "$stack" '.[$stack].ApiUrl' "$file")"
           user_pool_id="$(jq -er --arg stack "$stack" '.[$stack].AuthUserPoolId' "$file")"
           user_pool_client_id="$(jq -er --arg stack "$stack" '.[$stack].AuthUserPoolClientId' "$file")"
