@@ -3,6 +3,21 @@ import { useEffect, useState, type KeyboardEvent, type MouseEvent } from 'react'
 import avatarPlaceholder from './character-avatar-placeholder.svg';
 import './character-card.css';
 
+function CheckIcon() {
+  return (
+    <svg width="10" height="10" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M20 6 9 17l-5-5"
+      />
+    </svg>
+  );
+}
+
 function TrashIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
@@ -108,83 +123,101 @@ export default function CharacterCard({
       }}
       onKeyDown={handleKeyDown}
     >
-      <Popover
-        trigger="click"
-        open={deleteOpen}
-        onOpenChange={(open) => {
-          setDeleteOpen(open);
-          if (!open) {
-            setTypedName('');
-          }
-        }}
-        title="Delete character"
-        content={
-          <Flex
-            className="character-card__delete-confirm"
-            vertical
-            gap={8}
-            onMouseDown={(event) => event.stopPropagation()}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <Typography.Text>Are you sure?</Typography.Text>
-            <Typography.Text>Type {name} to delete this character.</Typography.Text>
-            <Input
-              value={typedName}
-              aria-label={`Type ${name} to confirm deletion`}
-              onChange={(event) => setTypedName(event.target.value)}
-              onPressEnter={() => void confirmDelete()}
-            />
-            <Button
-              danger
-              type="primary"
-              disabled={!nameMatches}
-              loading={deleting}
-              onClick={() => void confirmDelete()}
-            >
-              Delete
-            </Button>
-          </Flex>
-        }
+      <Flex
+        className="character-card__content"
+        vertical
+        gap="small"
+        style={{ height: '100%' }}
       >
-        <Button
-          className="character-card__delete"
-          type="text"
-          aria-label={`Delete ${name}`}
-          icon={<TrashIcon />}
-          onClick={stopCardActivation}
-        />
-      </Popover>
-      <Flex className="character-card__content" vertical gap="small">
         <Flex align="flex-start" gap="small">
           <CharacterAvatar src={avatar} />
           <Flex className="character-card__details" vertical gap={4}>
-            <Typography.Title className="character-card__name" level={4}>
+            <Typography.Title className="character-card__name" level={5}>
               {name}
             </Typography.Title>
-            <Typography.Text className="character-card__field">
-              {primaryArchetype || '—'}
-            </Typography.Text>
-            <Typography.Text className="character-card__field">
-              {secondaryArchetype || '—'}
-            </Typography.Text>
-            <Typography.Text className="character-card__field">
-              {personalApocalypse || '—'}
-            </Typography.Text>
+            <Flex
+              vertical
+              gap={2}
+            >
+              <Typography.Text className="character-card__field">
+                {primaryArchetype || '—'}
+              </Typography.Text>
+              <Typography.Text className="character-card__field">
+                {secondaryArchetype || '—'}
+              </Typography.Text>
+              <Typography.Text className="character-card__field">
+                {personalApocalypse || '—'}
+              </Typography.Text>
+            </Flex>
+          </Flex>
+          <Flex
+            className="character-card__progress-container"
+            vertical
+            align="flex-end"
+            justify="space-between"
+          >
+            <Popover
+              trigger="click"
+              open={deleteOpen}
+              onOpenChange={(open) => {
+                setDeleteOpen(open);
+                if (!open) {
+                  setTypedName('');
+                }
+              }}
+              title="Delete character"
+              content={
+                <Flex
+                  className="character-card__delete-confirm"
+                  vertical
+                  gap={8}
+                  onMouseDown={(event) => event.stopPropagation()}
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <Typography.Text>Are you sure?</Typography.Text>
+                  <Typography.Text>Type {name} to delete this character.</Typography.Text>
+                  <Input
+                    value={typedName}
+                    aria-label={`Type ${name} to confirm deletion`}
+                    onChange={(event) => setTypedName(event.target.value)}
+                    onPressEnter={() => void confirmDelete()}
+                  />
+                  <Button
+                    danger
+                    type="primary"
+                    disabled={!nameMatches}
+                    loading={deleting}
+                    onClick={() => void confirmDelete()}
+                  >
+                    Delete
+                  </Button>
+                </Flex>
+              }
+            >
+              <Button
+                className="character-card__delete"
+                type="text"
+                aria-label={`Delete ${name}`}
+                icon={<TrashIcon />}
+                onClick={stopCardActivation}
+              />
+            </Popover>
+            <Progress
+              className="character-card__progress"
+              type='dashboard'
+              percent={progress}
+              steps={{ count: isReadyToPlay ? 0 : 7, gap: 3 }}
+              size={40}
+              format={(percent) => (isReadyToPlay ? <CheckIcon /> : `${percent}%`)}
+              aria-label={
+                isReadyToPlay
+                  ? `${name} is ready to play`
+                  : `${name} character creation progress`
+              }
+              railColor='rgba(255, 255, 255, 0.1)'
+            />
           </Flex>
         </Flex>
-        {isReadyToPlay ? (
-          <Typography.Text className="character-card__ready">
-            Ready to play!
-          </Typography.Text>
-        ) : (
-          <Progress
-            className="character-card__progress"
-            percent={progress}
-            size="small"
-            showInfo
-            aria-label={`${name} character creation progress`}
-          />
-        )}
       </Flex>
     </Card>
   );

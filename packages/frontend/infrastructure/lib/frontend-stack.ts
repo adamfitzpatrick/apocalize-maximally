@@ -12,9 +12,21 @@ import * as path from 'node:path';
 interface FrontendStackProps extends cdk.StackProps {
   environment: 'dev' | 'prd';
   domainName: string;
-  baseDomainName: string;
   hostedZoneId: string;
   hostedZoneName: string;
+}
+
+function recordNameInZone(domainName: string, zoneName: string): string | undefined {
+  const domain = domainName.replace(/\.$/, '').toLowerCase();
+  const zone = zoneName.replace(/\.$/, '').toLowerCase();
+  if (domain === zone) {
+    return undefined;
+  }
+  const suffix = `.${zone}`;
+  if (!domain.endsWith(suffix)) {
+    throw new Error(`Domain ${domain} is outside hosted zone ${zone}.`);
+  }
+  return domain.slice(0, -suffix.length);
 }
 
 export class FrontendStack extends cdk.Stack {
@@ -78,10 +90,7 @@ export class FrontendStack extends cdk.Stack {
 
     new route53.ARecord(this, 'SiteAliasRecord', {
       zone: hostedZone,
-      recordName: props.domainName.slice(
-        0,
-        -(props.baseDomainName.length + 1)
-      ),
+      recordName: recordNameInZone(props.domainName, props.hostedZoneName),
       target: route53.RecordTarget.fromAlias(
         new targets.CloudFrontTarget(distribution)
       )

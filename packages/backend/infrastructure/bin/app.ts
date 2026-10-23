@@ -22,9 +22,10 @@ if (!account || !region || !frontendDomainName) {
   );
 }
 
-const frontendOrigin = `https://${environment}.${frontendDomainName
-  .replace(/\.$/, '')
-  .toLowerCase()}`;
+const frontendDomain = frontendDomainName.replace(/\.$/, '').toLowerCase();
+const frontendHost =
+  environment === 'prd' ? frontendDomain : `${environment}.${frontendDomain}`;
+const frontendOrigin = `https://${frontendHost}`;
 const app = new cdk.App();
 new BackendStack(app, `BackendStack-${environment}`, {
   env: { account, region },

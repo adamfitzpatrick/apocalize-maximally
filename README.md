@@ -32,8 +32,10 @@ DynamoDB items are scoped to the authenticated user.
 Set `AWS_ACCOUNT_ID`, `AWS_REGION`, and `FRONTEND_DOMAIN_NAME` in
 `packages/backend/.env`. Set `ENVIRONMENT` to
 `dev` or `prd` in both package `.env` files; it defaults to `dev` when omitted.
-The backend derives its allowed frontend origin as
-`https://<ENVIRONMENT>.<FRONTEND_DOMAIN_NAME>`. It also allows
+The backend allows the dev site at
+`https://dev.<FRONTEND_DOMAIN_NAME>` and the production site at
+`https://<FRONTEND_DOMAIN_NAME>`. With `FRONTEND_DOMAIN_NAME=ma.stepinto.io`,
+those are `https://dev.ma.stepinto.io` and `https://ma.stepinto.io`. It also allows
 `http://localhost:5173` and `http://127.0.0.1:5173` for local frontend
 development.
 
@@ -54,15 +56,16 @@ Set `AWS_ACCOUNT_ID`, `FRONTEND_DOMAIN_NAME`, `HOSTED_ZONE_ID`, and
 `HOSTED_ZONE_NAME` in `packages/frontend/.env`. The frontend CDK stack runs in
 `us-east-1`, as required for CloudFront certificates. Set `VITE_API_URL` to the
 backend API URL and the two `VITE_COGNITO_*` values from the backend stack
-before building. `FRONTEND_DOMAIN_NAME` is the base domain; CDK prepends the
-environment as a subdomain (`dev.app.example.com` or `prd.app.example.com` for
-`app.example.com`). The frontend package and backend package must use the same
-environment and base domain. The frontend domain must be within the configured
-Route 53 hosted zone; `http://localhost:5173` is also allowed for local development.
+before building. `FRONTEND_DOMAIN_NAME` is the production site name. Dev is
+served at `dev.<FRONTEND_DOMAIN_NAME>`; production is served at
+`FRONTEND_DOMAIN_NAME` itself, with no `prd` label. The frontend package and
+backend package must use the same environment and base domain. The frontend
+domain must be within the configured Route 53 hosted zone; `http://localhost:5173`
+is also allowed for local development.
 
-Stack names, named AWS resources, and the frontend domain are
-environment-prefixed. Deploying `dev` and `prd` therefore creates separate
-stacks and distinct frontend domains. To deploy a selected environment,
+Stack names and named AWS resources are environment-prefixed. Deploying `dev`
+and `prd` therefore creates separate stacks. Production's public site name is
+the base domain. To deploy a selected environment,
 set the same `ENVIRONMENT=dev` or `ENVIRONMENT=prd` in both package `.env`
 files before running that environment's synth or deploy command.
 

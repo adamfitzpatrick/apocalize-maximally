@@ -1,36 +1,36 @@
+.character-card .ant-card-body {
+  padding: 0.75rem;
+}
+
 .character-card {
   position: relative;
   cursor: pointer;
-}
-
-.character-card__delete.ant-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 1;
 }
 
 .character-card__delete-confirm {
   width: 16rem;
 }
 
-.character-card__content {
-  height: 100%;
-  justify-content: space-between;
+.character-card__content>.ant-flex {
+  height: 6rem;
 }
 
 .character-card__details {
   min-width: 0;
-  padding-right: 1.5rem;
+  height: 100%;
+  padding: 0 0.25rem;
+  flex-grow: 1;
+  justify-content: space-between;
 }
 
 .character-card__avatar {
   flex: 0 0 auto;
-  width: 64px;
-  height: 64px;
+  width: 6rem;
+  height: 6rem;
   object-fit: cover;
   border-radius: 8px;
   background: #292929;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 50%, transparent);
 }
 
 .character-card:focus-visible {
@@ -47,12 +47,14 @@
   line-height: 1.35;
 }
 
+.character-card__progress-container {
+  height: 100%;
+}
+
 .character-card__progress.ant-progress {
   margin: 0;
 }
 
-.character-card__ready.ant-typography {
-  align-self: flex-end;
-  color: var(--color-accent-primary);
-  font-size: 0.75rem;
+.character-card__progress .ant-progress-text {
+  font-size: 0.42rem;
 }

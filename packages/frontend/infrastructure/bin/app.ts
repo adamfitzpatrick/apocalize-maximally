@@ -34,14 +34,14 @@ if (
   );
 }
 
-const environmentDomainName = `${environment}.${normalizedDomain}`;
+const environmentDomainName =
+  environment === 'prd' ? normalizedDomain : `${environment}.${normalizedDomain}`;
 const app = new cdk.App();
 new FrontendStack(app, `FrontendStack-${environment}`, {
   env: { account, region: 'us-east-1' },
   stackName: `apocalize-${environment}-frontend`,
   environment,
   domainName: environmentDomainName,
-  baseDomainName: normalizedDomain,
   hostedZoneId,
   hostedZoneName
 });
