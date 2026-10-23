@@ -52,9 +52,11 @@ stack outputs to `VITE_API_URL`, `VITE_COGNITO_USER_POOL_ID`, and
 
 ### Frontend
 
-Set `AWS_ACCOUNT_ID`, `FRONTEND_DOMAIN_NAME`, `HOSTED_ZONE_ID`, and
-`HOSTED_ZONE_NAME` in `packages/frontend/.env`. The frontend CDK stack runs in
-`us-east-1`, as required for CloudFront certificates. Set `VITE_API_URL` to the
+Set `AWS_ACCOUNT_ID`, `AWS_REGION`, `FRONTEND_DOMAIN_NAME`, `HOSTED_ZONE_ID`,
+`HOSTED_ZONE_NAME`, and `CLOUDFRONT_CERTIFICATE_ARN` in `packages/frontend/.env`.
+The frontend is one stack in `AWS_REGION`, including the site bucket. It does not
+create a CloudFront certificate. `CLOUDFRONT_CERTIFICATE_ARN` must be an existing
+certificate in `us-east-1` that covers the site name. Set `VITE_API_URL` to the
 backend API URL and the two `VITE_COGNITO_*` values from the backend stack
 before building. `FRONTEND_DOMAIN_NAME` is the production site name. Dev is
 served at `dev.<FRONTEND_DOMAIN_NAME>`; production is served at
@@ -83,17 +85,16 @@ yarn synth:frontend
 
 Bootstrap each target AWS environment with AWS CDK before the first deploy.
 Deploy the backend before the frontend so the frontend build can use the API URL.
-The frontend certificate stack is in `us-east-1`, so bootstrap that region as well
-as `AWS_REGION` when they differ.
+S3 buckets are created in `AWS_REGION`.
 
 ### Continuous deployment
 
-A push to `main` deploys the dev environment. You can also run it by hand from the Actions tab with **Run workflow** on `main`. The workflow deploys the asset
+A push to `main` deploys the dev environment. You can also run it by hand from the Actions tab with **Run workflow**, and the branch must be `main`. The workflow deploys the asset
 stack, the backend, the frontend, and then writes the game-data JSON into the
 dev table. It reads the backend stack outputs and passes them to the frontend
 build, so those values are not stored in GitHub.
 
-Production does not follow a successful dev deployment. After you accept a commit, run **Deploy prd** from the Actions tab on that same commit. The workflow stops unless **Deploy dev** has already succeeded for it, then deploys the prd stacks and writes game data into the prd table.
+Production does not follow a successful dev deployment. After you accept a commit on `main`, run **Deploy prd** from the Actions tab with that branch selected. The workflow stops unless the branch is `main` and **Deploy dev** has already succeeded for that commit, then deploys the prd stacks and writes game data into the prd table.
 
 Create these variables on the GitHub Actions environment named `dev`, and again on the environment named `prd`:
 
@@ -102,6 +103,7 @@ Create these variables on the GitHub Actions environment named `dev`, and again 
 - `FRONTEND_DOMAIN_NAME`
 - `HOSTED_ZONE_ID`
 - `HOSTED_ZONE_NAME`
+- `CLOUDFRONT_CERTIFICATE_ARN`
 
 Create a secret named `AWS_DEPLOY_ROLE_ARN` on each of those environments. Its value
 is an IAM role that GitHub Actions can assume with OIDC. Because each workflow
@@ -110,8 +112,8 @@ selects its environment, the role trust policy must allow
 (`repo:adamfitzpatrick/apocalize-maximally:environment:dev` or
 `repo:adamfitzpatrick/apocalize-maximally:environment:prd`) and audience
 `sts.amazonaws.com`. A trust condition on `ref:refs/heads/main` does not match
-that token. The role must be able to deploy that environment's stacks in both
-`AWS_REGION` and `us-east-1`.
+that token. The role must be able to deploy that environment's stacks in
+`AWS_REGION`.
 
 ## Local frontend development
 

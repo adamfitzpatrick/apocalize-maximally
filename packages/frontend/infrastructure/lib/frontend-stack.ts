@@ -14,6 +14,8 @@ interface FrontendStackProps extends cdk.StackProps {
   domainName: string;
   hostedZoneId: string;
   hostedZoneName: string;
+  /** Existing us-east-1 certificate. This stack does not create or delete it. */
+  certificateArn: string;
 }
 
 function recordNameInZone(domainName: string, zoneName: string): string | undefined {
@@ -42,10 +44,6 @@ export class FrontendStack extends cdk.Stack {
         zoneName: props.hostedZoneName
       }
     );
-    const certificate = new acm.Certificate(this, 'SiteCertificate', {
-      domainName: props.domainName,
-      validation: acm.CertificateValidation.fromDns(hostedZone)
-    });
     const bucket = new s3.Bucket(this, 'SiteBucket', {
       bucketName: `${prefix}-apocalize-frontend-${props.env?.account}-${props.env?.region}`,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
@@ -58,7 +56,11 @@ export class FrontendStack extends cdk.Stack {
       defaultRootObject: 'index.html',
       comment: `${prefix}-apocalize-frontend`,
       domainNames: [props.domainName],
-      certificate,
+      certificate: acm.Certificate.fromCertificateArn(
+        this,
+        'SiteCertificate',
+        props.certificateArn
+      ),
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
       defaultBehavior: {
         origin: origins.S3BucketOrigin.withOriginAccessControl(bucket),

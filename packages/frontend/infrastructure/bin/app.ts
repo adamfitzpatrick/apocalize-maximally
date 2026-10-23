@@ -13,13 +13,22 @@ if (environmentValue !== 'dev' && environmentValue !== 'prd') {
 }
 const environment = environmentValue;
 const account = process.env.AWS_ACCOUNT_ID;
+const region = process.env.AWS_REGION;
 const domainName = process.env.FRONTEND_DOMAIN_NAME;
 const hostedZoneId = process.env.HOSTED_ZONE_ID;
 const hostedZoneName = process.env.HOSTED_ZONE_NAME;
+const certificateArn = process.env.CLOUDFRONT_CERTIFICATE_ARN;
 
-if (!account || !domainName || !hostedZoneId || !hostedZoneName) {
+if (
+  !account ||
+  !region ||
+  !domainName ||
+  !hostedZoneId ||
+  !hostedZoneName ||
+  !certificateArn
+) {
   throw new Error(
-    'Set AWS_ACCOUNT_ID, FRONTEND_DOMAIN_NAME, HOSTED_ZONE_ID, and HOSTED_ZONE_NAME in packages/frontend/.env.'
+    'Set AWS_ACCOUNT_ID, AWS_REGION, FRONTEND_DOMAIN_NAME, HOSTED_ZONE_ID, HOSTED_ZONE_NAME, and CLOUDFRONT_CERTIFICATE_ARN in packages/frontend/.env.'
   );
 }
 
@@ -38,10 +47,11 @@ const environmentDomainName =
   environment === 'prd' ? normalizedDomain : `${environment}.${normalizedDomain}`;
 const app = new cdk.App();
 new FrontendStack(app, `FrontendStack-${environment}`, {
-  env: { account, region: 'us-east-1' },
+  env: { account, region },
   stackName: `apocalize-${environment}-frontend`,
   environment,
   domainName: environmentDomainName,
   hostedZoneId,
-  hostedZoneName
+  hostedZoneName,
+  certificateArn
 });

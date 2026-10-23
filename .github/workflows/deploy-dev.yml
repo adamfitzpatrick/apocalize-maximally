@@ -27,7 +27,14 @@ jobs:
       FRONTEND_DOMAIN_NAME: ${{ vars.FRONTEND_DOMAIN_NAME }}
       HOSTED_ZONE_ID: ${{ vars.HOSTED_ZONE_ID }}
       HOSTED_ZONE_NAME: ${{ vars.HOSTED_ZONE_NAME }}
+      CLOUDFRONT_CERTIFICATE_ARN: ${{ vars.CLOUDFRONT_CERTIFICATE_ARN }}
     steps:
+      - name: Require the main branch
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error title=Branch not allowed::Deployments only run from main (selected ${{ github.ref_name }})."
+          exit 1
+
       - name: Check out the repository
         uses: actions/checkout@v5
 
@@ -62,6 +69,7 @@ jobs:
           require FRONTEND_DOMAIN_NAME "$FRONTEND_DOMAIN_NAME" "Add the FRONTEND_DOMAIN_NAME variable to the dev environment."
           require HOSTED_ZONE_ID "$HOSTED_ZONE_ID" "Add the HOSTED_ZONE_ID variable to the dev environment."
           require HOSTED_ZONE_NAME "$HOSTED_ZONE_NAME" "Add the HOSTED_ZONE_NAME variable to the dev environment."
+          require CLOUDFRONT_CERTIFICATE_ARN "$CLOUDFRONT_CERTIFICATE_ARN" "Add the CLOUDFRONT_CERTIFICATE_ARN variable to the dev environment."
           require AWS_DEPLOY_ROLE_ARN "$AWS_DEPLOY_ROLE_ARN" "Add the AWS_DEPLOY_ROLE_ARN secret to the dev environment."
           if [ "$missing" -ne 0 ]; then
             exit 1
