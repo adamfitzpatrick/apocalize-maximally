@@ -117,6 +117,13 @@ export function CharacterCreationProvider({
       if (!isCoreGameDataReady(coreGameData) || !character) {
         return;
       }
+      if (
+        target === 'secondaryArchetype' &&
+        selection &&
+        selection === character.characterRecord.primaryArchetype
+      ) {
+        return;
+      }
       const nextRecord = {
         ...character.characterRecord,
         [target]: selection
@@ -126,6 +133,16 @@ export function CharacterCreationProvider({
         selection !== character.characterRecord.primaryArchetype
       ) {
         nextRecord.primaryArchetypeSpecialAbility = '';
+        if (
+          selection &&
+          selection === character.characterRecord.secondaryArchetype
+        ) {
+          nextRecord.secondaryArchetype = '';
+          nextRecord.archetypeSkills = {
+            primary: character.characterRecord.archetypeSkills?.primary ?? [],
+            secondary: []
+          };
+        }
       }
       if (
         target === 'personalApocalypse' &&

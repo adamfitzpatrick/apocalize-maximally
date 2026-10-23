@@ -65,6 +65,16 @@ function clearGearSelections(record: CharacterRecord): CharacterRecord {
   return nextRecord;
 }
 
+function hasGearSelections(record: CharacterRecord): boolean {
+  if ((record.gear ?? []).length > 0 || (record.freeChoiceGear ?? []).length > 0) {
+    return true;
+  }
+  if ((record.customGear ?? []).some((row) => !isBlankCustomGearRow(row))) {
+    return true;
+  }
+  return Boolean(record.startingWeapon || record.startingGear);
+}
+
 function slugCounts(items: { slug: string }[]) {
   const counts = new Map<string, number>();
   for (const item of items) {
@@ -146,7 +156,7 @@ export function StartingGearMethod() {
     if (!record || next === method) {
       return;
     }
-    if (storedMethod) {
+    if (hasGearSelections(record)) {
       setPendingMethod(next);
       return;
     }

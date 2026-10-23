@@ -186,20 +186,22 @@ function Status({
   return (
     <div className="other-data__status">
       <div className="other-data__resolve">
-        <Typography.Title level={4}>Resolve DMG</Typography.Title>
-        <Table
-          headers={[]}
-          rows={RESOLVE_DAMAGE_ROWS.map((row) => [
-            row.label,
-            <Checkbox
-              key={row.key}
-              checked={damage[row.key]}
-              onChange={(event) =>
-                onResolveDamageChange({ ...damage, [row.key]: event.target.checked })
-              }
-            />
-          ])}
-        />
+        <div className="other-data__resolve-body">
+          <Typography.Title level={4}>Resolve DMG</Typography.Title>
+          <Table
+            headers={[]}
+            rows={RESOLVE_DAMAGE_ROWS.map((row) => [
+              row.label,
+              <Checkbox
+                key={row.key}
+                checked={damage[row.key]}
+                onChange={(event) =>
+                  onResolveDamageChange({ ...damage, [row.key]: event.target.checked })
+                }
+              />
+            ])}
+          />
+        </div>
         <Tooltip title={HUNGER_TOOLTIP}>
           <div className="other-data__hunger">
             <Typography.Text>Hunger</Typography.Text>
@@ -214,6 +216,9 @@ function Status({
         </Tooltip>
       </div>
       <div className="other-data__tracked">
+        <Typography.Title className="other-data__backpack-title" level={4} style={{ marginBottom: 0 }}>
+          Backpack
+        </Typography.Title>
         <div className="other-data__stat-columns">
           <div className="other-data__stat-column">
             <CountStat
@@ -247,8 +252,12 @@ function Status({
               : 'other-data__encumbrance'
           }
         >
-          <Typography.Text strong>Encumbrance</Typography.Text>
-          <Typography.Text>-1 Initiative, disadv to dodge, 1/2 move</Typography.Text>
+          <Typography.Text className="other-data__encumbrance-title" strong>
+            Encumbrance
+          </Typography.Text>
+          <Typography.Text className="other-data__encumbrance-effect">
+            -1 Initiative, disadv to dodge, 1/2 move
+          </Typography.Text>
           <Typography.Text>Total CP: {character.gearCp}</Typography.Text>
         </div>
       </div>

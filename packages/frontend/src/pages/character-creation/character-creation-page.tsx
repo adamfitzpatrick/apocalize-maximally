@@ -1,6 +1,7 @@
 import { Alert, Button, Flex, Spin } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ArrowIcon } from '../../components/atom/arrow-icon-button/arrow-icon-button';
 import { CreationStage } from '../../entities/character';
 import { CharacterCreationPhase } from '../../components/organisms/character-creation-phase/character-creation-phase';
 import { useCharacterCreation } from '../../contexts/character-creation-provider';
@@ -90,6 +91,10 @@ export default function CharacterCreation() {
       return;
     }
     const phase = config.phases[stage[0] - 1];
+    const step = phase?.steps[stage[1] - 1];
+    if (!phase || !step?.isComplete(draft)) {
+      return;
+    }
     const isFinalStep =
       stage[0] === config.phases.length && stage[1] === phase.steps.length;
     if (isFinalStep) {
@@ -162,8 +167,12 @@ export default function CharacterCreation() {
 
   return (
     <section className="character-creation-page">
-      <Button onClick={() => navigate('/')} className="character-creation-back">
-        Back to characters
+      <Button
+        className="character-creation-back"
+        icon={<ArrowIcon left inline />}
+        onClick={() => navigate('/')}
+      >
+        Back
       </Button>
       {error && !draft && <Alert message={error} type="error" showIcon />}
       {(loading || (!draft && !error)) && (

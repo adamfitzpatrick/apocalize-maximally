@@ -44,6 +44,7 @@ function SkillPillGroup({
   options,
   selectedSkills,
   canSelectSkill,
+  isUnavailable,
   source,
   onToggle,
   repeatable = false,
@@ -52,6 +53,7 @@ function SkillPillGroup({
   options: SelectableOption[];
   selectedSkills: string[];
   canSelectSkill: (skillName: string) => boolean;
+  isUnavailable?: (skillName: string) => boolean;
   source: SkillSelectionSource;
   onToggle: (
     skillName: string,
@@ -70,6 +72,7 @@ function SkillPillGroup({
           (name) => name === option.name
         ).length;
         const selected = selectionCount > 0;
+        const unavailable = isUnavailable?.(option.name) ?? false;
         const proficiency = showProficiency
           ? (character?.getSkillProficiencyMarker(option.name) ?? null)
           : null;
@@ -80,9 +83,13 @@ function SkillPillGroup({
               description={option.description}
               proficiency={proficiency}
               selected={selected}
-              disabled={!canSelectSkill(option.name)}
-              onClick={() =>
-                onToggle(option.name, source, repeatable ? 'add' : 'toggle')
+              unavailable={unavailable}
+              disabled={!unavailable && !canSelectSkill(option.name)}
+              onClick={
+                unavailable
+                  ? undefined
+                  : () =>
+                      onToggle(option.name, source, repeatable ? 'add' : 'toggle')
               }
             />
             {repeatable && selected && (
@@ -187,6 +194,9 @@ export function SkillSelector({ source, instructions }: SkillSelectorProps) {
               Boolean(character?.isApocalypseSkillEligible(skillName)) &&
               (selectedSkills.includes(skillName) ||
                 Boolean(character?.canSelectMoreApocalypseSkills))
+            }
+            isUnavailable={(skillName) =>
+              !character?.isApocalypseSkillEligible(skillName)
             }
             source="apocalypse"
             onToggle={updateSkills}

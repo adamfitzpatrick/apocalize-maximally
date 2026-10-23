@@ -15,6 +15,11 @@
   transform: scaleX(-1);
 }
 
+.arrow-icon-button__mark.arrow-icon-button__mark--inline {
+  width: 0.55rem;
+  height: 1rem;
+}
+
 .arrow-icon-button__mark--disabled {
   opacity: 0.3;
 }

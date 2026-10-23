@@ -1,12 +1,30 @@
 import { InputNumber, Typography } from 'antd';
+import { useEffect, useState } from 'react';
 import { AgeCategory, type StatModifiers } from '../../../api/core-game-data';
 import { useCharacterCreation } from '../../../contexts/character-creation-context';
+import { MAX_CHARACTER_AGE } from '../../../entities/character';
 import Table from '../table/table';
 
 import './character-creation-step.css';
 
 interface AgeSelectorProps {
   ageCategories: AgeCategory[];
+}
+
+function useNarrowScreen() {
+  const [narrow, setNarrow] = useState(() =>
+    window.matchMedia('(max-width: 520px)').matches
+  );
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 520px)');
+    const update = () => setNarrow(query.matches);
+    update();
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+
+  return narrow;
 }
 
 const ageTableStatKeys: (keyof StatModifiers)[] = [
@@ -36,6 +54,7 @@ export function AgeSelectionSummary() {
 
 export default function AgeSelector({ ageCategories }: AgeSelectorProps) {
   const { character, updateAgeSelection } = useCharacterCreation();
+  const narrow = useNarrowScreen();
   const headers = [
     'Age',
     ...ageTableStatKeys.map((key) => key.toUpperCase()),
@@ -43,7 +62,7 @@ export default function AgeSelector({ ageCategories }: AgeSelectorProps) {
   ];
   const rows = ageCategories.map((ageCategory) => [
     ageCategory.range,
-    ageCategory.category,
+    ...(narrow ? [] : [ageCategory.category]),
     ...ageTableStatKeys.map((key) => ageCategory.modifiers[key]),
     ageCategory.skillProf
   ]);
@@ -51,21 +70,25 @@ export default function AgeSelector({ ageCategories }: AgeSelectorProps) {
   return (
     <>
       <Table
+        className="age-category-table"
         caption="Age categories"
         headers={headers}
         rows={rows}
-        spanFirstHeaderAcrossTwoColumns
+        spanFirstHeaderAcrossTwoColumns={!narrow}
         highlightSignedNumbers
       />
       <label className="character-creation-field">
         Age
         <InputNumber
           min={1}
-          value={character?.characterRecord.age}
+          max={MAX_CHARACTER_AGE}
+          value={
+            character?.characterRecord.age
+              ? character.characterRecord.age
+              : null
+          }
           onChange={(value) => {
-            if (typeof value === 'number') {
-              updateAgeSelection(value);
-            }
+            updateAgeSelection(typeof value === 'number' ? value : 0);
           }}
         />
       </label>

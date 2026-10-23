@@ -1,5 +1,5 @@
-import { Avatar, Button, Card, Flex, Input, Popover, Progress, Typography } from 'antd';
-import { useState, type KeyboardEvent, type MouseEvent } from 'react';
+import { Button, Card, Flex, Input, Popover, Progress, Typography } from 'antd';
+import { useEffect, useState, type KeyboardEvent, type MouseEvent } from 'react';
 import avatarPlaceholder from './character-avatar-placeholder.svg';
 import './character-card.css';
 
@@ -27,6 +27,23 @@ export interface CharacterCardProps {
   creationProgress: number;
   onClick: () => void;
   onDelete: () => Promise<void> | void;
+}
+
+function CharacterAvatar({ src }: { src?: string }) {
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    setFailed(false);
+  }, [src]);
+
+  return (
+    <img
+      className="character-card__avatar"
+      src={!failed && src ? src : avatarPlaceholder}
+      alt=""
+      onError={() => setFailed(true)}
+    />
+  );
 }
 
 export default function CharacterCard({
@@ -139,13 +156,7 @@ export default function CharacterCard({
       </Popover>
       <Flex className="character-card__content" vertical gap="small">
         <Flex align="flex-start" gap="small">
-          <Avatar
-            className="character-card__avatar"
-            src={avatar || avatarPlaceholder}
-            alt=""
-            shape="square"
-            size={64}
-          />
+          <CharacterAvatar src={avatar} />
           <Flex className="character-card__details" vertical gap={4}>
             <Typography.Title className="character-card__name" level={4}>
               {name}

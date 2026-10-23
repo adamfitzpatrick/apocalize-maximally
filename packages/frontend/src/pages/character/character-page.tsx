@@ -1,4 +1,5 @@
 import { Alert, Button, Descriptions, Flex, Popconfirm, Spin, Typography } from 'antd';
+import { ArrowIcon } from '../../components/atom/arrow-icon-button/arrow-icon-button';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BaseStats, BaseStatsMobile } from '../../components/organisms/base-stats/base-stats';
@@ -13,9 +14,30 @@ import {
 } from '../../api/characters';
 import { useAuth } from '../../contexts/auth-context';
 import { useCoreGameData } from '../../contexts/core-game-data-context';
-import Character from '../../entities/character';
+import Character, {
+  PSYCHIC_POWER_LUCKY_MUTATION
+} from '../../entities/character';
+import {
+  buildCreationConfig,
+  incompleteCreationPath
+} from '../character-creation/creation-config';
 
 import './character-page.css';
+
+function EditIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"
+      />
+    </svg>
+  );
+}
 
 function displayValue(value?: string | null) {
   return value?.trim() ? value : '—';
@@ -120,6 +142,49 @@ export default function CharacterPage() {
     coreGameData?.startingGear
   ]);
 
+  useEffect(() => {
+    if (
+      !character ||
+      !coreGameData ||
+      coreGameData.loading ||
+      !coreGameData.archetypes ||
+      !coreGameData.apocalypses ||
+      !coreGameData.ages ||
+      !coreGameData.skills ||
+      !coreGameData.specialAbilities ||
+      !coreGameData.luckyMutations ||
+      !coreGameData.negativeTraits ||
+      !coreGameData.startingGear
+    ) {
+      return;
+    }
+    const path = incompleteCreationPath(
+      character,
+      buildCreationConfig(
+        coreGameData.archetypes,
+        coreGameData.apocalypses,
+        coreGameData.ages,
+        character.luckyMutation === PSYCHIC_POWER_LUCKY_MUTATION
+      )
+    );
+    if (path) {
+      navigate(path, { replace: true });
+    }
+  }, [
+    character,
+    coreGameData,
+    coreGameData?.loading,
+    coreGameData?.archetypes,
+    coreGameData?.apocalypses,
+    coreGameData?.ages,
+    coreGameData?.skills,
+    coreGameData?.specialAbilities,
+    coreGameData?.luckyMutations,
+    coreGameData?.negativeTraits,
+    coreGameData?.startingGear,
+    navigate
+  ]);
+
   if (loading || coreGameData?.loading) {
     return (
       <Flex className="characters-loading" justify="center">
@@ -187,7 +252,9 @@ export default function CharacterPage() {
     <>
     <section className="character-page character-page--wide">
       <Flex justify="space-between" align="center" gap={12} wrap>
-        <Button onClick={() => navigate('/')}>Back to characters</Button>
+        <Button icon={<ArrowIcon left inline />} onClick={() => navigate('/')}>
+          Back
+        </Button>
         <Flex gap={8}>
           {!record.playing && (
             <Popconfirm
@@ -201,14 +268,14 @@ export default function CharacterPage() {
           )}
           {!record.playing && (
             <Button
+              aria-label="Edit Character"
+              icon={<EditIcon />}
               onClick={() =>
                 navigate(
                   `/character-creation/${encodeURIComponent(record.id)}`
                 )
               }
-            >
-              Edit Character
-            </Button>
+            />
           )}
         </Flex>
       </Flex>
@@ -268,7 +335,9 @@ export default function CharacterPage() {
     </section>
     <section className="character-page character-page--phone">
       <Flex justify="space-between" align="center" gap={12} wrap>
-        <Button onClick={() => navigate('/')}>Back to characters</Button>
+        <Button icon={<ArrowIcon left inline />} onClick={() => navigate('/')}>
+          Back
+        </Button>
         <Flex gap={8}>
           {!record.playing && (
             <Popconfirm
@@ -277,19 +346,19 @@ export default function CharacterPage() {
               cancelText="Cancel"
               onConfirm={() => persistCurrents({ playing: true })}
             >
-              <Button>Play Character</Button>
+              <Button type="primary">Play Character</Button>
             </Popconfirm>
           )}
           {!record.playing && (
             <Button
+              aria-label="Edit Character"
+              icon={<EditIcon />}
               onClick={() =>
                 navigate(
                   `/character-creation/${encodeURIComponent(record.id)}`
                 )
               }
-            >
-              Edit Character
-            </Button>
+            />
           )}
         </Flex>
       </Flex>

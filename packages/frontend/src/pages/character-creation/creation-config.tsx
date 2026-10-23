@@ -73,7 +73,8 @@ export function buildCreationConfig(
               </InformationDisplay>
             ),
             collapsedComponent: null,
-            isComplete: () => true
+            isComplete: () => true,
+            tracksProgress: false
           },
           {
             title: 'Select a primary archetype',
@@ -97,7 +98,10 @@ export function buildCreationConfig(
               />
             ),
             collapsedComponent: (<MajorChoiceSelectorSummary target="secondaryArchetype" />),
-            isComplete: (character) => Boolean(character.secondaryArchetype)
+            isComplete: (character) =>
+              Boolean(character.secondaryArchetype) &&
+              character.secondaryArchetype?.name !==
+                character.primaryArchetype?.name
           },
           {
             title: 'Select a personal apocalypse',
@@ -146,7 +150,8 @@ export function buildCreationConfig(
             ),
             collapsedComponent: null,
             // 0–2 combat skills are valid; unused slots become bonus archetype picks.
-            isComplete: () => true
+            isComplete: () => true,
+            tracksProgress: false
           },
           {
             title: 'Choose Archetype Skills',
@@ -181,7 +186,8 @@ export function buildCreationConfig(
             title: 'Review derived stats',
             fullComponent: <DerivedStatsReview />,
             collapsedComponent: null,
-            isComplete: () => true
+            isComplete: () => true,
+            tracksProgress: false
           }
         ]
       },
@@ -276,12 +282,14 @@ export function buildCreationConfig(
             title: 'Choose a Method',
             fullComponent: <StartingGearMethod />,
             collapsedComponent: null,
-            isComplete: () => true
+            isComplete: () => true,
+            tracksProgress: false
           },
           {
             title: 'Select Starting Gear',
             fullComponent: <StartingGearSelection />,
             collapsedComponent: null,
+            hideUntilReached: true,
             isComplete: (character) =>
               character.characterRecord.startingGearMethod === 'free-choice'
                 ? isFreeChoiceSelectionComplete(character)
@@ -291,6 +299,32 @@ export function buildCreationConfig(
       }
     ]
   };
+}
+
+export function creationProgressPercent(
+  character: Character,
+  config: CreationConfigData
+): number {
+  const steps = config.phases.flatMap((phase) =>
+    phase.steps.filter((step) => step.tracksProgress !== false)
+  );
+  if (steps.length === 0) {
+    return 0;
+  }
+  const completed = steps.filter((step) => step.isComplete(character)).length;
+  return Math.round((completed / steps.length) * 100);
+}
+
+export function incompleteCreationPath(
+  character: Character,
+  config: CreationConfigData
+): string | null {
+  const stage = earliestIncompleteCreationStage(character, config);
+  if (!stage) {
+    return null;
+  }
+  const id = encodeURIComponent(character.characterRecord.id);
+  return `/character-creation/${id}?phase=${stage[0]}&step=${stage[1]}`;
 }
 
 export function earliestIncompleteCreationStage(

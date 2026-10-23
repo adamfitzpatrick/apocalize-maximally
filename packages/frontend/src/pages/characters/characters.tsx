@@ -14,39 +14,14 @@ import type { CharacterCardProps } from '../../components/molecules/character-ca
 import Character, { PSYCHIC_POWER_LUCKY_MUTATION } from '../../entities/character';
 import {
   buildCreationConfig,
-  earliestIncompleteCreationStage
+  creationProgressPercent,
+  incompleteCreationPath
 } from '../character-creation/creation-config';
 
-const characterCreationFields = [
-  'name',
-  'primaryArchetype',
-  'secondaryArchetype',
-  'personalApocalypse',
-  'age',
-  'investedDevelopmentPoints',
-  'skills',
-  'armor',
-  'health',
-  'infection',
-  'experience'
-];
-
-function getCharacterCreationProgress(character: CharacterRecord): number {
-  const completedFields = characterCreationFields.filter((field) => {
-    const value = character[field];
-    return typeof value === 'string'
-      ? value.trim().length > 0
-      : value !== undefined && value !== null;
-  }).length;
-
-  return Math.round((completedFields / characterCreationFields.length) * 100);
-}
-
-function openCharacterPath(
+function creationState(
   record: CharacterRecord,
   coreGameData: NonNullable<ReturnType<typeof useCoreGameData>>
 ) {
-  const id = encodeURIComponent(record.id);
   if (
     !coreGameData.archetypes ||
     !coreGameData.apocalypses ||
@@ -58,23 +33,49 @@ function openCharacterPath(
     !coreGameData.startingGear ||
     !coreGameData.bugOutKits
   ) {
-    return `/character/${id}`;
+    return null;
   }
 
   const character = new Character(coreGameData, record);
-  const stage = earliestIncompleteCreationStage(
+  return {
     character,
-    buildCreationConfig(
+    config: buildCreationConfig(
       coreGameData.archetypes,
       coreGameData.apocalypses,
       coreGameData.ages,
       character.luckyMutation === PSYCHIC_POWER_LUCKY_MUTATION
     )
-  );
-  if (!stage) {
-    return `/character/${id}`;
+  };
+}
+
+function openCharacterPath(
+  record: CharacterRecord,
+  coreGameData: NonNullable<ReturnType<typeof useCoreGameData>>
+) {
+  const id = encodeURIComponent(record.id);
+  const state = creationState(record, coreGameData);
+  if (!state) {
+    const phase = record.creationStage?.phase ?? 1;
+    const step = record.creationStage?.step ?? 1;
+    return `/character-creation/${id}?phase=${phase}&step=${step}`;
   }
-  return `/character-creation/${id}?phase=${stage[0]}&step=${stage[1]}`;
+  return (
+    incompleteCreationPath(state.character, state.config) ?? `/character/${id}`
+  );
+}
+
+function getCharacterCreationProgress(
+  record: CharacterRecord,
+  coreGameData: NonNullable<ReturnType<typeof useCoreGameData>> | null
+) {
+  if (!coreGameData) {
+    return 0;
+  }
+  const state = creationState(record, coreGameData);
+  if (!state) {
+    return 0;
+  }
+  return creationProgressPercent(state.character, state.config);
 }
 
 export default function CharactersPage() {
@@ -192,12 +193,15 @@ export default function CharactersPage() {
               secondaryArchetype: character.secondaryArchetype,
               personalApocalypse: character.personalApocalypse,
               avatar: character.avatar,
-              creationProgress: getCharacterCreationProgress(character),
+              creationProgress: getCharacterCreationProgress(
+                character,
+                coreGameData
+              ),
               onClick: () =>
                 navigate(
                   coreGameData
                     ? openCharacterPath(character, coreGameData)
-                    : `/character/${encodeURIComponent(character.id)}`
+                    : `/character-creation/${encodeURIComponent(character.id)}?phase=${character.creationStage?.phase ?? 1}&step=${character.creationStage?.step ?? 1}`
                 ),
               onDelete: () => handleDeleteCharacter(character.id)
             };

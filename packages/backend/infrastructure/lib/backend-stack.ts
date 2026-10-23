@@ -1,11 +1,14 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as path from 'node:path';
 
 interface BackendStackProps extends cdk.StackProps {
@@ -98,6 +101,8 @@ export class BackendStack extends cdk.Stack {
       ),
       handler: 'index.handler',
       runtime: lambda.Runtime.NODEJS_22_X,
+      timeout: cdk.Duration.seconds(15),
+      memorySize: 256,
       environment: {
         TABLE_NAME: table.tableName,
         FRONTEND_ORIGINS: JSON.stringify(allowedFrontendOrigins),
@@ -107,6 +112,39 @@ export class BackendStack extends cdk.Stack {
     });
 
     table.grantReadWriteData(handler);
+
+    const characterImagesBucket = new s3.Bucket(this, 'CharacterImagesBucket', {
+      bucketName: `${prefix}-apocalize-character-images-${this.account}-${this.region}`,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      enforceSSL: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN
+    });
+    const characterImagesDistribution = new cloudfront.Distribution(
+      this,
+      'CharacterImagesDistribution',
+      {
+        comment: `${prefix}-apocalize-character-images`,
+        defaultBehavior: {
+          origin: origins.S3BucketOrigin.withOriginAccessControl(
+            characterImagesBucket
+          ),
+          viewerProtocolPolicy:
+            cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+        }
+      }
+    );
+    characterImagesBucket.grantPut(handler);
+    characterImagesBucket.grantDelete(handler);
+    characterImagesBucket.grantRead(handler);
+    handler.addEnvironment(
+      'CHARACTER_IMAGES_BUCKET',
+      characterImagesBucket.bucketName
+    );
+    handler.addEnvironment(
+      'CHARACTER_IMAGES_BASE_URL',
+      `https://${characterImagesDistribution.distributionDomainName}`
+    );
 
     const api = new apigateway.RestApi(this, 'ItemsApi', {
       restApiName: `${prefix}-Apocalize Items API`,
@@ -190,6 +228,10 @@ export class BackendStack extends cdk.Stack {
     item.addMethod('PUT', integration, authorizedMethodOptions);
     item.addMethod('DELETE', integration, authorizedMethodOptions);
 
+    api.root
+      .addResource('bug-reports')
+      .addMethod('POST', integration, authorizedMethodOptions);
+
     const admin = api.root.addResource('admin');
     const adminCampaign = admin.addResource('campaign');
     adminCampaign.addMethod('GET', integration, authorizedMethodOptions);
@@ -205,6 +247,9 @@ export class BackendStack extends cdk.Stack {
     character.addMethod('GET', integration, authorizedMethodOptions);
     character.addMethod('PUT', integration, authorizedMethodOptions);
     character.addMethod('DELETE', integration, authorizedMethodOptions);
+    const characterImage = character.addResource('image');
+    characterImage.addMethod('POST', integration, authorizedMethodOptions);
+    characterImage.addMethod('DELETE', integration, authorizedMethodOptions);
 
     new cdk.CfnOutput(this, 'ApiUrl', {
       value: api.url,

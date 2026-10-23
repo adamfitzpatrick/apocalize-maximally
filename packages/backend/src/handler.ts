@@ -7,6 +7,12 @@ import {
   QueryCommand
 } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import {
+  DeleteObjectsCommand,
+  ListObjectsV2Command,
+  PutObjectCommand,
+  S3Client
+} from '@aws-sdk/client-s3';
 import type {
   APIGatewayProxyEvent,
   APIGatewayProxyResult
@@ -22,13 +28,35 @@ import gear from '../../data-management/data/gear.json';
 import bugOutKits from '../../data-management/data/bug-out-kits.json';
 import otherRules from '../../data-management/data/other-rules.json';
 const client = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+const s3 = new S3Client({
+  requestChecksumCalculation: 'WHEN_REQUIRED',
+  responseChecksumValidation: 'WHEN_REQUIRED'
+});
 const tableName = process.env.TABLE_NAME ?? '';
 const frontendOriginsValue = process.env.FRONTEND_ORIGINS ?? '';
 const itemsIndexName = process.env.ITEMS_INDEX_NAME ?? '';
+const characterImagesBucket = process.env.CHARACTER_IMAGES_BUCKET ?? '';
+const characterImagesBaseUrl = (
+  process.env.CHARACTER_IMAGES_BASE_URL ?? ''
+).replace(/\/+$/, '');
 
-if (!tableName || !frontendOriginsValue || !itemsIndexName) {
+const CHARACTER_IMAGE_EXTENSIONS: Record<string, string> = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/gif': 'gif'
+};
+const MAX_CHARACTER_IMAGE_BYTES = 4 * 1024 * 1024;
+
+if (
+  !tableName ||
+  !frontendOriginsValue ||
+  !itemsIndexName ||
+  !characterImagesBucket ||
+  !characterImagesBaseUrl
+) {
   throw new Error(
-    'TABLE_NAME, FRONTEND_ORIGINS, and ITEMS_INDEX_NAME must be configured.'
+    'TABLE_NAME, FRONTEND_ORIGINS, ITEMS_INDEX_NAME, CHARACTER_IMAGES_BUCKET, and CHARACTER_IMAGES_BASE_URL must be configured.'
   );
 }
 
@@ -545,6 +573,251 @@ async function getCharacterCreationData(
   return storedData;
 }
 
+function characterImagePrefix(userId: string, characterId: string): string {
+  return `characters/${userId}/${characterId}/`;
+}
+
+function matchesImageSignature(contentType: string, bytes: Buffer): boolean {
+  if (contentType === 'image/jpeg') {
+    return (
+      bytes.length >= 3 &&
+      bytes[0] === 0xff &&
+      bytes[1] === 0xd8 &&
+      bytes[2] === 0xff
+    );
+  }
+  if (contentType === 'image/png') {
+    return (
+      bytes.length >= 8 &&
+      bytes[0] === 0x89 &&
+      bytes[1] === 0x50 &&
+      bytes[2] === 0x4e &&
+      bytes[3] === 0x47 &&
+      bytes[4] === 0x0d &&
+      bytes[5] === 0x0a &&
+      bytes[6] === 0x1a &&
+      bytes[7] === 0x0a
+    );
+  }
+  if (contentType === 'image/gif') {
+    if (bytes.length < 6) {
+      return false;
+    }
+    const header = bytes.subarray(0, 6).toString('ascii');
+    return header === 'GIF87a' || header === 'GIF89a';
+  }
+  if (contentType === 'image/webp') {
+    return (
+      bytes.length >= 12 &&
+      bytes.subarray(0, 4).toString('ascii') === 'RIFF' &&
+      bytes.subarray(8, 12).toString('ascii') === 'WEBP'
+    );
+  }
+  return false;
+}
+
+function readCharacterImage(
+  body: string | null
+):
+  | { ok: true; contentType: string; extension: string; bytes: Buffer }
+  | { ok: false; message: string } {
+  const invalid = {
+    ok: false as const,
+    message: 'Choose a JPEG, PNG, WebP, or GIF image.'
+  };
+  const data = parseJsonObject(body);
+  if (
+    !data ||
+    typeof data.contentType !== 'string' ||
+    typeof data.image !== 'string'
+  ) {
+    return invalid;
+  }
+  const extension = CHARACTER_IMAGE_EXTENSIONS[data.contentType];
+  if (!extension || data.image.length % 4 !== 0) {
+    return invalid;
+  }
+  if (!/^[A-Za-z0-9+/]+={0,2}$/.test(data.image)) {
+    return invalid;
+  }
+  const bytes = Buffer.from(data.image, 'base64');
+  if (bytes.length === 0) {
+    return invalid;
+  }
+  if (bytes.length > MAX_CHARACTER_IMAGE_BYTES) {
+    return { ok: false, message: 'Image must be 4 MB or smaller.' };
+  }
+  if (!matchesImageSignature(data.contentType, bytes)) {
+    return invalid;
+  }
+  return { ok: true, contentType: data.contentType, extension, bytes };
+}
+
+async function characterExists(
+  userId: string,
+  characterId: string
+): Promise<boolean> {
+  const result = await client.send(
+    new GetCommand({
+      TableName: tableName,
+      Key: {
+        PK: `USER#${userId}`,
+        SK: `CHARACTER#${characterId}`
+      }
+    })
+  );
+  return Boolean(result.Item);
+}
+
+async function deleteCharacterImageObjects(
+  userId: string,
+  characterId: string,
+  keepKey?: string
+): Promise<void> {
+  const prefix = characterImagePrefix(userId, characterId);
+  let continuationToken: string | undefined;
+  do {
+    const listed = await s3.send(
+      new ListObjectsV2Command({
+        Bucket: characterImagesBucket,
+        Prefix: prefix,
+        ContinuationToken: continuationToken
+      })
+    );
+    const keys = (listed.Contents ?? [])
+      .map((item) => item.Key)
+      .filter(
+        (key): key is string => typeof key === 'string' && key !== keepKey
+      );
+    if (keys.length > 0) {
+      await s3.send(
+        new DeleteObjectsCommand({
+          Bucket: characterImagesBucket,
+          Delete: { Objects: keys.slice(0, 1000).map((Key) => ({ Key })) }
+        })
+      );
+    }
+    continuationToken = listed.IsTruncated
+      ? listed.NextContinuationToken
+      : undefined;
+  } while (continuationToken);
+}
+
+const MAX_BUG_REPORT_DESCRIPTION_LENGTH = 2000;
+const MAX_BUG_REPORT_PATH_LENGTH = 300;
+
+async function handleBugReport(
+  event: APIGatewayProxyEvent,
+  userId: string,
+  requestOrigin: string | undefined
+): Promise<APIGatewayProxyResult> {
+  if (event.httpMethod !== 'POST') {
+    return response(405, { message: 'Method not allowed.' }, requestOrigin);
+  }
+
+  const body = parseJsonObject(requestBody(event));
+  const description =
+    typeof body?.description === 'string' ? body.description.trim() : '';
+  if (!description) {
+    return response(400, { message: 'Describe the bug.' }, requestOrigin);
+  }
+  if (description.length > MAX_BUG_REPORT_DESCRIPTION_LENGTH) {
+    return response(
+      400,
+      { message: 'Bug reports must be 2000 characters or fewer.' },
+      requestOrigin
+    );
+  }
+
+  const path = body?.path;
+  if (
+    path !== undefined &&
+    (typeof path !== 'string' || path.length > MAX_BUG_REPORT_PATH_LENGTH)
+  ) {
+    return response(400, { message: 'The page path is invalid.' }, requestOrigin);
+  }
+
+  const emailValue = event.requestContext.authorizer?.claims?.email;
+  const id = randomUUID();
+  const createdAt = new Date().toISOString();
+  await client.send(
+    new PutCommand({
+      TableName: tableName,
+      Item: {
+        PK: 'BUG_REPORT',
+        SK: `${createdAt}#${id}`,
+        id,
+        userId,
+        ...(typeof emailValue === 'string' && emailValue.trim()
+          ? { email: emailValue.trim() }
+          : {}),
+        description,
+        ...(typeof path === 'string' && path ? { path } : {}),
+        createdAt
+      }
+    })
+  );
+  return response(201, { id }, requestOrigin);
+}
+
+function requestBody(event: APIGatewayProxyEvent): string | null {
+  if (!event.body) {
+    return null;
+  }
+  if (event.isBase64Encoded) {
+    return Buffer.from(event.body, 'base64').toString('utf8');
+  }
+  return event.body;
+}
+
+async function handleCharacterImage(
+  event: APIGatewayProxyEvent,
+  userId: string,
+  requestOrigin: string | undefined
+): Promise<APIGatewayProxyResult> {
+  const method = event.httpMethod;
+  const characterId = event.pathParameters?.characterId;
+  if (!characterId) {
+    return response(
+      400,
+      { message: 'A character ID is required.' },
+      requestOrigin
+    );
+  }
+  if (!(await characterExists(userId, characterId))) {
+    return response(404, { message: 'Character not found.' }, requestOrigin);
+  }
+
+  if (method === 'DELETE') {
+    await deleteCharacterImageObjects(userId, characterId);
+    return response(204, undefined, requestOrigin);
+  }
+  if (method !== 'POST') {
+    return response(405, { message: 'Method not allowed.' }, requestOrigin);
+  }
+
+  const image = readCharacterImage(requestBody(event));
+  if (!image.ok) {
+    return response(400, { message: image.message }, requestOrigin);
+  }
+  const key = `${characterImagePrefix(userId, characterId)}${randomUUID()}.${image.extension}`;
+  await s3.send(
+    new PutObjectCommand({
+      Bucket: characterImagesBucket,
+      Key: key,
+      Body: image.bytes,
+      ContentType: image.contentType,
+      CacheControl: 'public, max-age=31536000, immutable'
+    })
+  );
+  await deleteCharacterImageObjects(userId, characterId, key);
+  return response(
+    200,
+    { avatar: `${characterImagesBaseUrl}/${key}` },
+    requestOrigin
+  );
+}
+
 async function handleRequest(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
@@ -692,9 +965,14 @@ async function handleRequest(
     return response(405, { message: 'Method not allowed.' }, requestOrigin);
   }
 
+  if (resource === '/bug-reports') {
+    return handleBugReport(event, userId, requestOrigin);
+  }
+
   if (
     resource === '/user/{userId}/characters' ||
-    resource === '/user/{userId}/character/{characterId}'
+    resource === '/user/{userId}/character/{characterId}' ||
+    resource === '/user/{userId}/character/{characterId}/image'
   ) {
     const requestedUserId = event.pathParameters?.userId;
     if (!requestedUserId || requestedUserId !== userId) {
@@ -728,6 +1006,10 @@ async function handleRequest(
         };
       });
       return response(200, characters, requestOrigin);
+    }
+
+    if (resource === '/user/{userId}/character/{characterId}/image') {
+      return handleCharacterImage(event, userId, requestOrigin);
     }
 
     if (
@@ -772,20 +1054,20 @@ async function handleRequest(
       }
 
       if (method === 'DELETE') {
-        const result = await client.send(
-          new DeleteCommand({
-            TableName: tableName,
-            Key: key,
-            ReturnValues: 'ALL_OLD'
-          })
-        );
-        if (!result.Attributes) {
+        if (!(await characterExists(userId, characterId))) {
           return response(
             404,
             { message: 'Character not found.' },
             requestOrigin
           );
         }
+        await deleteCharacterImageObjects(userId, characterId);
+        await client.send(
+          new DeleteCommand({
+            TableName: tableName,
+            Key: key
+          })
+        );
         return response(204, undefined, requestOrigin);
       }
 

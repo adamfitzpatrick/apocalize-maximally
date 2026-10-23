@@ -6,6 +6,10 @@ export interface Step {
   fullComponent: ReactNode;
   collapsedComponent: ReactNode;
   isComplete: (character: Character) => boolean;
+  /** Review and optional steps stay complete without a player choice, so they are left out of the progress percentage. */
+  tracksProgress?: boolean;
+  /** A later step that is already complete stays hidden until the player reaches it. */
+  hideUntilReached?: boolean;
 }
 
 export interface Phase {

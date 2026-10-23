@@ -358,7 +358,25 @@ async function requestCharacterApi(
     }
   );
   if (!response.ok) {
-    throw new Error(`Character request failed (${response.status}).`);
+    const text = await response.text();
+    let message = `Character request failed (${response.status}).`;
+    if (text) {
+      try {
+        const body: unknown = JSON.parse(text);
+        if (
+          typeof body === 'object' &&
+          body !== null &&
+          'message' in body &&
+          typeof body.message === 'string' &&
+          body.message.trim()
+        ) {
+          message = body.message;
+        }
+      } catch {
+        // Keep the status message when the body is not JSON.
+      }
+    }
+    throw new Error(message);
   }
   if (response.status === 204) {
     return undefined;
@@ -406,6 +424,73 @@ export async function saveCharacter(
     throw new Error('The saved character response is invalid.');
   }
   return result;
+}
+
+const CHARACTER_IMAGE_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif'
+]);
+const MAX_CHARACTER_IMAGE_BYTES = 4 * 1024 * 1024;
+
+function readFileAsBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result !== 'string') {
+        reject(new Error('Unable to read the image.'));
+        return;
+      }
+      const comma = reader.result.indexOf(',');
+      resolve(comma >= 0 ? reader.result.slice(comma + 1) : reader.result);
+    };
+    reader.onerror = () => reject(new Error('Unable to read the image.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+export async function uploadCharacterImage(
+  userId: string,
+  characterId: string,
+  file: File
+): Promise<string> {
+  if (!CHARACTER_IMAGE_TYPES.has(file.type)) {
+    throw new Error('Choose a JPEG, PNG, WebP, or GIF image.');
+  }
+  if (file.size === 0 || file.size > MAX_CHARACTER_IMAGE_BYTES) {
+    throw new Error('Image must be 4 MB or smaller.');
+  }
+  const image = await readFileAsBase64(file);
+  const result = await requestCharacterApi(
+    userId,
+    `/character/${encodeURIComponent(characterId)}/image`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ contentType: file.type, image })
+    }
+  );
+  if (
+    typeof result !== 'object' ||
+    result === null ||
+    !('avatar' in result) ||
+    typeof result.avatar !== 'string' ||
+    !result.avatar
+  ) {
+    throw new Error('The image upload response is invalid.');
+  }
+  return result.avatar;
+}
+
+export async function deleteCharacterImage(
+  userId: string,
+  characterId: string
+): Promise<void> {
+  await requestCharacterApi(
+    userId,
+    `/character/${encodeURIComponent(characterId)}/image`,
+    { method: 'DELETE' }
+  );
 }
 
 export async function deleteCharacter(

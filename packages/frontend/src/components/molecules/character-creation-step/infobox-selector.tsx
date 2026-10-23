@@ -59,7 +59,13 @@ export function MajorChoiceSelector({
   if (!character) {
     return null;
   }
-  const selected = character[target];
+  const primaryArchetypeName = character.primaryArchetype?.name;
+  const rawSelected = character[target];
+  const selected =
+    target === 'secondaryArchetype' &&
+    rawSelected?.name === primaryArchetypeName
+      ? null
+      : rawSelected;
 
   function doSetSelection(name: string) {
     setExpanded(expanded.map(() => false));
@@ -100,6 +106,12 @@ export function MajorChoiceSelector({
     <>
       <div>
         {data.map((datum, index) => {
+          if (
+            target === 'secondaryArchetype' &&
+            datum.name === primaryArchetypeName
+          ) {
+            return null;
+          }
           if (selected && selected.name !== datum.name) {
             return null;
           }

@@ -1,0 +1,110 @@
+name: Deploy prd
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+concurrency:
+  group: deploy-prd
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: prd
+    env:
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      ENVIRONMENT: prd
+      AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_DEFAULT_REGION: ${{ vars.AWS_REGION }}
+      FRONTEND_DOMAIN_NAME: ${{ vars.FRONTEND_DOMAIN_NAME }}
+      HOSTED_ZONE_ID: ${{ vars.HOSTED_ZONE_ID }}
+      HOSTED_ZONE_NAME: ${{ vars.HOSTED_ZONE_NAME }}
+    steps:
+      - name: Require a successful dev deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          count="$(gh api "/repos/${{ github.repository }}/actions/workflows/deploy-dev.yml/runs?head_sha=${{ github.sha }}&status=success&per_page=1" --jq '.total_count')"
+          if [ "${count:-0}" -lt 1 ]; then
+            echo "::error title=Dev deployment required::${{ github.sha }} has no successful dev deployment. Accept production only after Deploy dev succeeds for this commit."
+            exit 1
+          fi
+
+      - name: Check out the repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Enable Corepack
+        run: |
+          npm install --global corepack
+          corepack enable
+          corepack prepare yarn@4.13.0 --activate
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Check deployment settings
+        env:
+          AWS_DEPLOY_ROLE_ARN: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+        run: |
+          missing=0
+          require() {
+            if [ -z "$2" ]; then
+              echo "::error title=Missing $1::$3"
+              missing=1
+            fi
+          }
+          require AWS_ACCOUNT_ID "$AWS_ACCOUNT_ID" "Add the AWS_ACCOUNT_ID variable to the prd environment."
+          require AWS_REGION "$AWS_REGION" "Add the AWS_REGION variable to the prd environment."
+          require FRONTEND_DOMAIN_NAME "$FRONTEND_DOMAIN_NAME" "Add the FRONTEND_DOMAIN_NAME variable to the prd environment."
+          require HOSTED_ZONE_ID "$HOSTED_ZONE_ID" "Add the HOSTED_ZONE_ID variable to the prd environment."
+          require HOSTED_ZONE_NAME "$HOSTED_ZONE_NAME" "Add the HOSTED_ZONE_NAME variable to the prd environment."
+          require AWS_DEPLOY_ROLE_ARN "$AWS_DEPLOY_ROLE_ARN" "Add the AWS_DEPLOY_ROLE_ARN secret to the prd environment."
+          if [ "$missing" -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Deploy assets
+        run: yarn deploy:assets
+
+      - name: Deploy backend
+        run: yarn workspace @apocalize/backend deploy --outputs-file "$RUNNER_TEMP/backend-outputs.json"
+
+      - name: Read backend outputs
+        id: backend
+        run: |
+          stack=apocalize-prd-backend
+          file="$RUNNER_TEMP/backend-outputs.json"
+          api_url="$(jq -er --arg stack "$stack" '.[$stack].ApiUrl' "$file")"
+          user_pool_id="$(jq -er --arg stack "$stack" '.[$stack].AuthUserPoolId' "$file")"
+          user_pool_client_id="$(jq -er --arg stack "$stack" '.[$stack].AuthUserPoolClientId' "$file")"
+          echo "api_url=$api_url" >> "$GITHUB_OUTPUT"
+          echo "user_pool_id=$user_pool_id" >> "$GITHUB_OUTPUT"
+          echo "user_pool_client_id=$user_pool_client_id" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy frontend
+        env:
+          VITE_API_URL: ${{ steps.backend.outputs.api_url }}
+          VITE_COGNITO_USER_POOL_ID: ${{ steps.backend.outputs.user_pool_id }}
+          VITE_COGNITO_USER_POOL_CLIENT_ID: ${{ steps.backend.outputs.user_pool_client_id }}
+        run: yarn deploy:frontend
+
+      - name: Update game data
+        run: yarn update:db

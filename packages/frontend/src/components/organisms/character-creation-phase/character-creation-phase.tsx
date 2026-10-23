@@ -52,7 +52,10 @@ export function CharacterCreationPhase({
       {steps.map((step, index) => {
         const stepNumber = index + 1;
         const isCurrentStep = stepNumber === currentStep;
-        if (stepNumber > currentStep && !step.isComplete(character)) {
+        if (
+          stepNumber > currentStep &&
+          (step.hideUntilReached || !step.isComplete(character))
+        ) {
           return null;
         }
 

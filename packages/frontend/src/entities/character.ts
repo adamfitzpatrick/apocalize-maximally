@@ -4,6 +4,7 @@ import { CharacterRecord, CharacterStats } from '../api/characters';
 export type CreationStage = [number, number]
 
 export const INITIAL_FREE_DEVELOPMENT_POINTS = 100;
+export const MAX_CHARACTER_AGE = 100;
 export const MAX_COMBAT_SKILL_SELECTIONS = 2;
 export const MAX_PRIMARY_ARCHETYPE_SKILL_SELECTIONS = 4;
 export const MAX_SECONDARY_ARCHETYPE_SKILL_SELECTIONS = 3;
@@ -717,16 +718,23 @@ export default class Character {
 
   private getAgeCategory(age: number) {
     return this.coreGameData.ages?.map(category => {
-      return {
-        category,
-        min: Math.min(...this.convertRangeString(category.range)),
-        max: Math.max(...this.convertRangeString(category.range))
-      }
-    }).find(category => category.min <= age && category.max >= age)?.category ?? null;
+      const bounds = this.convertRangeString(category.range);
+      return bounds ? { category, ...bounds } : null;
+    }).find(category =>
+      category !== null && category.min <= age && category.max >= age
+    )?.category ?? null;
   }
 
-  private convertRangeString(rangeStr: string) {
-    return rangeStr.split('-').map(bound => Number(bound.trim()))
+  private convertRangeString(rangeStr: string): { min: number; max: number } | null {
+    const openEnded = rangeStr.match(/^(\d+)\+$/);
+    if (openEnded) {
+      return { min: Number(openEnded[1]), max: MAX_CHARACTER_AGE };
+    }
+    const bounds = rangeStr.split('-').map(bound => Number(bound.trim()));
+    if (bounds.length < 2 || bounds.some(bound => Number.isNaN(bound))) {
+      return null;
+    }
+    return { min: bounds[0], max: bounds[1] };
   }
 
   private addStatMods(baseStats: CharacterStats, ...modifiers: CharacterStats[]): CharacterStats {

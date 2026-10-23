@@ -10,6 +10,8 @@ export interface CharacterSkillPillProps {
   proficiency?: SkillProficiencyMarker | null;
   selected?: boolean;
   disabled?: boolean;
+  /** Already gained earlier. Shown as static text, not a control that rejects a click. */
+  unavailable?: boolean;
   displayOnly?: boolean;
   onClick?: () => void;
 }
@@ -20,11 +22,31 @@ export default function CharacterSkillPill({
   proficiency = null,
   selected = false,
   disabled = false,
+  unavailable = false,
   displayOnly = false,
   onClick
 }: CharacterSkillPillProps) {
   if (displayOnly) { disabled = true; }
-  const pill = (
+  const body = (
+    <Flex className="character-skill-pill__content">
+      <Typography.Text
+        className={classNames(
+          'character-skill-pill__proficiency',
+          `character-skill-pill__proficiency--${proficiency ?? 'empty'}`,
+          { 'character-skill-pill__proficiency--color': selected && !proficiency }
+        )}
+      >{proficiency}</Typography.Text>
+      <Typography.Text className="character-skill-pill__name">{name}</Typography.Text>
+    </Flex>
+  );
+  const pill = unavailable ? (
+    <div
+      aria-disabled="true"
+      className="character-skill-pill character-skill-pill--unavailable"
+    >
+      {body}
+    </div>
+  ) : (
     <Button
       aria-pressed={selected}
       className={classNames('character-skill-pill', {
@@ -36,25 +58,23 @@ export default function CharacterSkillPill({
       onClick={onClick}
       size="small"
     >
-      <Flex className="character-skill-pill__content">
-        <Typography.Text
-          className={classNames(
-            'character-skill-pill__proficiency',
-            `character-skill-pill__proficiency--${proficiency ?? 'empty'}`,
-            { 'character-skill-pill__proficiency--color': selected && !proficiency }
-          )}
-        >{proficiency}</Typography.Text>
-        <Typography.Text className="character-skill-pill__name">{name}</Typography.Text>
-      </Flex>
+      {body}
     </Button>
   );
 
-  if (!description) {
+  const tooltip = [
+    description,
+    unavailable ? 'Already gained from an earlier step.' : undefined
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  if (!tooltip) {
     return pill;
   }
 
   return (
-    <Tooltip title={description} mouseEnterDelay={0.2}>
+    <Tooltip title={tooltip} mouseEnterDelay={0.2}>
       {/* Span keeps tooltips working when the button is disabled. */}
       <span className="character-skill-pill__tooltip-anchor">{pill}</span>
     </Tooltip>

@@ -90,7 +90,9 @@ stack, the backend, the frontend, and then writes the game-data JSON into the
 dev table. It reads the backend stack outputs and passes them to the frontend
 build, so those values are not stored in GitHub.
 
-Create these variables on the GitHub Actions environment named `dev`:
+Production does not follow a successful dev deployment. After you accept a commit, run **Deploy prd** from the Actions tab on that same commit. The workflow stops unless **Deploy dev** has already succeeded for it, then deploys the prd stacks and writes game data into the prd table.
+
+Create these variables on the GitHub Actions environment named `dev`, and again on the environment named `prd`:
 
 - `AWS_ACCOUNT_ID`
 - `AWS_REGION`
@@ -98,10 +100,15 @@ Create these variables on the GitHub Actions environment named `dev`:
 - `HOSTED_ZONE_ID`
 - `HOSTED_ZONE_NAME`
 
-Create a secret named `AWS_DEPLOY_ROLE_ARN` on that same environment. Its value
-is an IAM role that GitHub Actions can assume with OIDC, trusted for this
-repository on `main`, with permission to deploy the dev stacks. The role must
-be able to deploy in both `AWS_REGION` and `us-east-1`.
+Create a secret named `AWS_DEPLOY_ROLE_ARN` on each of those environments. Its value
+is an IAM role that GitHub Actions can assume with OIDC. Because each workflow
+selects its environment, the role trust policy must allow
+`sts:AssumeRoleWithWebIdentity` for that environment's subject
+(`repo:adamfitzpatrick/apocalize-maximally:environment:dev` or
+`repo:adamfitzpatrick/apocalize-maximally:environment:prd`) and audience
+`sts.amazonaws.com`. A trust condition on `ref:refs/heads/main` does not match
+that token. The role must be able to deploy that environment's stacks in both
+`AWS_REGION` and `us-east-1`.
 
 ## Local frontend development
 

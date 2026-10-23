@@ -4,6 +4,39 @@ import type { MouseEventHandler } from 'react';
 
 import './arrow-icon-button.css';
 
+export interface ArrowIconProps {
+  left?: boolean;
+  className?: string;
+  /** Sized to sit beside button text. The phase arrows stay full height. */
+  inline?: boolean;
+}
+
+export function ArrowIcon({ left = false, className, inline = false }: ArrowIconProps) {
+  return (
+    <svg
+      className={classNames(
+        'arrow-icon-button__mark',
+        {
+          'arrow-icon-button__mark--left': left,
+          'arrow-icon-button__mark--inline': inline
+        },
+        className
+      )}
+      viewBox="0 0 50 150"
+      aria-hidden="true"
+    >
+      <polyline
+        points="10,10 45,75 10,140"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="7"
+        strokeLinecap="butt"
+        strokeLinejoin="miter"
+      />
+    </svg>
+  );
+}
+
 export interface ArrowIconButtonProps {
   left?: boolean;
   disabled?: boolean;
@@ -27,23 +60,10 @@ export default function ArrowIconButton({
       aria-label={ariaLabel}
       onClick={onClick}
       icon={
-        <svg
-          className={classNames('arrow-icon-button__mark', {
-            'arrow-icon-button__mark--left': left,
-            'arrow-icon-button__mark--disabled': disabled
-          })}
-          viewBox="0 0 50 150"
-          aria-hidden="true"
-        >
-          <polyline
-            points="10,10 45,75 10,140"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="7"
-            strokeLinecap="butt"
-            strokeLinejoin="miter"
-          />
-        </svg>
+        <ArrowIcon
+          left={left}
+          className={classNames({ 'arrow-icon-button__mark--disabled': disabled })}
+        />
       }
     />
   );

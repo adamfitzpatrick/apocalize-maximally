@@ -45,7 +45,7 @@ body {
 
 .app-header-content {
   display: flex;
-  width: min(1120px, calc(100% - 40px));
+  width: min(960px, calc(100% - 40px));
   min-height: 68px;
   align-items: center;
   justify-content: space-between;

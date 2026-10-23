@@ -26,6 +26,11 @@
 
 .character-card__avatar {
   flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #292929;
 }
 
 .character-card:focus-visible {
