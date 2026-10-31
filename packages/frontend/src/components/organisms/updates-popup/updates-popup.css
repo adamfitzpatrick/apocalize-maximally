@@ -1,0 +1,13 @@
+.updates-popup__content {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.updates-popup__entry + .updates-popup__entry {
+  margin-top: 16px;
+}
+
+.updates-popup__entry ul {
+  margin: 0;
+  padding-left: 20px;
+}

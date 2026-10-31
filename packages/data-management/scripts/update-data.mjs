@@ -61,7 +61,8 @@ const datasets = [
   ['LUCKY_MUTATION', 'lucky-mutation.json'],
   ['NEGATIVE_TRAITS', 'negative-traits.json'],
   ['GEAR', ['gear.json', 'bug-out-kits.json']],
-  ['OTHER_RULES', 'other-rules.json']
+  ['OTHER_RULES', 'other-rules.json'],
+  ['UPDATES', 'updates.json']
 ];
 const client = DynamoDBDocumentClient.from(
   new DynamoDBClient({

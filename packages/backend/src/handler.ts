@@ -27,6 +27,7 @@ import negativeTraits from '../../data-management/data/negative-traits.json';
 import gear from '../../data-management/data/gear.json';
 import bugOutKits from '../../data-management/data/bug-out-kits.json';
 import otherRules from '../../data-management/data/other-rules.json';
+import updates from '../../data-management/data/updates.json';
 const client = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const s3 = new S3Client({
   requestChecksumCalculation: 'WHEN_REQUIRED',
@@ -375,6 +376,30 @@ function requireStoredOtherRulesData(value: unknown): unknown {
   return value;
 }
 
+function requireStoredUpdatesData(value: unknown): unknown[] {
+  if (
+    !Array.isArray(value) ||
+    value.some((update) => {
+      if (
+        typeof update !== 'object' ||
+        update === null ||
+        Array.isArray(update)
+      ) {
+        return true;
+      }
+      const record = update as Record<string, unknown>;
+      return (
+        typeof record.date !== 'string' ||
+        !Array.isArray(record.description) ||
+        record.description.some((entry) => typeof entry !== 'string')
+      );
+    })
+  ) {
+    throw new Error('Stored updates data is invalid.');
+  }
+  return value;
+}
+
 function requireStoredNegativeTraitData(value: unknown): unknown[] {
   if (
     !Array.isArray(value) ||
@@ -526,7 +551,8 @@ async function getCharacterCreationData(
     | 'LUCKY_MUTATION'
     | 'NEGATIVE_TRAITS'
     | 'GEAR'
-    | 'OTHER_RULES',
+    | 'OTHER_RULES'
+    | 'UPDATES',
   defaultData: unknown,
   validate: (value: unknown) => unknown
 ): Promise<unknown> {
@@ -918,6 +944,16 @@ async function handleRequest(
             'OTHER_RULES',
             otherRules,
             requireStoredOtherRulesData
+          ),
+          requestOrigin
+        );
+      case '/data/updates':
+        return response(
+          200,
+          await getCharacterCreationData(
+            'UPDATES',
+            updates,
+            requireStoredUpdatesData
           ),
           requestOrigin
         );

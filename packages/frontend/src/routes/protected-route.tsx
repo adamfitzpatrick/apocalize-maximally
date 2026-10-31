@@ -3,6 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/auth-context'; // Replace with your actual auth state hook
 import { Spin, Typography } from 'antd';
 import { CoreGameDataProvider } from '../contexts/core-game-data-context';
+import UpdatesPopup from '../components/organisms/updates-popup/updates-popup';
 
 export const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -17,6 +18,9 @@ export const ProtectedRoute = () => {
   }
 
   return isAuthenticated ?
-    <CoreGameDataProvider><Outlet /></CoreGameDataProvider> :
+    <CoreGameDataProvider>
+      <UpdatesPopup />
+      <Outlet />
+    </CoreGameDataProvider> :
     <Navigate to="/login" replace />;
 };

@@ -167,7 +167,9 @@ export class BackendStack extends cdk.Stack {
         cognitoUserPools: [userPool]
       }
     );
-    const integration = new apigateway.LambdaIntegration(handler);
+    const integration = new apigateway.LambdaIntegration(handler, {
+      scopePermissionToMethod: false
+    });
     const items = api.root.addResource('items');
     const authorizedMethodOptions: apigateway.MethodOptions = {
       authorizationType: apigateway.AuthorizationType.COGNITO,
@@ -215,6 +217,11 @@ export class BackendStack extends cdk.Stack {
       authorizedMethodOptions
     );
     data.addResource('other-rules').addMethod(
+      'GET',
+      integration,
+      authorizedMethodOptions
+    );
+    data.addResource('updates').addMethod(
       'GET',
       integration,
       authorizedMethodOptions
