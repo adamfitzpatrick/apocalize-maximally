@@ -64,8 +64,13 @@ export default function UpdatesPopup() {
     >
       <div className="updates-popup__content">
         {updates.map((update) => (
-          <section key={update.date} className="updates-popup__entry">
-            <Typography.Title level={2}>{update.date}</Typography.Title>
+          <section
+            key={`${update.date}-${update.version}`}
+            className="updates-popup__entry"
+          >
+            <Typography.Title level={2}>
+              {update.date} - v{update.version.replace(/^v/i, '')}
+            </Typography.Title>
             <ul>
               {update.description.map((item, index) => (
                 <li key={index}>{item}</li>

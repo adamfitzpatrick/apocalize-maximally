@@ -32,7 +32,7 @@ export default function Armor({
 }: ArmorProps) {
   const pieces = gear.filter((item) => item.category === 'armor' && item.equipped);
   const max = pieces.reduce((total, piece) => total + armorPoints(piece.cp), 0);
-  const monitor = <Monitor max={max} current={current} onChange={onChange} />;
+  const monitor = <Monitor label="AP Max" max={max} current={current} onChange={onChange} />;
   const table = (
     <Table
       className="armor__pieces"
@@ -53,7 +53,7 @@ export default function Armor({
   }
 
   return (
-    <Flex className="armor" align="start" gap={12}>
+    <Flex className="armor" align="stretch" gap={12}>
       {monitor}
       {table}
     </Flex>

@@ -92,7 +92,7 @@ function DerivedStatRow({
         </Typography.Text>
       </Flex>
       <div className="derived-stats-review__stat">
-        <CharacterStat label={abbrev} value={value} />
+        <CharacterStat label={abbrev} value={value} bold />
       </div>
     </Flex>
   );

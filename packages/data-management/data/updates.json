@@ -1,6 +1,9 @@
 [{
     "date": "2026-10-30",
+    "version": "0.2.0",
     "description": [
-        "Thank you for trying out Apocalize Maximally! Please report bugs and suggestions using the little bug icon in the header."
+        "CHANGE: Added print button to the character page.",
+        "INFO: Per a house rule, negative traits are NOT optional.  They make for more interesting roll play!",
+        "INFO: Per a house rule, Lucky Mutations can either be chosen or selected at random.  If you wish a random mutation, roll a d10 and select the indicated item from the list."
     ]
 }]

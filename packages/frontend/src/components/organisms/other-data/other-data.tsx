@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import classNames from 'classnames';
 import { Checkbox, InputNumber, Radio, Segmented, Tooltip, Typography } from 'antd';
 import type { ResolveDamage } from '../../../api/characters';
 import Table from '../../molecules/table/table';
@@ -285,6 +286,14 @@ function Status({
 const OTHER_DATA_VIEWS = ['Inventory', 'Abilities', 'Status'] as const;
 type OtherDataView = (typeof OTHER_DATA_VIEWS)[number];
 
+function panelClassName(panel: OtherDataView, view: OtherDataView) {
+  return classNames(
+    'other-data__panel',
+    `other-data__panel--${panel.toLowerCase()}`,
+    { 'other-data__panel--active': panel === view }
+  );
+}
+
 export function OtherData({
   character,
   onResolveDamageChange,
@@ -312,9 +321,13 @@ export function OtherData({
         value={view}
         onChange={(value) => setView(value as OtherDataView)}
       />
-      {view === 'Inventory' && <GearInventory character={character} />}
-      {view === 'Abilities' && <SpecialAbilities character={character} />}
-      {view === 'Status' && (
+      <div className={panelClassName('Inventory', view)}>
+        <GearInventory character={character} />
+      </div>
+      <div className={panelClassName('Abilities', view)}>
+        <SpecialAbilities character={character} />
+      </div>
+      <div className={panelClassName('Status', view)}>
         <Status
           character={character}
           onResolveDamageChange={onResolveDamageChange}
@@ -322,7 +335,7 @@ export function OtherData({
           onHungerChange={onHungerChange}
           onCountChange={onCountChange}
         />
-      )}
+      </div>
     </section>
   );
 }

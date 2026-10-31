@@ -47,13 +47,14 @@ export function BaseStats({ character, skills }: BaseStatsProps) {
   return (
     <section className="base-stats">
       <Typography.Title level={4}>BASE STATS</Typography.Title>
-      <Flex className="base-stats__columns" wrap gap={12}>
+      <Flex className="base-stats__columns" wrap gap={6}>
         {STATS.map((stat, index) => (
           <Flex className="base-stats__column" key={stat.name} vertical gap={1}>
             <CharacterStat
               label={stat.short}
               value={BASE_STAT_GETTERS[index](character)}
               showDerived
+              bold
             />
             {sortedStandardSkills[stat.short.toLowerCase()] ? (
               sortedStandardSkills[stat.short.toLowerCase()].map((skill) => (
@@ -100,6 +101,7 @@ export function BaseStatsMobile({ character, skills }: BaseStatsProps) {
                     label={stat.short}
                     value={BASE_STAT_GETTERS[index](character)}
                     showDerived
+                    bold
                   />
                 );
               })}

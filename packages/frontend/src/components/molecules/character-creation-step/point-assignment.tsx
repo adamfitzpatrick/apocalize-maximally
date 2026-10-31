@@ -36,6 +36,7 @@ export default function PointAssignment() {
               <CharacterStat
                 label={STATS[index].short}
                 value={effectiveStats[statKey]}
+                bold
               />
               <InputNumber
                 className="point-assignment__input"

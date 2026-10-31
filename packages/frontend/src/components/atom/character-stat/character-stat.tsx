@@ -5,9 +5,10 @@ export interface CharacterStatProps {
   label: string;
   value: number;
   showDerived?: boolean;
+  bold?: boolean;
 }
 
-export default function CharacterStat({ label, value, showDerived }: CharacterStatProps) {
+export default function CharacterStat({ label, value, showDerived, bold }: CharacterStatProps) {
   const halfValue = Math.floor(value / 2);
   const quarterValue = Math.floor(value / 4);
 
@@ -25,7 +26,7 @@ export default function CharacterStat({ label, value, showDerived }: CharacterSt
         justify='center'
         className="character-stat__value"
       >
-        <Typography.Text strong>{label}</Typography.Text>
+        <Typography.Text strong={bold}>{label}</Typography.Text>
         <Typography.Text className="character-stat__value-text">{value}</Typography.Text>
       </Flex>
       {showDerived && <Flex

@@ -445,6 +445,22 @@ body {
   background: color-mix(in srgb, var(--color-accent-tertiary) 18%, var(--color-background));
 }
 
+@media print {
+  body {
+    background: none;
+  }
+
+  .app-header {
+    display: none;
+  }
+
+  .shell,
+  .shell.post-auth {
+    width: 100%;
+    padding: 0;
+  }
+}
+
 @media (max-width: 808px) {
   .character-creation-phase-nav--back.icon-button.ant-btn {
     left: calc(50% - min(360px, 50vw - 20px) + 8px);
@@ -463,7 +479,7 @@ body {
   }
 }
 
-@media (max-width: 520px) {
+@media screen and (max-width: 520px) {
   input,
   select,
   textarea,

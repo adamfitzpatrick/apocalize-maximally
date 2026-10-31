@@ -1,6 +1,7 @@
 import { ConfigProvider, theme } from 'antd';
 import { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import type { ReactNode } from 'react';
+import { flushSync } from 'react-dom';
 
 interface ThemeContextValue {
   isDarkMode: boolean;
@@ -38,15 +39,31 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     window.matchMedia('(prefers-color-scheme: dark)').matches
   );
   const [themeOverride, setThemeOverride] = useState<boolean | null>(readStoredThemeOverride);
+  const [printing, setPrinting] = useState(false);
   const isDarkMode = themeOverride ?? systemPrefersDark;
+  const renderDark = isDarkMode && !printing;
 
   useEffect(() => {
     writeStoredThemeOverride(themeOverride);
   }, [themeOverride]);
 
   useLayoutEffect(() => {
-    document.documentElement.dataset.theme = isDarkMode ? 'dark' : 'light';
-  }, [isDarkMode]);
+    document.documentElement.dataset.theme = renderDark ? 'dark' : 'light';
+  }, [renderDark]);
+
+  useEffect(() => {
+    // Browsers drop backgrounds when printing, so dark-theme text would be
+    // white on white. The swap must be synchronous to land before the print
+    // snapshot is taken.
+    const startPrinting = () => flushSync(() => setPrinting(true));
+    const stopPrinting = () => setPrinting(false);
+    window.addEventListener('beforeprint', startPrinting);
+    window.addEventListener('afterprint', stopPrinting);
+    return () => {
+      window.removeEventListener('beforeprint', startPrinting);
+      window.removeEventListener('afterprint', stopPrinting);
+    };
+  }, []);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -66,12 +83,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     >
       <ConfigProvider
         theme={{
-          algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+          algorithm: renderDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
           token: {
             colorPrimary: '#e16828',
             colorError: '#c92f2e',
-            colorBgBase: isDarkMode ? '#000000' : 'rgb(244, 244, 244)',
-            colorTextBase: isDarkMode ? '#ffffff' : '#000000',
+            colorBgBase: renderDark ? '#000000' : 'rgb(244, 244, 244)',
+            colorTextBase: renderDark ? '#ffffff' : '#000000',
             borderRadius: 8,
             fontFamily:
               'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'

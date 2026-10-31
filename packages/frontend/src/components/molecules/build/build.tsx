@@ -21,8 +21,8 @@ export default function Build({ build, bands, current, onChange }: BuildProps) {
   const maxHp = Math.floor(build / 5);
 
   return (
-    <Flex className="build" align="center" gap={12}>
-      <Flex className="build__stat" align="stretch">
+    <Flex className="build" align="stretch" gap={12}>
+      <Flex className="build__stat" vertical align="stretch">
         <CharacterStat label="BLD" value={build} />
         <Flex className="build__dc" vertical align="center" justify="center">
           <Typography.Text className="build__label">DC mod</Typography.Text>
@@ -31,7 +31,7 @@ export default function Build({ build, bands, current, onChange }: BuildProps) {
           </Typography.Text>
         </Flex>
       </Flex>
-      <Monitor max={maxHp} current={current} onChange={onChange} />
+      <Monitor label="HP Max" max={maxHp} current={current} onChange={onChange} />
     </Flex>
   );
 }

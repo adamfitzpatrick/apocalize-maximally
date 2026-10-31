@@ -67,7 +67,7 @@ export function buildCreationConfig(
               >
                 <Flex className="starting-base-stats" justify="space-between">
                   {STATS.map((stat) => (
-                    <CharacterStat key={stat.short} label={stat.short} value={25} />
+                    <CharacterStat key={stat.short} label={stat.short} value={25} bold />
                   ))}
                 </Flex>
               </InformationDisplay>

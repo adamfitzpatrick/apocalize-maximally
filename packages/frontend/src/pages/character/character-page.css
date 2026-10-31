@@ -9,7 +9,7 @@
   display: none;
 }
 
-@media (max-width: 520px) {
+@media screen and (max-width: 520px) {
   .character-page--wide {
     display: none;
   }
@@ -23,15 +23,21 @@
   width: 100%;
 }
 
-.character-page__identity .ant-descriptions-view > table {
-  width: 100%;
-  table-layout: fixed;
+.character-page__name {
+  flex: 1 0 auto;
 }
-.character-page__identity .ant-descriptions-item-label {
+
+.character-page__identity-item {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.character-page__identity-item--age {
+  flex: 0 1 auto;
+}
+
+.character-page__identity-label.ant-typography {
   font-size: 0.75rem;
-}
-.character-page__identity .ant-descriptions-item {
-  padding-bottom: 0;
 }
 
 .character-page__phone-identity {
@@ -43,4 +49,45 @@
   border-bottom: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
   border-radius: 6px;
   padding: 8px;
+}
+
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  /* Lay out at the desktop width and scale to the 186mm printable width of A4
+     and Letter, so the sheet is identical regardless of the printing device. */
+  .character-page--wide {
+    display: grid;
+    width: 960px;
+    max-width: none;
+    margin: 0;
+    zoom: 0.72;
+  }
+
+  .character-page--phone,
+  .character-page__toolbar {
+    display: none;
+  }
+
+  .character-page section,
+  .character-page header {
+    break-inside: avoid;
+  }
+
+  .character-page .data-table th,
+  .character-page .data-table td {
+    padding: 3px 6px;
+  }
+
+  .character-page h4.ant-typography {
+    margin-bottom: 4px;
+  }
+
+  .character-page .ant-input-number,
+  .character-page .ant-checkbox-wrapper,
+  .character-page .ant-radio-wrapper {
+    visibility: hidden;
+  }
 }

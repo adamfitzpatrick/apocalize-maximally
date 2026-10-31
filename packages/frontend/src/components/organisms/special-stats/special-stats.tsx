@@ -54,6 +54,7 @@ function DerivedSpecialStats({
       label={stat.label}
       value={stat.value(character)}
       showDerived
+      bold
     />
   ));
 
@@ -62,7 +63,7 @@ function DerivedSpecialStats({
   }
 
   return (
-    <Flex className="special-stats__derived" gap={12} align="start">
+    <Flex className="special-stats__derived" gap={12} align="center">
       {stats}
     </Flex>
   );
@@ -88,16 +89,18 @@ export function SpecialStats({
   return (
     <section className="special-stats">
       <Typography.Title level={4}>SPECIAL STATS</Typography.Title>
-      <Flex className="special-stats__stats" gap={12} align="center">
+      <Flex className="special-stats__stats" gap={12} align="stretch">
         <ArmorStat
           character={character}
           onCurrentArmorChange={onCurrentArmorChange}
         />
-        <BuildStat
-          character={character}
-          onCurrentHpChange={onCurrentHpChange}
-        />
-        <CharacterStat label="INIT" value={character.initiative} />
+        <Flex className="special-stats__group" gap={12} align="center">
+          <BuildStat
+            character={character}
+            onCurrentHpChange={onCurrentHpChange}
+          />
+          <CharacterStat label="INIT" value={character.initiative} bold />
+        </Flex>
         <DerivedSpecialStats character={character} />
       </Flex>
     </section>
@@ -154,22 +157,20 @@ export function SpecialStatsMobile({
                   label="HP"
                   value={`${character.currentHp} / ${character.hp}`}
                 />
+                <SummaryValue label="Initiative" value={character.initiative} />
               </Flex>
             ),
             children: (
-              <Build
-                build={character.build}
-                bands={coreGameData?.otherRules?.build ?? []}
-                current={character.currentHp}
-                onChange={numberChange(onCurrentHpChange)}
-              />
+              <Flex align="center" gap={12} wrap>
+                <Build
+                  build={character.build}
+                  bands={coreGameData?.otherRules?.build ?? []}
+                  current={character.currentHp}
+                  onChange={numberChange(onCurrentHpChange)}
+                />
+                <CharacterStat label="INIT" value={character.initiative} bold />
+              </Flex>
             )
-          },
-          {
-            key: 'initiative',
-            collapsible: 'disabled',
-            showArrow: false,
-            label: <SummaryValue label="Initiative" value={character.initiative} />
           },
           {
             key: 'derived',

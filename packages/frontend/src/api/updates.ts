@@ -3,6 +3,7 @@ import { requireApiUrl } from './api-url';
 
 export interface Update {
   date: string;
+  version: string;
   description: string[];
 }
 
@@ -13,6 +14,7 @@ function isUpdate(value: unknown): value is Update {
   const update = value as Record<string, unknown>;
   return (
     typeof update.date === 'string' &&
+    typeof update.version === 'string' &&
     Array.isArray(update.description) &&
     update.description.every((entry) => typeof entry === 'string')
   );

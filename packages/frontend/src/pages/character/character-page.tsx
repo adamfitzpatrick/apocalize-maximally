@@ -1,4 +1,4 @@
-import { Alert, Button, Descriptions, Flex, Popconfirm, Spin, Typography } from 'antd';
+import { Alert, Button, Flex, Popconfirm, Spin, Typography } from 'antd';
 import { ArrowIcon } from '../../components/atom/arrow-icon-button/arrow-icon-button';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -37,6 +37,36 @@ function EditIcon() {
       />
     </svg>
   );
+}
+
+function PrintIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"
+      />
+    </svg>
+  );
+}
+
+function printCharacterSheet(name?: string | null) {
+  const previousTitle = document.title;
+  if (name?.trim()) {
+    document.title = name.trim();
+  }
+  window.addEventListener(
+    'afterprint',
+    () => {
+      document.title = previousTitle;
+    },
+    { once: true }
+  );
+  window.print();
 }
 
 function displayValue(value?: string | null) {
@@ -248,14 +278,30 @@ export default function CharacterPage() {
     void saveCharacter(userId, nextRecord);
   }
 
+  const printButton = (
+    <Button
+      aria-label="Print or save as PDF"
+      title="Print or save as PDF"
+      icon={<PrintIcon />}
+      onClick={() => printCharacterSheet(record.name)}
+    />
+  );
+
   return (
     <>
     <section className="character-page character-page--wide">
-      <Flex justify="space-between" align="center" gap={12} wrap>
+      <Flex
+        className="character-page__toolbar"
+        justify="space-between"
+        align="center"
+        gap={12}
+        wrap
+      >
         <Button icon={<ArrowIcon left inline />} onClick={() => navigate('/')}>
           Back
         </Button>
         <Flex gap={8}>
+          {printButton}
           {!record.playing && (
             <Popconfirm
               title="You will no longer be able to edit this character."
@@ -281,38 +327,51 @@ export default function CharacterPage() {
       </Flex>
 
       <header>
-        <Typography.Title level={2} style={{ marginBottom: 4 }}>
-          {displayValue(record.name)}
-        </Typography.Title>
-        <Descriptions
-          className="character-page__identity"
-          column={4}
-          layout="vertical"
-          size="small"
-          colon={false}
-          items={[
+        <Flex className="character-page__identity" align="center" justify="space-between" gap={16}>
+          <Typography.Title
+            className="character-page__name"
+            level={2}
+            style={{ marginBottom: 0 }}
+          >
+            {displayValue(record.name)}
+          </Typography.Title>
+          {[
             {
-              key: 'primaryArchetype',
               label: 'Primary archetype',
-              children: displayValue(character.primaryArchetype?.name)
+              value: displayValue(character.primaryArchetype?.name)
             },
             {
-              key: 'secondaryArchetype',
               label: 'Secondary archetype',
-              children: displayValue(character.secondaryArchetype?.name)
+              value: displayValue(character.secondaryArchetype?.name)
             },
             {
-              key: 'personalApocalypse',
               label: 'Personal apocalypse',
-              children: displayValue(character.personalApocalypse?.name)
+              value: displayValue(character.personalApocalypse?.name)
             },
             {
-              key: 'age',
               label: 'Age',
-              children: formatAge(record.age, character.ageCategory?.category)
+              value: formatAge(record.age, character.ageCategory?.category)
             }
-          ]}
-        />
+          ].map((item) => (
+            <Flex
+              key={item.label}
+              className={
+                item.label === 'Age'
+                  ? 'character-page__identity-item character-page__identity-item--age'
+                  : 'character-page__identity-item'
+              }
+              vertical
+            >
+              <Typography.Text
+                className="character-page__identity-label"
+                type="secondary"
+              >
+                {item.label}
+              </Typography.Text>
+              <Typography.Text>{item.value}</Typography.Text>
+            </Flex>
+          ))}
+        </Flex>
       </header>
 
       <BaseStats character={character} skills={coreGameData?.skills} />
@@ -334,11 +393,18 @@ export default function CharacterPage() {
       />
     </section>
     <section className="character-page character-page--phone">
-      <Flex justify="space-between" align="center" gap={12} wrap>
+      <Flex
+        className="character-page__toolbar"
+        justify="space-between"
+        align="center"
+        gap={12}
+        wrap
+      >
         <Button icon={<ArrowIcon left inline />} onClick={() => navigate('/')}>
           Back
         </Button>
         <Flex gap={8}>
+          {printButton}
           {!record.playing && (
             <Popconfirm
               title="You will no longer be able to edit this character."

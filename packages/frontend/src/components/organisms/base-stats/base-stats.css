@@ -4,7 +4,7 @@
 }
 
 .base-stats__column {
-  width: calc((100% / 9) - 12px);
+  width: calc((100% - 8 * 6px) / 9);
 }
 
 .base-stats__switch {

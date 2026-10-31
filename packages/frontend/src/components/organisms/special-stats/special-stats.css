@@ -1,15 +1,20 @@
 .special-stats__stats {
-  align-items: center;
+  align-items: stretch;
   flex-wrap: nowrap;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
-.special-stats__derived {
+.special-stats__derived,
+.special-stats__group {
   width: fit-content;
   max-width: 100%;
   border: 1px solid color-mix(in srgb, var(--color-foreground) 18%, transparent);
   border-radius: 6px;
   padding: 8px;
+}
+
+.special-stats .special-stats__group > .character-stat {
+  margin-bottom: 0;
 }
 
 .special-stats__derived--paired {
@@ -25,9 +30,4 @@
 
 .special-stats__collapse {
   width: 100%;
-}
-
-.special-stats__collapse .ant-collapse-item-disabled > .ant-collapse-header {
-  color: inherit;
-  cursor: default;
 }

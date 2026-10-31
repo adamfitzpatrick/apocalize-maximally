@@ -390,6 +390,7 @@ function requireStoredUpdatesData(value: unknown): unknown[] {
       const record = update as Record<string, unknown>;
       return (
         typeof record.date !== 'string' ||
+        typeof record.version !== 'string' ||
         !Array.isArray(record.description) ||
         record.description.some((entry) => typeof entry !== 'string')
       );

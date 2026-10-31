@@ -36,7 +36,13 @@ export default function CharacterSkillPill({
           { 'character-skill-pill__proficiency--color': selected && !proficiency }
         )}
       >{proficiency}</Typography.Text>
-      <Typography.Text className="character-skill-pill__name">{name}</Typography.Text>
+      <Typography.Text className="character-skill-pill__name">
+        {name.split(/\s+/).filter(Boolean).map((word, index) => (
+          <span key={index} className="character-skill-pill__word">
+            {word}
+          </span>
+        ))}
+      </Typography.Text>
     </Flex>
   );
   const pill = unavailable ? (

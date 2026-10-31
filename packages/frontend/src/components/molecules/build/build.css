@@ -17,8 +17,8 @@
 
 .build__dc {
   min-width: 3.25rem;
-  padding-inline: 6px;
-  border-left: 1px solid color-mix(in srgb, var(--color-foreground) 24%, transparent);
+  padding: 4px 6px;
+  border-top: 1px solid color-mix(in srgb, var(--color-foreground) 24%, transparent);
 }
 
 .build__label {
