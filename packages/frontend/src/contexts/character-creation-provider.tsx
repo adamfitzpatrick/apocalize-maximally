@@ -521,6 +521,8 @@ export function CharacterCreationProvider({
 
   const includePsychicPowerStep =
     character?.luckyMutation === PSYCHIC_POWER_LUCKY_MUTATION;
+  const includeBugOutAdditionalGearStep =
+    character?.characterRecord.startingGearMethod !== 'free-choice';
 
   const creationConfig = useMemo(() => {
     if (!isCoreGameDataReady(coreGameData)) {
@@ -530,9 +532,15 @@ export function CharacterCreationProvider({
       coreGameData.archetypes,
       coreGameData.apocalypses,
       coreGameData.ages,
-      includePsychicPowerStep
+      includePsychicPowerStep,
+      includeBugOutAdditionalGearStep
     );
-  }, [coreGameData, dataReady, includePsychicPowerStep]);
+  }, [
+    coreGameData,
+    dataReady,
+    includePsychicPowerStep,
+    includeBugOutAdditionalGearStep
+  ]);
 
   const value = useMemo(
     () => ({

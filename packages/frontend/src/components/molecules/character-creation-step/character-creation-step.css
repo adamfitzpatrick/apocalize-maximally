@@ -96,6 +96,18 @@
   overflow-wrap: break-word;
 }
 
+.free-choice-gear-table__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100%;
+}
+
+.free-choice-gear-table__badge {
+  color: var(--color-background);
+  background: var(--color-foreground);
+}
+
 .free-choice-gear-table .data-table th:nth-child(2),
 .free-choice-gear-table .data-table td:nth-child(2) {
   text-align: left;

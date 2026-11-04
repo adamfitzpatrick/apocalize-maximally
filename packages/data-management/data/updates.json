@@ -1,9 +1,20 @@
 [{
+    "date": "2026-11-4",
+    "version": "0.3.0",
+    "description": [
+        "CHANGE: Added ability to select gear items multiple times. (Addresses maxapoc_test00@emilgerth.org bug report on Nov 2, 2026.)",
+        "CHANGE: Added Studded Leather Vest to the gear list. (Addresses maxapoc_test00@emilgerth.org bug report on Nov 2, 2026.)",
+        "CHANGE: Added additional 32 CP free equipment selection after selecting a bug out kit. Oops. (Addresses Jeff's bug report on Oct 31, 2026.)",
+        "INFO: Your character is updated every time you move from step to step; no need to save. (Addresses Jeff's report/questions on Oct 27, 2026.)",
+        "INFO: Armor values will not be displayed in association with bug out kit options for now.  Please refer to the Core Rule Book for this info. (Addresses Jeff's report/questions on Oct 27, 2026.)",
+        "INFO: A repeated request for a login code will invalidate a previous code.  This can be confusing, because all of the emails are identical.  I'm performing auth through a third-party service, so this is out of my control ATM.  (Addresses maxapoc_test00@emilgerth.org's report/questions on Nov 2, 2026.)"
+    ]
+}, {
     "date": "2026-10-30",
     "version": "0.2.0",
     "description": [
         "CHANGE: Added print button to the character page.",
-        "INFO: Per a house rule, negative traits are NOT optional.  They make for more interesting roll play!",
-        "INFO: Per a house rule, Lucky Mutations can either be chosen or selected at random.  If you wish a random mutation, roll a d10 and select the indicated item from the list."
+        "INFO: Per a house rule, negative traits are NOT optional. They make for more interesting roll play! (Addresses Jeff's report/questions on Oct 27, 2026.)",
+        "INFO: Per a house rule, Lucky Mutations can either be chosen or selected at random.  If you wish a random mutation, roll a d10 and select the indicated item from the list. (Addresses Jeff's report/questions on Oct 27, 2026.)"
     ]
 }]

@@ -194,7 +194,8 @@ export default function CharacterPage() {
         coreGameData.archetypes,
         coreGameData.apocalypses,
         coreGameData.ages,
-        character.luckyMutation === PSYCHIC_POWER_LUCKY_MUTATION
+        character.luckyMutation === PSYCHIC_POWER_LUCKY_MUTATION,
+        character.characterRecord.startingGearMethod !== 'free-choice'
       )
     );
     if (path) {

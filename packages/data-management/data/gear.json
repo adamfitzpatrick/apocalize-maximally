@@ -1,5 +1,11 @@
 [
   {
+    "slug": "studded-leather-vest",
+    "name": "Studded Leather Vest",
+    "category": "armor",
+    "cp": 21
+  },
+  {
     "slug": "2-qt-container-of-oil",
     "name": "2 qt container of oil",
     "category": "gear",

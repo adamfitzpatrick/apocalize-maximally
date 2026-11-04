@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Flex, Popconfirm, Segmented, Typography } from 'antd';
+import { Button, Flex, Popconfirm, Segmented, Typography } from 'antd';
 import {
   type BugOutKit,
   type BugOutKitEntry,
@@ -15,6 +15,7 @@ import ManualEntry from '../manual-entry/manual-entry';
 import Table from '../table/table';
 
 const FREE_CHOICE_CP = 140;
+const BUG_OUT_ADDITIONAL_CP = 32;
 const CUSTOM_GEAR_HEADERS = ['Name', 'Description', 'Category', 'CP'];
 const CUSTOM_GEAR_CATEGORIES = ['weapon', 'armor', 'gear'];
 const EMPTY_CUSTOM_GEAR_ROW = ['', '', '', ''];
@@ -205,11 +206,19 @@ function gearCpSpent(
   items: StartingGearOption[],
   selectedSlugs: readonly string[]
 ): number {
-  const selected = new Set(selectedSlugs);
-  return items.reduce(
-    (spent, item) => spent + (selected.has(item.slug) ? item.cp : 0),
+  const cpBySlug = new Map(items.map((item) => [item.slug, item.cp]));
+  return selectedSlugs.reduce(
+    (spent, slug) => spent + (cpBySlug.get(slug) ?? 0),
     0
   );
+}
+
+function slugSelectionCounts(selectedSlugs: readonly string[]): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const slug of selectedSlugs) {
+    counts.set(slug, (counts.get(slug) ?? 0) + 1);
+  }
+  return counts;
 }
 
 function customGearCp(row: string[]): number | null {
@@ -229,7 +238,10 @@ function isBlankCustomGearRow(row: string[]): boolean {
   return row.every((cell) => cell.trim() === '');
 }
 
-export function isFreeChoiceSelectionComplete(character: Character): boolean {
+export function isFreeChoiceSelectionComplete(
+  character: Character,
+  cpBudget = FREE_CHOICE_CP
+): boolean {
   const rows = character.characterRecord.customGear ?? [];
   const rowsReady = rows.every(
     (row) => isBlankCustomGearRow(row) || customGearCp(row) !== null
@@ -240,10 +252,18 @@ export function isFreeChoiceSelectionComplete(character: Character): boolean {
   const spent =
     gearCpSpent(character.gearCatalog, character.characterRecord.freeChoiceGear ?? []) +
     rows.reduce((total, row) => total + (customGearCp(row) ?? 0), 0);
-  return spent <= FREE_CHOICE_CP;
+  return spent <= cpBudget;
 }
 
-export function FreeChoiceGearSelector() {
+export function isBugOutAdditionalGearComplete(character: Character): boolean {
+  return isFreeChoiceSelectionComplete(character, BUG_OUT_ADDITIONAL_CP);
+}
+
+export function FreeChoiceGearSelector({
+  cpBudget = FREE_CHOICE_CP
+}: {
+  cpBudget?: number;
+} = {}) {
   const { character, setDraft } = useCharacterCreation();
   const coreGameData = useCoreGameData();
   const record = character?.characterRecord;
@@ -251,37 +271,42 @@ export function FreeChoiceGearSelector() {
     left.name.localeCompare(right.name)
   );
   const selectedSlugs = record?.freeChoiceGear ?? [];
-  const selected = new Set(selectedSlugs);
+  const selectionCounts = slugSelectionCounts(selectedSlugs);
   const customRows = record?.customGear ?? [EMPTY_CUSTOM_GEAR_ROW];
   const customSpent = customRows.reduce(
     (total, row) => total + (customGearCp(row) ?? 0),
     0
   );
   const spent = gearCpSpent(items, selectedSlugs) + customSpent;
-  const remaining = FREE_CHOICE_CP - spent;
+  const remaining = cpBudget - spent;
 
-  function toggleItem(rowIndex: number) {
+  function setFreeChoiceGear(next: string[]) {
     if (!record) {
-      return;
-    }
-    const item = items[rowIndex];
-    if (!item) {
-      return;
-    }
-    if (selected.has(item.slug)) {
-      setDraft({
-        ...record,
-        freeChoiceGear: selectedSlugs.filter((slug) => slug !== item.slug)
-      });
-      return;
-    }
-    if (item.cp > remaining) {
       return;
     }
     setDraft({
       ...record,
-      freeChoiceGear: [...selectedSlugs, item.slug]
+      freeChoiceGear: next
     });
+  }
+
+  function addItem(rowIndex: number) {
+    const item = items[rowIndex];
+    if (!item || item.cp > remaining) {
+      return;
+    }
+    setFreeChoiceGear([...selectedSlugs, item.slug]);
+  }
+
+  function removeOne(slug: string) {
+    const index = selectedSlugs.lastIndexOf(slug);
+    if (index < 0) {
+      return;
+    }
+    setFreeChoiceGear([
+      ...selectedSlugs.slice(0, index),
+      ...selectedSlugs.slice(index + 1)
+    ]);
   }
 
   return (
@@ -292,11 +317,34 @@ export function FreeChoiceGearSelector() {
       <Table
         className="free-choice-gear-table"
         headers={['Name', 'Description', 'CP']}
-        rows={items.map((item) => [item.name, item.description ?? '', item.cp])}
+        rows={items.map((item) => {
+          const count = selectionCounts.get(item.slug) ?? 0;
+          return [
+            <span key={item.slug} className="free-choice-gear-table__name">
+              <span>{item.name}</span>
+              {count > 0 ? (
+                <Button
+                  className="free-choice-gear-table__badge"
+                  shape='circle'
+                  aria-label={`Remove one ${item.name}, ${count} selected`}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeOne(item.slug);
+                  }}
+                  onKeyDown={(event) => event.stopPropagation()}
+                >
+                  {count}
+                </Button>
+              ) : null}
+            </span>,
+            item.description ?? '',
+            item.cp
+          ];
+        })}
         selectedRowIndexes={items.flatMap((item, index) =>
-          selected.has(item.slug) ? [index] : []
+          (selectionCounts.get(item.slug) ?? 0) > 0 ? [index] : []
         )}
-        onRowClick={toggleItem}
+        onRowClick={addItem}
       />
       <Typography.Paragraph style={{ marginBottom: 0 }}>
         Add your own equipment. Each entry needs a name, description, category, and CP value.
@@ -316,6 +364,18 @@ export function FreeChoiceGearSelector() {
           });
         }}
       />
+    </Flex>
+  );
+}
+
+export function BugOutAdditionalGearSelection() {
+  return (
+    <Flex vertical gap={16}>
+      <Typography.Paragraph style={{ marginBottom: 0 }}>
+        Bug-Out characters get {BUG_OUT_ADDITIONAL_CP} CP to spend on additional
+        individual gear.
+      </Typography.Paragraph>
+      <FreeChoiceGearSelector cpBudget={BUG_OUT_ADDITIONAL_CP} />
     </Flex>
   );
 }

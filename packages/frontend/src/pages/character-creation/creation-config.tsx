@@ -17,6 +17,8 @@ import { SkillSelector } from '../../components/molecules/character-creation-ste
 import DerivedStatsReview from '../../components/molecules/character-creation-step/derived-stats-review';
 import PersonalDescription from '../../components/molecules/character-creation-step/personal-description';
 import {
+  BugOutAdditionalGearSelection,
+  isBugOutAdditionalGearComplete,
   isBugOutSelectionComplete,
   isFreeChoiceSelectionComplete,
   StartingGearMethod,
@@ -50,7 +52,8 @@ export function buildCreationConfig(
   archetypes: ArchetypeOption[],
   apocalypses: ApocalypseOption[],
   ageCategories: AgeCategory[],
-  includePsychicPowerStep = false
+  includePsychicPowerStep = false,
+  includeBugOutAdditionalGearStep = false
 ): CreationConfigData {
   return {
     phases: [
@@ -294,7 +297,19 @@ export function buildCreationConfig(
               character.characterRecord.startingGearMethod === 'free-choice'
                 ? isFreeChoiceSelectionComplete(character)
                 : isBugOutSelectionComplete(character)
-          }
+          },
+          ...(includeBugOutAdditionalGearStep
+            ? [
+                {
+                  title: 'Select Additional Gear',
+                  fullComponent: <BugOutAdditionalGearSelection />,
+                  collapsedComponent: null,
+                  hideUntilReached: true,
+                  isComplete: (character: Character) =>
+                    isBugOutAdditionalGearComplete(character)
+                }
+              ]
+            : [])
         ]
       }
     ]

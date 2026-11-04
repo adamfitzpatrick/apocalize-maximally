@@ -210,9 +210,7 @@ function isCustomGear(value: unknown): boolean {
 function isFreeChoiceGear(value: unknown): boolean {
   return (
     value === undefined ||
-    (Array.isArray(value) &&
-      value.every((slug) => typeof slug === 'string') &&
-      new Set(value).size === value.length)
+    (Array.isArray(value) && value.every((slug) => typeof slug === 'string'))
   );
 }
 
